@@ -5,7 +5,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sprout School – Læring er gøy!</title>
-<style>
+#accountPanel input {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px;
+  border: 2px solid #eee3d3;
+  border-radius: 12px;
+  margin-top: 5px;
+}
+#playerList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  gap: 12px;
+}
+.player-card {
+  text-align: left;
+  padding: 15px;
+  border-radius: 16px;
+  background: #e8f5e7;
+  color: var(--ink);
+  font-weight: bold;
+}
+.verified {
+  display: inline-block;
+  background: #d9f4df;
+  color: #18733a;
+  border-radius: 20px;
+  padding: 3px 8px;
+  font-size: 12px;
+}
+#trollGame {
+  background: #f1e6ff;
+}
+  <style>
+  
 :root {
   --ink:#29354c; --green:#52ad70; --cream:#fffaf0;
   --pink:#ffb6c8; --blue:#b8e7fa; --yellow:#ffdc76;
@@ -373,6 +406,330 @@ $("teacherTab").addEventListener("click",()=>{
  window.scrollTo({top:0,behavior:"smooth"});
 });
 $("backStudent").addEventListener("click",()=>$("studentTab").click());
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sproutDB = window.supabase.createClient(
+  "https://wsouovpgassxxoktoidh.supabase.co",
+  "sb_publishable_tmdFnqHesBspObVZ4g87Ww_Sv_5T5NY"
+);
+
+let sproutUser = null;
+let trollRound = [];
+let trollIndex = 0;
+let trollPoints = 0;
+let trollAnswered = false;
+let quizRoundId = 0;
+const savedQuizRounds = new Set();
+
+function authMessage(message, error = false) {
+  const el = document.getElementById("authMessage");
+  el.textContent = message;
+  el.style.color = error ? "#b42318" : "#267845";
+}
+
+async function loadPlayerList() {
+  const list = document.getElementById("playerList");
+  const { data, error } = await sproutDB
+    .from("profiles")
+    .select("id, username, avatar, is_verified, total_points")
+    .order("total_points", { ascending: false })
+    .limit(50);
+
+  if (error) {
+    list.textContent = "Kunne ikke laste spillere akkurat nå.";
+    console.error(error);
+    return;
+  }
+
+  list.replaceChildren();
+
+  if (!data.length) {
+    list.textContent = "Ingen spillere ennå. Bli den første!";
+    return;
+  }
+
+  data.forEach(player => {
+    const button = document.createElement("button");
+    button.className = "player-card";
+
+    const name = document.createElement("div");
+    name.textContent = `${player.avatar || "🌱"} ${player.username}`;
+
+    const score = document.createElement("div");
+    score.textContent = `⭐ ${player.total_points || 0} poeng`;
+
+    button.append(name, score);
+
+    if (player.is_verified) {
+      const badge = document.createElement("span");
+      badge.className = "verified";
+      badge.textContent = "✓ Verifisert";
+      button.appendChild(badge);
+    }
+
+    button.addEventListener("click", () => showPlayerProfile(player));
+    list.appendChild(button);
+  });
+}
+
+function showPlayerProfile(player) {
+  const panel = document.getElementById("selectedProfile");
+  panel.classList.remove("hidden");
+  panel.replaceChildren();
+
+  const title = document.createElement("h2");
+  title.textContent = `${player.avatar || "🌱"} ${player.username}`;
+
+  const points = document.createElement("p");
+  points.textContent = `⭐ ${player.total_points || 0} poeng`;
+
+  panel.append(title, points);
+
+  if (player.is_verified) {
+    const badge = document.createElement("span");
+    badge.className = "verified";
+    badge.textContent = "✓ Verifisert spiller";
+    panel.appendChild(badge);
+  }
+
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+async function refreshSproutAccount() {
+  const { data } = await sproutDB.auth.getSession();
+  sproutUser = data.session?.user || null;
+
+  document.getElementById("authForms").classList.toggle("hidden", !!sproutUser);
+  document.getElementById("signedInPanel").classList.toggle("hidden", !sproutUser);
+
+  if (!sproutUser) {
+    document.getElementById("totalScore").textContent = "0";
+    await loadPlayerList();
+    return;
+  }
+
+  const { data: profile, error } = await sproutDB
+    .from("profiles")
+    .select("username, avatar, total_points, is_verified")
+    .eq("id", sproutUser.id)
+    .single();
+
+  if (error) {
+    authMessage("Innlogging fungerer, men profilen kunne ikke lastes. Sjekk databaseoppsettet.", true);
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("welcomeUser").textContent =
+    `Hei, ${profile.username}! ${profile.avatar || "🌱"}`;
+
+  document.getElementById("accountStats").textContent =
+    `Du har ${profile.total_points || 0} poeng${profile.is_verified ? " · ✓ Verifisert" : ""}.`;
+
+  document.getElementById("totalScore").textContent = profile.total_points || 0;
+  await loadPlayerList();
+}
+
+document.getElementById("signupButton").addEventListener("click", async () => {
+  const username = document.getElementById("accountUsername").value.trim();
+  const email = document.getElementById("accountEmail").value.trim();
+  const password = document.getElementById("accountPassword").value;
+
+  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+    authMessage("Brukernavnet må være 3–20 tegn og bruke bokstaver, tall eller _.", true);
+    return;
+  }
+
+  if (!email || password.length < 8) {
+    authMessage("Skriv inn e-post og et passord på minst 8 tegn.", true);
+    return;
+  }
+
+  const { error } = await sproutDB.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username },
+      emailRedirectTo: window.location.origin
+    }
+  });
+
+  if (error) {
+    authMessage(error.message, true);
+    return;
+  }
+
+  authMessage("Kontoen er opprettet! Sjekk e-posten din hvis du blir bedt om å bekrefte den.");
+  await refreshSproutAccount();
+});
+
+document.getElementById("loginButton").addEventListener("click", async () => {
+  const email = document.getElementById("accountEmail").value.trim();
+  const password = document.getElementById("accountPassword").value;
+
+  const { error } = await sproutDB.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    authMessage(error.message, true);
+    return;
+  }
+
+  authMessage("Du er logget inn! 🎉");
+  await refreshSproutAccount();
+});
+
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  const { error } = await sproutDB.auth.signOut();
+  if (error) {
+    authMessage(error.message, true);
+    return;
+  }
+
+  authMessage("Du er logget ut.");
+  await refreshSproutAccount();
+});
+
+sproutDB.auth.onAuthStateChange(() => {
+  refreshSproutAccount();
+});
+
+// Save a completed quiz when the result panel appears.
+document.querySelectorAll("[data-subject]").forEach(button => {
+  button.addEventListener("click", () => quizRoundId++);
+});
+
+document.getElementById("again").addEventListener("click", () => {
+  quizRoundId++;
+});
+
+document.getElementById("next").addEventListener("click", async () => {
+  if (!sproutUser) return;
+
+  const result = document.getElementById("result");
+  if (result.classList.contains("hidden")) return;
+  if (savedQuizRounds.has(quizRoundId)) return;
+
+  savedQuizRounds.add(quizRoundId);
+  const points = Number.parseInt(document.getElementById("earned").textContent, 10) || 0;
+
+  const { error } = await sproutDB.rpc("save_game_score", {
+    p_game_name: "Sprout School quiz",
+    p_points: points
+  });
+
+  if (error) {
+    authMessage("Kunne ikke lagre quizpoengene. " + error.message, true);
+    console.error(error);
+  } else {
+    authMessage(`Quizpoengene dine ble lagret! +${points} poeng.`);
+    await refreshSproutAccount();
+  }
+});
+
+// Troll multiplication game
+function startTrollRound() {
+  trollRound = Array.from({ length: 5 }, () => {
+    const a = Math.floor(Math.random() * 10) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    return { a, b, answer: a * b };
+  });
+
+  trollIndex = 0;
+  trollPoints = 0;
+  document.getElementById("startTroll").classList.add("hidden");
+  document.getElementById("nextTroll").classList.add("hidden");
+  showTrollQuestion();
+}
+
+function showTrollQuestion() {
+  trollAnswered = false;
+  const q = trollRound[trollIndex];
+  document.getElementById("trollQuestion").textContent =
+    `Oppgave ${trollIndex + 1} av 5: ${q.a} × ${q.b} = ?`;
+  document.getElementById("trollFeedback").textContent = "";
+  document.getElementById("nextTroll").classList.add("hidden");
+
+  const options = new Set([q.answer]);
+  while (options.size < 4) {
+    options.add(Math.max(1, q.answer + Math.floor(Math.random() * 15) - 7));
+  }
+
+  const answers = [...options].sort(() => Math.random() - 0.5);
+  const area = document.getElementById("trollAnswers");
+  area.replaceChildren();
+
+  answers.forEach(value => {
+    const button = document.createElement("button");
+    button.className = "answer";
+    button.textContent = value;
+    button.addEventListener("click", () => {
+      if (trollAnswered) return;
+      trollAnswered = true;
+
+      [...area.children].forEach(b => b.disabled = true);
+
+      if (value === q.answer) {
+        trollPoints += 10;
+        button.classList.add("correct");
+        document.getElementById("trollFeedback").textContent =
+          "🎉 Riktig! Trollet hopper av glede! +10 poeng";
+      } else {
+        button.classList.add("wrong");
+        document.getElementById("trollFeedback").textContent =
+          `Nesten! Riktig svar er ${q.answer}. Prøv igjen neste gang!`;
+        [...area.children].forEach(b => {
+          if (Number(b.textContent) === q.answer) b.classList.add("correct");
+        });
+      }
+
+      document.getElementById("nextTroll").classList.remove("hidden");
+      document.getElementById("nextTroll").textContent =
+        trollIndex === 4 ? `Se resultatet · ${trollPoints} poeng` : "Neste oppgave →";
+    });
+    area.appendChild(button);
+  });
+}
+
+document.getElementById("startTroll").addEventListener("click", startTrollRound);
+
+document.getElementById("nextTroll").addEventListener("click", async () => {
+  if (trollIndex < 4) {
+    trollIndex++;
+    showTrollQuestion();
+    return;
+  }
+
+  document.getElementById("trollQuestion").textContent =
+    `Ferdig! Du fikk ${trollPoints} av 50 mulige poeng! 🏆`;
+  document.getElementById("trollAnswers").replaceChildren();
+  document.getElementById("nextTroll").classList.add("hidden");
+  document.getElementById("startTroll").classList.remove("hidden");
+  document.getElementById("startTroll").textContent = "Spill igjen 🔄";
+
+  if (!sproutUser) {
+    document.getElementById("trollFeedback").textContent =
+      "Logg inn for å lagre poengene dine.";
+    return;
+  }
+
+  const { error } = await sproutDB.rpc("save_game_score", {
+    p_game_name: "Trollens gangetabell",
+    p_points: trollPoints
+  });
+
+  if (error) {
+    document.getElementById("trollFeedback").textContent =
+      "Kunne ikke lagre poengene. " + error.message;
+    console.error(error);
+  } else {
+    document.getElementById("trollFeedback").textContent =
+      `Poengene er lagret! +${trollPoints} poeng 🌟`;
+    await refreshSproutAccount();
+  }
+});
+
+refreshSproutAccount();
 </script>
 </body>
 </html>
