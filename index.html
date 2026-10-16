@@ -250,6 +250,16 @@
       object-fit: contain;
     }
 
+    .admin-icon {
+      width: 19px;
+      height: 19px;
+      display: inline-block;
+      vertical-align: -4px;
+      margin-left: 4px;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 1px #bd1f2d30);
+    }
+
     .quiz-box { max-width: 760px; margin: 25px auto; }
     .quiz-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .progress { height: 9px; border-radius: 99px; background: #eeeafa; overflow: hidden; margin: 18px 0; }
@@ -689,6 +699,7 @@
 
     const $ = id => document.getElementById(id);
     const GOLD_BADGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/81/Twitter_Verified_Badge_Gold.svg";
+    const ADMIN_BADGE_URL = "https://www.iconpacks.net/icons/free-icons-6/free-icon-red-verified-badge-18763.png";
     const avatars = ["🐸","🐱","🐼","🦊","🐻","🐰","🦄","🐲","🐵","🐧","🐢","🦁"];
 
     const subjects = [
@@ -790,10 +801,21 @@
       parent.appendChild(img);
     }
 
-    function displayName(name, verified) {
+    function addAdminBadge(parent) {
+      const img = document.createElement("img");
+      img.className = "admin-icon";
+      img.src = ADMIN_BADGE_URL;
+      img.alt = "Administrator";
+      img.title = "Sprout School administrator";
+      img.loading = "lazy";
+      parent.appendChild(img);
+    }
+
+    function displayName(name, verified, isAdmin = false) {
       const span = document.createElement("span");
       span.textContent = name;
-      if (verified) addVerifiedBadge(span);
+      if (isAdmin) addAdminBadge(span);
+      else if (verified) addVerifiedBadge(span);
       return span;
     }
 
@@ -1295,7 +1317,7 @@
       }
       const {data,error} = await supabase
         .from("profiles")
-        .select("id,username,avatar,is_verified,total_points,created_at")
+        .select("id,username,avatar,is_verified,is_admin,total_points,created_at")
         .eq("id",currentUser.id)
         .maybeSingle();
       if (error) throw error;
@@ -1324,7 +1346,7 @@
       info.className = "profile-info";
       const name = document.createElement("div");
       name.className = "profile-name";
-      name.appendChild(displayName(profile.username,profile.is_verified));
+      name.appendChild(displayName(profile.username,profile.is_verified,profile.is_admin));
       const email = document.createElement("div");
       email.className = "muted";
       email.textContent = currentUser.email || "";
@@ -1370,7 +1392,7 @@
         const {data,error} = await supabase.from("profiles")
           .update({username,avatar:chosenAvatar})
           .eq("id",currentUser.id)
-          .select("id,username,avatar,is_verified,total_points,created_at")
+          .select("id,username,avatar,is_verified,is_admin,total_points,created_at")
           .single();
         if (error) throw error;
         profile = data;
@@ -1404,7 +1426,7 @@
       list.textContent = "Laster spillere …";
       try {
         const {data,error} = await supabase.from("profiles")
-          .select("id,username,avatar,is_verified,total_points,created_at")
+          .select("id,username,avatar,is_verified,is_admin,total_points,created_at")
           .order("total_points",{ascending:false})
           .limit(100);
         if (error) throw error;
@@ -1423,7 +1445,7 @@
           info.className = "profile-info";
           const name = document.createElement("div");
           name.className = "profile-name";
-          name.appendChild(displayName(player.username,player.is_verified));
+          name.appendChild(displayName(player.username,player.is_verified,player.is_admin));
           const pts = document.createElement("div");
           pts.className = "profile-points";
           pts.textContent = `${player.total_points || 0} poeng`;
