@@ -178,7 +178,7 @@ begin
  return v_result;
 end $$;
 
-revoke execute on all functions in schema public from public,anon;
+revoke execute on function public.teacher_create_class(text),public.teacher_list_classes(),public.teacher_create_assignment(bigint,text,text),public.teacher_list_progress(),public.student_join_class(text),public.student_list_assignments(),public.student_complete_assignment(bigint,integer),public.create_support_ticket(text,text),public.send_support_message(bigint,text),public.claim_support_ticket(bigint),public.close_support_ticket(bigint),public.list_support_tickets() from public,anon;
 grant execute on function public.teacher_create_class(text),public.teacher_list_classes(),public.teacher_create_assignment(bigint,text,text),public.teacher_list_progress(),public.student_join_class(text),public.student_list_assignments(),public.student_complete_assignment(bigint,integer),public.create_support_ticket(text,text),public.send_support_message(bigint,text),public.claim_support_ticket(bigint),public.close_support_ticket(bigint),public.list_support_tickets() to authenticated;
 
 -- IMPORTANT: an administrator must explicitly grant teacher status after verifying the account:
