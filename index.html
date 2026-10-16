@@ -1055,7 +1055,9 @@
       $("forest-finish-title").textContent=zone.emoji+" Område fullført!";$("forest-finish-text").textContent="Du fikk "+forestPoints+" av 100 poeng. "+(forestPoints===100?"Fantastisk — alle svarene var riktige!":"Bra jobbet med å hjelpe Rusk!")+" Du får "+Math.max(1,Math.floor(forestPoints/10))+" eikenøtter for eventyret.";
       recordProgress("Skogseventyret 2.0",forestPoints,forestPoints===100?"perfect":"");const msg=await saveScore("Sprout School quiz",forestPoints);$("forest-finish-text").textContent+=" "+msg;renderForestMap();renderPets();refreshHomeStats();
     }
-    $("forest-start").addEventListener("click",()=>{forestZoneIndex=readForestSave().unlocked;startForest();});
+    // The forest was redesigned to start from clickable map cards, so the old forest-start button no longer exists.
+    const forestStartButton = $("forest-start");
+    if (forestStartButton) forestStartButton.addEventListener("click",()=>{forestZoneIndex=readForestSave().unlocked;startForest();});
     $("forest-restart").addEventListener("click",()=>{$("forest-intro").classList.remove("hidden");$("forest-game").classList.add("hidden");$("forest-finished").classList.add("hidden");renderForestMap();});
     $("forest-next").addEventListener("click",()=>{if(!forestAnswered)return;if(forestIndex<forestZones[forestZoneIndex].stages.length-1){forestIndex++;renderForestStage();}else finishForest();});
 
