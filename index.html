@@ -3,385 +3,334 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprout School 🌱</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sprout School – Læring er gøy!</title>
 <style>
 :root {
-  --green: #32834b;
-  --dark: #203c2b;
-  --bg: #f3f8ef;
-  --white: #fff;
+  --ink:#29354c; --green:#52ad70; --cream:#fffaf0;
+  --pink:#ffb6c8; --blue:#b8e7fa; --yellow:#ffdc76;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-}
-header {
-  background: white;
-  padding: 18px 6%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 12px #00000008;
-}
-.logo { font-size: 24px; font-weight: 800; color: var(--green); }
-.score {
-  background: #e3f5df;
-  border-radius: 12px;
-  padding: 10px 15px;
-  font-weight: bold;
-}
-.hero { text-align: center; padding: 40px 16px 25px; }
-.hero h1 { font-size: clamp(30px, 5vw, 46px); margin-bottom: 10px; }
-.hero p { color: #617264; }
-main { max-width: 900px; margin: auto; padding: 12px 16px 50px; }
-.panel {
-  background: white;
-  border-radius: 22px;
-  padding: 25px;
-  margin-bottom: 20px;
-  box-shadow: 0 5px 20px #203c2b0b;
-}
-h2 { margin-top: 0; }
-label { display: block; font-weight: bold; margin-bottom: 8px; }
-select {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #d7e3d6;
-  border-radius: 10px;
-  background: white;
-  color: var(--dark);
-  font-size: 16px;
-}
-.settings {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-button {
-  cursor: pointer;
-  border: 0;
-  border-radius: 12px;
-  padding: 13px 17px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: transform .12s, background .12s;
-}
-button:active { transform: scale(.98); }
-.primary { background: var(--green); color: white; }
-.primary:hover { background: #266b3c; }
-.secondary { background: #e9f3e6; color: var(--dark); }
-#start { width: 100%; margin-top: 20px; }
-.hidden { display: none !important; }
-.quiz-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  color: #637568;
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-.track {
-  height: 9px;
-  background: #e7eee4;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 25px;
-}
-#progress {
-  height: 100%;
-  width: 0%;
-  background: #64b86d;
-  transition: width .2s;
-}
-#question { font-size: clamp(21px, 4vw, 28px); line-height: 1.4; }
-#answers { display: grid; gap: 11px; margin: 20px 0; }
-.answer {
-  width: 100%;
-  text-align: left;
-  background: #f7faf5;
-  border: 2px solid #e1eade;
-  color: var(--dark);
-}
-.answer:hover:not(:disabled) { border-color: var(--green); }
-.answer:disabled { cursor: default; opacity: 1; }
-.answer.correct { background: #e0f7e4; border-color: #39984f; }
-.answer.wrong { background: #fff0ee; border-color: #df6b61; }
-#feedback {
-  border-radius: 12px;
-  padding: 14px;
-  margin: 15px 0;
-  line-height: 1.5;
-}
-.good { background: #e4f7e7; color: #226735; }
-.bad { background: #fff0ee; color: #983f36; }
-#next { width: 100%; margin-top: 8px; }
-.result { text-align: center; }
-.big-score { font-size: 48px; color: var(--green); font-weight: 800; }
-.small { color: #647467; font-size: 14px; }
-footer { text-align: center; padding: 20px; color: #728073; }
-@media (max-width: 540px) {
-  .settings { grid-template-columns: 1fr; }
-  .panel { padding: 19px; }
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:#fffaf0;color:var(--ink)}
+button,select{font:inherit}
+button{cursor:pointer;border:0}
+header{height:76px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:3px solid #f1eadc;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:1000;color:#32965a}
+.logo span{display:inline-block;background:#dff5d9;padding:7px;border-radius:14px;margin-right:6px}
+.nav{display:flex;gap:10px;align-items:center}
+.nav button{background:#f2f5ef;color:var(--ink);padding:11px 15px;border-radius:14px;font-weight:bold}
+.nav button.active{background:#ffe69b}
+#points{background:#e1f5dd;color:#267845}
+.hero{margin:22px auto 0;max-width:1200px;padding:28px 5%;border-radius:30px;background:#dff2ff;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;min-height:300px}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.06;margin:0 0 14px;letter-spacing:-1px}
+.hero p{font-size:18px;line-height:1.6;max-width:480px}
+.pill{display:inline-block;background:white;border-radius:50px;padding:8px 13px;font-size:13px;font-weight:bold;margin-bottom:12px}
+.bigbutton{background:#ffca59;padding:15px 22px;border-radius:16px;font-weight:900;box-shadow:0 5px 0 #e7a937;color:#463717}
+.mascots{display:flex;align-items:end;justify-content:center;gap:4px;min-width:260px}
+.character{display:flex;align-items:center;justify-content:center;border:4px solid white;border-radius:46% 46% 40% 40%;box-shadow:0 7px 0 #00000010;font-size:66px;width:112px;height:145px;position:relative}
+.character:after{content:"";position:absolute;bottom:-13px;width:35px;height:17px;background:inherit;border-radius:50%}
+.character.a{background:#ffb8c8;transform:rotate(-7deg)}
+.character.b{background:#ffe184;height:180px;width:132px;font-size:83px;z-index:1}
+.character.c{background:#b5e6c3;transform:rotate(7deg)}
+.wrap{max-width:1200px;margin:35px auto;padding:0 5%}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+h2{font-size:29px;margin:0 0 8px}
+.muted{color:#68758a;line-height:1.5}
+.subjects{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:20px}
+.subject{min-height:155px;border:3px solid transparent;border-radius:23px;padding:17px 12px;text-align:left;color:var(--ink);transition:.15s;position:relative;overflow:hidden}
+.subject:hover{transform:translateY(-4px);border-color:#ffffff;box-shadow:0 8px 0 #0000000d}
+.subject .emoji{font-size:42px;display:block;margin-bottom:10px}
+.subject strong{font-size:16px;display:block}
+.subject small{display:block;margin-top:5px;color:#4e5d70}
+.s1{background:#d9f0ff}.s2{background:#ffe1e8}.s3{background:#fff0bb}.s4{background:#dff5d7}.s5{background:#e8ddff}
+.s6{background:#ffdfc4}.s7{background:#cceeea}.s8{background:#f8d9f4}.s9{background:#e1e7ff}.s10{background:#e7edda}
+.panel{background:white;border:2px solid #f0eadf;border-radius:25px;padding:25px;margin-top:25px}
+.hidden{display:none!important}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select{background:#fffaf0;border:2px solid #eee3d3;padding:12px;border-radius:12px;min-width:170px}
+.quiztop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#68758a;font-weight:bold}
+.track{height:10px;background:#edf0e9;border-radius:30px;overflow:hidden;margin:17px 0 24px}
+#progress{height:100%;background:#52ad70;width:0;transition:.2s}
+#question{font-size:clamp(22px,4vw,32px);line-height:1.35}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.answer{padding:17px;text-align:left;background:#f7f6f0;border:3px solid #ece9df;border-radius:16px;color:var(--ink);font-weight:bold}
+.answer:hover:not(:disabled){border-color:#8bc99b}
+.answer.correct{background:#dff7e3;border-color:#52ad70}
+.answer.wrong{background:#ffe4e0;border-color:#f28c7e}
+#feedback{padding:15px;border-radius:15px;line-height:1.5;margin:12px 0}
+.good{background:#e1f6e5;color:#21683b}.bad{background:#fff0ec;color:#9c4537}
+.action{background:#4da968;color:white;padding:13px 20px;border-radius:14px;font-weight:bold}
+.secondary{background:#f2f1e9;color:var(--ink);padding:13px 20px;border-radius:14px;font-weight:bold}
+#result{text-align:center}
+.resultnum{font-size:48px;font-weight:1000;color:#34945a}
+footer{text-align:center;padding:35px 15px;color:#7b8492}
+.teacherbox{background:#f0e8ff}
+@media(max-width:900px){.subjects{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{flex-wrap:wrap}.mascots{margin:auto}}
+@media(max-width:560px){header{height:auto;min-height:70px;padding:12px 4%;flex-wrap:wrap}.logo{font-size:20px}.nav{gap:5px}.nav button{padding:9px;font-size:12px}.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.character{width:75px;height:105px;font-size:45px}.character.b{width:95px;height:130px;font-size:60px}.mascots{min-width:0}.hero{padding:25px 6%}.answers{grid-template-columns:1fr}.panel{padding:18px}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">🌱 Sprout School</div>
-  <div class="score">⭐ Poeng: <span id="totalScore">0</span></div>
+  <div class="logo"><span>🌱</span>Sprout School</div>
+  <nav class="nav">
+    <button class="active" id="studentTab">🎮 Spill for elever</button>
+    <button id="teacherTab">👩‍🏫 For lærere</button>
+    <button id="points">⭐ <span id="totalScore">0</span></button>
+  </nav>
 </header>
 
-<section class="hero">
-  <h1>Lær noe nytt! 🎮</h1>
-  <p>Velg et fag, finn nivået ditt og samle poeng.</p>
-</section>
-
-<main>
-  <section class="panel" id="setup">
-    <h2>📚 Velg din utfordring</h2>
-    <div class="settings">
-      <div>
-        <label for="subject">Fag</label>
-        <select id="subject">
-          <option value="matte">🔢 Matematikk</option>
-          <option value="norsk">📖 Norsk</option>
-          <option value="naturfag">🌍 Naturfag</option>
-        </select>
-      </div>
-      <div>
-        <label for="difficulty">Vanskelighetsgrad</label>
-        <select id="difficulty">
-          <option value="easy">🟢 Lett</option>
-          <option value="medium">🟡 Middels</option>
-          <option value="hard">🔴 Vanskelig</option>
-        </select>
-      </div>
+<div id="studentPage">
+  <section class="hero">
+    <div>
+      <span class="pill">🌈 ET STED FOR NYE OPPDAGELSER</span>
+      <h1>Hei, oppdager! 👋<br>Skal vi lære noe?</h1>
+      <p>Bli med vennene våre på spennende oppdrag. Utforsk fag, svar på spørsmål og samle stjerner!</p>
+      <button class="bigbutton" onclick="document.getElementById('fag').scrollIntoView({behavior:'smooth'})">Finn et fag ↓</button>
     </div>
-    <button class="primary" id="start">Start quiz 🚀</button>
-    <p class="small">Hvert spørsmål har tre svaralternativer. Klarer du alle?</p>
-  </section>
-
-  <section class="panel hidden" id="quiz">
-    <div class="quiz-top">
-      <span id="questionNumber">Spørsmål 1</span>
-      <span id="levelLabel">🟢 Lett</span>
+    <div class="mascots" aria-label="Sprout School sine fantasivenner">
+      <div class="character a">🐱</div>
+      <div class="character b">🐸</div>
+      <div class="character c">🐻</div>
     </div>
-    <div class="track"><div id="progress"></div></div>
-    <h2 id="question"></h2>
-    <div id="answers"></div>
-    <div id="feedback" class="hidden" role="status" aria-live="polite"></div>
-    <button class="primary hidden" id="next">Neste spørsmål →</button>
   </section>
 
-  <section class="panel result hidden" id="results">
-    <div style="font-size:55px" id="resultEmoji">🏆</div>
-    <h2 id="resultTitle">Bra jobbet!</h2>
-    <div class="big-score" id="earned">0 poeng</div>
-    <p id="resultText"></p>
-    <button class="primary" id="again">Spill igjen 🔄</button>
-    <button class="secondary" id="change">Velg et annet fag</button>
-  </section>
+  <main class="wrap" id="fag">
+    <div class="sectionhead">
+      <div><h2>Hva vil du lære i dag? 📚</h2><div class="muted">Velg et fag og start et lite læringseventyr!</div></div>
+    </div>
+    <div class="subjects" id="subjectCards"></div>
 
-  <section class="panel">
-    <h2>🏅 Slik fungerer poengene</h2>
-    <p>🟢 Lett: <strong>10 poeng</strong> for riktig svar.</p>
-    <p>🟡 Middels: <strong>20 poeng</strong> for riktig svar.</p>
-    <p>🔴 Vanskelig: <strong>30 poeng</strong> for riktig svar.</p>
-    <p class="small">Du får poeng bare én gang per spørsmål.</p>
-  </section>
-</main>
+    <section class="panel hidden" id="quiz">
+      <div class="quiztop"><span id="qnumber">Spørsmål 1</span><span id="levelLabel">🟢 Lett</span></div>
+      <div class="track"><div id="progress"></div></div>
+      <h2 id="question"></h2>
+      <div class="answers" id="answers"></div>
+      <div id="feedback" class="hidden" role="status" aria-live="polite"></div>
+      <button class="action hidden" id="next">Neste spørsmål →</button>
+    </section>
 
-<footer>© 2026 Sprout School 🌱 · Læring for alle</footer>
+    <section class="panel hidden" id="result">
+      <div style="font-size:55px" id="resultEmoji">🏆</div>
+      <h2 id="resultTitle">Bra jobbet!</h2>
+      <div class="resultnum" id="earned">0 poeng</div>
+      <p id="resultText"></p>
+      <button class="action" id="again">Spill igjen 🔄</button>
+      <button class="secondary" id="back">Velg et annet fag</button>
+    </section>
+
+    <section class="panel">
+      <h2>⭐ Samle stjerner!</h2>
+      <p class="muted">Lette spørsmål gir 10 poeng, middels gir 20, og vanskelige gir 30 poeng for hvert riktige svar.</p>
+    </section>
+  </main>
+</div>
+
+<div id="teacherPage" class="wrap hidden">
+  <section class="panel teacherbox">
+    <div style="font-size:50px">👩‍🏫📚</div>
+    <h1>Velkommen, lærer!</h1>
+    <p class="muted">Her skal lærere etter hvert kunne lage oppgaver, velge fag og følge elevenes læring.</p>
+    <h2>Dette kommer senere</h2>
+    <p>📝 Lage egne oppgaver</p>
+    <p>🏫 Opprette klasser</p>
+    <p>📈 Følge læringsprogresjon</p>
+    <p>🔐 Sikker lærerinnlogging</p>
+    <p class="muted">Lærerdelen er foreløpig en forhåndsvisning. Den har ikke innlogging eller lagring av elevdata ennå.</p>
+    <button class="action" id="backStudent">Til elevsiden</button>
+  </section>
+</div>
+
+<footer>🌱 Sprout School · Læring er et eventyr!</footer>
 
 <script>
-const questions = {
-  matte: {
-    easy: [
-      {q:"Hva er 7 + 5?",a:["11","12","13"],c:1,why:"7 + 5 = 12."},
-      {q:"Hva er 6 × 3?",a:["18","15","21"],c:0,why:"6 ganger 3 er 18."},
-      {q:"Hva er 20 − 8?",a:["10","11","12"],c:2,why:"20 − 8 = 12."},
-      {q:"Hva er halvparten av 16?",a:["6","8","10"],c:1,why:"16 delt på 2 er 8."}
-    ],
-    medium: [
-      {q:"Hva er 12 × 8?",a:["86","96","108"],c:1,why:"12 × 8 = 96."},
-      {q:"Hva er 144 delt på 12?",a:["11","12","14"],c:1,why:"12 × 12 = 144."},
-      {q:"Hva er 25 % av 200?",a:["25","40","50"],c:2,why:"En fjerdedel av 200 er 50."},
-      {q:"Hva er 3,5 + 2,7?",a:["5,2","6,2","6,7"],c:1,why:"3,5 + 2,7 = 6,2."}
-    ],
-    hard: [
-      {q:"Hva er 15 % av 400?",a:["40","60","80"],c:1,why:"10 % er 40, og 5 % er 20. Til sammen 60."},
-      {q:"Hva er 3² + 4²?",a:["25","49","12"],c:0,why:"9 + 16 = 25."},
-      {q:"En vare koster 800 kr og får 25 % rabatt. Hva er ny pris?",a:["600 kr","650 kr","700 kr"],c:0,why:"25 % av 800 er 200. 800 − 200 = 600 kr."},
-      {q:"Løs likningen: 3x = 27.",a:["x = 6","x = 9","x = 12"],c:1,why:"27 delt på 3 er 9."}
-    ]
-  },
-  norsk: {
-    easy: [
-      {q:"Hvilket ord er skrevet riktig?",a:["Skole","Shole","Skoole"],c:0,why:"Skole er riktig skrevet."},
-      {q:"Hva er flertall av «bok»?",a:["Boker","Bøker","Bokker"],c:1,why:"Flertall av bok er bøker."},
-      {q:"Hvilket ord er et verb?",a:["Løpe","Blå","Bord"],c:0,why:"Å løpe er en handling, altså et verb."},
-      {q:"Hva er det motsatte av «varm»?",a:["Het","Kald","Myk"],c:1,why:"Det motsatte av varm er kald."}
-    ],
-    medium: [
-      {q:"Hvilken setning er riktig?",a:["Jeg liker å lese.","Jeg liker og lese.","Jeg liker å leser."],c:0,why:"Her bruker vi «å lese»."},
-      {q:"Hva er et adjektiv?",a:["Et ord som beskriver","Et navn på en person","Et ord for en handling"],c:0,why:"Adjektiv beskriver for eksempel størrelse, farge eller egenskaper."},
-      {q:"Hva er preteritum av «å skrive»?",a:["Skriver","Skrev","Skrevet"],c:1,why:"Preteritum er «skrev»."},
-      {q:"Hvilket ord er et substantiv?",a:["Raskt","Hoppe","Sykkel"],c:2,why:"En sykkel er en ting, altså et substantiv."}
-    ],
-    hard: [
-      {q:"Hvilken setning har riktig tegnsetting?",a:["Hei hvordan går det?","Hei, hvordan går det?","Hei hvordan, går det"],c:1,why:"Komma etter «Hei» og spørsmålstegn til slutt."},
-      {q:"Hva er et synonym for «modig»?",a:["Tapper","Redd","Trøtt"],c:0,why:"Tapper betyr omtrent det samme som modig."},
-      {q:"Hvilken ordklasse tilhører «fordi» i «Jeg gikk hjem fordi jeg var trøtt»?",a:["Preposisjon","Subjunksjon","Adjektiv"],c:1,why:"«Fordi» innleder en leddsetning."},
-      {q:"Hva er riktig skrivemåte?",a:["Interessant","Interesant","Intresant"],c:0,why:"Det skrives interessant, med to s-er."}
-    ]
-  },
-  naturfag: {
-    easy: [
-      {q:"Hvilken planet bor vi på?",a:["Mars","Jorden","Venus"],c:1,why:"Vi bor på planeten Jorden."},
-      {q:"Hva trenger planter for å vokse?",a:["Bare godteri","Lys og vann","Bare stein"],c:1,why:"Planter trenger blant annet lys, vann og næringsstoffer."},
-      {q:"Hvilket dyr er et pattedyr?",a:["Laks","Frosk","Hund"],c:2,why:"Hunder er pattedyr."},
-      {q:"Hva er Solen?",a:["En stjerne","En planet","En måne"],c:0,why:"Solen er stjernen i solsystemet vårt."}
-    ],
-    medium: [
-      {q:"Hvilken gass trenger mennesker for å puste?",a:["Oksygen","Helium","Karbondioksid"],c:0,why:"Vi bruker oksygen i celleåndingen."},
-      {q:"Ved hvilken temperatur fryser rent vann normalt?",a:["0 °C","10 °C","100 °C"],c:0,why:"Rent vann fryser normalt ved 0 °C."},
-      {q:"Hva er fotosyntese?",a:["Når planter lager sukker ved hjelp av lys","Når vann fryser","Når dyr sover"],c:0,why:"Planter bruker lys, vann og karbondioksid til å lage sukker og frigir oksygen."},
-      {q:"Hvilket organ pumper blod rundt i kroppen?",a:["Lungene","Hjertet","Magesekken"],c:1,why:"Hjertet pumper blod gjennom kroppen."}
-    ],
-    hard: [
-      {q:"Hva er det kjemiske symbolet for gull?",a:["Ag","Au","Fe"],c:1,why:"Gull har symbolet Au."},
-      {q:"Hva kalles prosessen der væske blir til gass?",a:["Kondensering","Fordamping","Frysing"],c:1,why:"Fordamping er overgangen fra væske til gass."},
-      {q:"Hvilken planet er kjent for sitt store røde stormområde?",a:["Jupiter","Merkur","Neptun"],c:0,why:"Den store røde flekken er en enorm storm på Jupiter."},
-      {q:"Hva er DNA sin viktigste rolle?",a:["Å transportere oksygen","Å lagre genetisk informasjon","Å fordøye mat"],c:1,why:"DNA inneholder genetiske opplysninger om en organisme."}
-    ]
-  }
+const subjects = [
+ {id:"matte",name:"Matematikk",emoji:"🔢",desc:"Tall og regning",color:"s1"},
+ {id:"norsk",name:"Norsk",emoji:"📖",desc:"Ord og lesing",color:"s2"},
+ {id:"engelsk",name:"Engelsk",emoji:"🇬🇧",desc:"Learn English",color:"s3"},
+ {id:"naturfag",name:"Naturfag",emoji:"🌍",desc:"Utforsk verden",color:"s4"},
+ {id:"krle",name:"KRLE",emoji:"🕊️",desc:"Religion og livssyn",color:"s5"},
+ {id:"kunst",name:"Kunst og håndverk",emoji:"🎨",desc:"Skap og tegn",color:"s6"},
+ {id:"samfunn",name:"Samfunnsfag",emoji:"🏛️",desc:"Mennesker og samfunn",color:"s7"},
+ {id:"musikk",name:"Musikk",emoji:"🎵",desc:"Rytme og toner",color:"s8"},
+ {id:"kropp",name:"Kroppsøving",emoji:"⚽",desc:"Bevegelse og helse",color:"s9"},
+ {id:"kode",name:"Programmering",emoji:"💻",desc:"Tenk som en utvikler",color:"s10"}
+];
+
+const bank = {
+matte:[
+["Hva er 7 + 5?",["11","12","13"],1,"7 + 5 = 12."],
+["Hva er 6 × 3?",["18","15","21"],0,"6 ganger 3 er 18."],
+["Hva er halvparten av 16?",["6","8","10"],1,"16 delt på 2 er 8."],
+["Hva er 12 × 8?",["86","96","108"],1,"12 × 8 = 96."],
+["Hva er 25 % av 200?",["25","40","50"],2,"En fjerdedel av 200 er 50."],
+["Hva er 3² + 4²?",["25","49","12"],0,"9 + 16 = 25."]
+],
+norsk:[
+["Hvilket ord er skrevet riktig?",["Skole","Shole","Skoole"],0,"Skole er riktig skrevet."],
+["Hva er flertall av bok?",["Boker","Bøker","Bokker"],1,"Flertall av bok er bøker."],
+["Hvilket ord er et verb?",["Løpe","Blå","Bord"],0,"Å løpe er en handling."],
+["Hva er preteritum av å skrive?",["Skriver","Skrev","Skrevet"],1,"Preteritum er skrev."],
+["Hva er et adjektiv?",["Et beskrivende ord","Et stedsnavn","En handling"],0,"Adjektiv beskriver for eksempel farge eller størrelse."],
+["Hvilket ord er riktig skrevet?",["Interessant","Interesant","Intresant"],0,"Det skrives interessant."]
+],
+engelsk:[
+["Hva betyr «apple»?",["Pære","Eple","Appelsin"],1,"Apple betyr eple."],
+["Hva betyr «good morning»?",["God natt","God morgen","Ha det"],1,"Good morning betyr god morgen."],
+["Hva er flertall av «cat»?",["Cats","Cates","Caties"],0,"Flertall er cats."],
+["Hva er fortid av «go»?",["Goed","Gone","Went"],2,"Fortidsformen er went."],
+["Hva betyr «careful»?",["Forsiktig","Sulten","Høy"],0,"Careful betyr forsiktig."],
+["Hvilken setning er riktig?",["She are happy","She is happy","She be happy"],1,"She is happy er riktig."]
+],
+naturfag:[
+["Hvilken planet bor vi på?",["Mars","Jorden","Venus"],1,"Vi bor på Jorden."],
+["Hva trenger planter for å vokse?",["Bare godteri","Lys og vann","Bare stein"],1,"Planter trenger blant annet lys og vann."],
+["Hva er Solen?",["En stjerne","En planet","En måne"],0,"Solen er en stjerne."],
+["Hvilken gass trenger mennesker for å puste?",["Oksygen","Helium","Neon"],0,"Vi trenger oksygen."],
+["Hva kalles væske som blir til gass?",["Frysing","Fordamping","Smelting"],1,"Dette kalles fordamping."],
+["Hva er DNA sin viktigste rolle?",["Lagre genetisk informasjon","Pumpe blod","Fordøye mat"],0,"DNA lagrer genetisk informasjon."]
+],
+krle:[
+["Hvilken bok er sentral i kristendommen?",["Bibelen","Koranen","Vedaene"],0,"Bibelen er kristendommens hellige bok."],
+["Hva heter den muslimske fastemåneden?",["Ramadan","Advent","Påske"],0,"Ramadan er en viktig måned i islam."],
+["Hva betyr toleranse?",["Å respektere forskjeller","Å alltid være enig","Å bestemme over andre"],0,"Toleranse handler om respekt for forskjeller."],
+["Hva heter buddhismens grunnlegger?",["Sokrates","Siddhartha Gautama","Abraham Lincoln"],1,"Siddhartha Gautama er kjent som Buddha."],
+["Hva er livssyn?",["En måte å forstå livet på","En type sport","Et språk"],0,"Et livssyn handler om hvordan man forstår livet og verden."],
+["Hva er etikk?",["Lære om rett og galt","Lære om vær","Lære om tall"],0,"Etikk undersøker hva som er rett og galt."]
+],
+kunst:[
+["Hvilke farger blander du for å få grønt med maling?",["Blå og gul","Rød og blå","Svart og hvit"],0,"Blått og gult gir grønt."],
+["Hva bruker du for å klippe papir?",["Saks","Skje","Linjal alene"],0,"En saks kan klippe papir."],
+["Hva er en skisse?",["En enkel tegning","En sang","En type maling"],0,"En skisse er en enkel tegning av en idé."],
+["Hva er en komplementærfarge?",["En farge som står mot en annen i fargesirkelen","Alltid hvit","En gjennomsiktig farge"],0,"Komplementærfarger står mot hverandre i fargesirkelen."],
+["Hva brukes perspektiv til i tegning?",["Å vise dybde","Å gjøre alt flatt","Å blande maling"],0,"Perspektiv kan gi inntrykk av dybde."],
+["Hva er gjenbruk i kunst?",["Å bruke materialer på nytt","Å kaste alt","Å bare bruke nytt papir"],0,"Gjenbruk gir materialer nytt liv."]
+],
+samfunn:[
+["Hva heter hovedstaden i Norge?",["Bergen","Oslo","Trondheim"],1,"Oslo er hovedstaden i Norge."],
+["Hva er demokrati?",["Folk kan være med og bestemme","Én person bestemmer alltid","Ingen regler finnes"],0,"I et demokrati kan folk påvirke hvem som styrer."],
+["Hva bruker vi kart til?",["Å finne steder","Å måle temperatur alene","Å skrive musikk"],0,"Kart viser steder og geografiske områder."],
+["Hva er en kommune?",["Et lokalt styringsområde","Et kontinent","En type fjell"],0,"Kommunen har ansvar for mange lokale tjenester."],
+["Hva betyr kildekritikk?",["Å vurdere om informasjon er til å stole på","Å tro på alt","Å lese bare overskriften"],0,"Kildekritikk betyr å undersøke informasjon og kilder."],
+["Hva er en grunnlov?",["En viktig lov som setter rammer for staten","En skolebok","En værmelding"],0,"Grunnloven fastsetter grunnleggende regler for staten."]
+],
+musikk:[
+["Hva bruker vi for å måle musikalsk puls?",["Takt","Farge","Temperatur"],0,"Takt organiserer pulsen i musikken."],
+["Hvilket instrument har tangenter?",["Piano","Trompet","Tromme"],0,"Piano har tangenter."],
+["Hva betyr «tempo» i musikk?",["Hvor fort musikken går","Hvor høy sangeren er","Hvor stor scenen er"],0,"Tempo er hastigheten på musikken."],
+["Hva er en melodi?",["En rekke toner som danner en musikalsk linje","En type mikrofon","En lydløs pause"],0,"Melodien er tonerekken du ofte kan nynne."],
+["Hva er en oktav?",["Avstanden mellom toner med samme tonenavn","En trommetype","En sangtekst"],0,"En oktav går fra en tone til neste med samme tonenavn."],
+["Hva betyr dynamikk i musikk?",["Variasjon i lydstyrke","Musikkens farge","Hvor mange instrumenter finnes"],0,"Dynamikk handler blant annet om sterkt og svakt."]
+],
+kropp:[
+["Hvor mange bein har et voksent menneske vanligvis?",["106","206","306"],1,"Et voksent menneske har vanligvis 206 bein."],
+["Hva er viktig før hard trening?",["Oppvarming","Å sitte helt stille hele dagen","Å holde pusten"],0,"Oppvarming forbereder kroppen på aktivitet."],
+["Hvilket organ pumper blod?",["Hjertet","Magesekken","Huden"],0,"Hjertet pumper blod rundt i kroppen."],
+["Hva hjelper musklene med?",["Bevegelse","Å se farger","Å lage bein"],0,"Musklene hjelper kroppen å bevege seg."],
+["Hva er utholdenhet?",["Å holde på med aktivitet over tid","Å hoppe én gang","Å sitte stille"],0,"Utholdenhet er evnen til å være aktiv over tid."],
+["Hvorfor trenger kroppen søvn?",["For hvile og restitusjon","For å slutte å trenge vann","For å stoppe hjertet"],0,"Søvn er viktig for både kropp og hjerne."]
+],
+kode:[
+["Hva er en algoritme?",["En trinnvis oppskrift","En dataskjerm","Et tastatur"],0,"En algoritme er en rekke instruksjoner."],
+["Hva er en løkke i programmering?",["Kode som gjentas","En datamus","Et bilde"],0,"En løkke gjentar instruksjoner."],
+["Hva betyr en feil i kode ofte?",["Programmet gjør ikke det forventede","Datamaskinen blir alltid ødelagt","Internett forsvinner alltid"],0,"Feilsøking handler om å finne og rette problemer."],
+["Hva er en variabel?",["Et sted der en verdi lagres","En type skjerm","Et nettverk"],0,"Variabler kan lagre data."],
+["Hva gjør en if-setning?",["Kjører kode hvis en betingelse stemmer","Skrur alltid av PC-en","Sletter all kode"],0,"En if-setning sjekker en betingelse."],
+["Hva er en boolsk verdi?",["Sann eller usann","Rød eller blå","Stor eller liten fil"],0,"Boolsk verdi er true eller false."]
+]
 };
 
-const labels = {easy:"🟢 Lett",medium:"🟡 Middels",hard:"🔴 Vanskelig"};
-let currentQuestions = [];
-let index = 0;
-let earned = 0;
-let totalScore = 0;
-let answered = false;
+const levels=[
+{name:"Lett",emoji:"🟢",points:10,start:0,end:2},
+{name:"Middels",emoji:"🟡",points:20,start:2,end:4},
+{name:"Vanskelig",emoji:"🔴",points:30,start:4,end:6}
+];
+let subjectId="matte", level=0, qs=[], pos=0, earned=0, total=0, answered=false;
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
+$("subjectCards").innerHTML=subjects.map(s=>`
+<button class="subject ${s.color}" data-subject="${s.id}">
+<span class="emoji">${s.emoji}</span><strong>${s.name}</strong><small>${s.desc}</small>
+</button>`).join("");
 
-function shuffle(items) {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+document.querySelectorAll("[data-subject]").forEach(b=>b.addEventListener("click",()=>{
+ subjectId=b.dataset.subject;
+ $("quiz").classList.remove("hidden");$("result").classList.add("hidden");
+ $("quiz").scrollIntoView({behavior:"smooth",block:"start"});
+ const levelChoice=prompt("Velg nivå:\n1 = Lett\n2 = Middels\n3 = Vanskelig","1");
+ if(levelChoice===null){$("quiz").classList.add("hidden");return}
+ level=Math.max(0,Math.min(2,Number(levelChoice)-1||0));
+ startQuiz();
+}));
+
+function startQuiz(){
+ const lv=levels[level], all=bank[subjectId];
+ qs=all.slice(lv.start,lv.end);
+ pos=0;earned=0;
+ $("levelLabel").textContent=lv.emoji+" "+lv.name+" · "+lv.points+" poeng per riktig svar";
+ $("result").classList.add("hidden");$("quiz").classList.remove("hidden");
+ showQuestion();
 }
-
-function startQuiz() {
-  const subject = $("subject").value;
-  const difficulty = $("difficulty").value;
-  currentQuestions = shuffle(questions[subject][difficulty]);
-  index = 0;
-  earned = 0;
-  $("levelLabel").textContent = labels[difficulty];
-  $("setup").classList.add("hidden");
-  $("results").classList.add("hidden");
-  $("quiz").classList.remove("hidden");
-  showQuestion();
+function showQuestion(){
+ answered=false;
+ const q=qs[pos];
+ $("qnumber").textContent=`Spørsmål ${pos+1} av ${qs.length}`;
+ $("progress").style.width=(pos/qs.length*100)+"%";
+ $("question").textContent=q[0];
+ $("answers").innerHTML="";
+ $("feedback").className="hidden";
+ $("next").classList.add("hidden");
+ q[1].forEach((a,i)=>{
+  const b=document.createElement("button");
+  b.className="answer";b.textContent=["A","B","C"][i]+". "+a;
+  b.addEventListener("click",()=>answer(i));
+  $("answers").appendChild(b);
+ });
 }
-
-function showQuestion() {
-  answered = false;
-  const item = currentQuestions[index];
-  $("questionNumber").textContent =
-    `Spørsmål ${index + 1} av ${currentQuestions.length}`;
-  $("progress").style.width =
-    `${index / currentQuestions.length * 100}%`;
-  $("question").textContent = item.q;
-  $("answers").innerHTML = "";
-  $("feedback").className = "hidden";
-  $("feedback").textContent = "";
-  $("next").classList.add("hidden");
-
-  item.a.forEach((answer, i) => {
-    const button = document.createElement("button");
-    button.className = "answer";
-    button.textContent = `${["A","B","C"][i]}. ${answer}`;
-    button.addEventListener("click", () => chooseAnswer(i));
-    $("answers").appendChild(button);
-  });
+function answer(i){
+ if(answered)return;answered=true;
+ const q=qs[pos],lv=levels[level];
+ [...$("answers").children].forEach((b,n)=>{
+  b.disabled=true;
+  if(n===q[2])b.classList.add("correct");
+  if(n===i&&i!==q[2])b.classList.add("wrong");
+ });
+ const f=$("feedback");
+ if(i===q[2]){
+  earned+=lv.points;total+=lv.points;
+  $("totalScore").textContent=total;
+  f.textContent=`🎉 Riktig! +${lv.points} poeng! ${q[3]}`;
+  f.className="good";
+ }else{
+  f.textContent=`💚 Prøv igjen neste gang! Riktig svar er «${q[1][q[2]]}». ${q[3]}`;
+  f.className="bad";
+ }
+ $("next").textContent=pos===qs.length-1?"Se resultatet 🏆":"Neste spørsmål →";
+ $("next").classList.remove("hidden");
 }
-
-function chooseAnswer(choice) {
-  if (answered) return;
-  answered = true;
-
-  const item = currentQuestions[index];
-  const buttons = [...$("answers").children];
-  buttons.forEach((button, i) => {
-    button.disabled = true;
-    if (i === item.c) button.classList.add("correct");
-    else if (i === choice) button.classList.add("wrong");
-  });
-
-  const correct = choice === item.c;
-  const points = {easy:10,medium:20,hard:30}[$("difficulty").value];
-  const feedback = $("feedback");
-
-  if (correct) {
-    earned += points;
-    totalScore += points;
-    $("totalScore").textContent = totalScore;
-    feedback.textContent = `🎉 Riktig! +${points} poeng. ${item.why}`;
-    feedback.className = "good";
-  } else {
-    feedback.textContent = `💚 Ikke helt! Riktig svar er «${item.a[item.c]}». ${item.why}`;
-    feedback.className = "bad";
-  }
-
-  $("next").textContent =
-    index === currentQuestions.length - 1 ? "Se resultatet 🏆" : "Neste spørsmål →";
-  $("next").classList.remove("hidden");
-}
-
-function finishQuiz() {
-  $("quiz").classList.add("hidden");
-  $("results").classList.remove("hidden");
-  $("progress").style.width = "100%";
-
-  const percentage = Math.round(earned /
-    (currentQuestions.length *
-    {easy:10,medium:20,hard:30}[$("difficulty").value]) * 100);
-
-  $("earned").textContent = `${earned} poeng`;
-  $("resultTitle").textContent =
-    percentage === 100 ? "Perfekt! 🌟" :
-    percentage >= 60 ? "Veldig bra jobbet! 🎉" : "Bra forsøk! 💪";
-  $("resultEmoji").textContent =
-    percentage === 100 ? "🏆" : percentage >= 60 ? "🌟" : "🌱";
-  $("resultText").textContent =
-    `Du fikk ${percentage} % riktig på ${currentQuestions.length} spørsmål. Fortsett å øve!`;
-}
-
-$("start").addEventListener("click", startQuiz);
-$("next").addEventListener("click", () => {
-  if (index < currentQuestions.length - 1) {
-    index++;
-    showQuestion();
-  } else {
-    finishQuiz();
-  }
+$("next").addEventListener("click",()=>{
+ if(pos<qs.length-1){pos++;showQuestion();return}
+ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
+ const pct=Math.round(earned/(qs.length*levels[level].points)*100);
+ $("earned").textContent=earned+" poeng";
+ $("resultTitle").textContent=pct===100?"Fantastisk! 🌟":pct>=60?"Veldig bra jobbet! 🎉":"Godt forsøk! 💪";
+ $("resultText").textContent=`Du fikk ${pct} % av mulige poeng i ${subjects.find(s=>s.id===subjectId).name}.`;
+ $("resultEmoji").textContent=pct===100?"🏆":pct>=60?"⭐":"🌱";
+ $("progress").style.width="100%";
+ $("result").scrollIntoView({behavior:"smooth",block:"center"});
 });
-$("again").addEventListener("click", startQuiz);
-$("change").addEventListener("click", () => {
-  $("results").classList.add("hidden");
-  $("setup").classList.remove("hidden");
+$("again").addEventListener("click",()=>{startQuiz();$("quiz").scrollIntoView({behavior:"smooth"})});
+$("back").addEventListener("click",()=>{$("result").classList.add("hidden");$("fag").scrollIntoView({behavior:"smooth"})});
+$("studentTab").addEventListener("click",()=>{
+ $("studentPage").classList.remove("hidden");$("teacherPage").classList.add("hidden");
+ $("studentTab").classList.add("active");$("teacherTab").classList.remove("active");
 });
+$("teacherTab").addEventListener("click",()=>{
+ $("studentPage").classList.add("hidden");$("teacherPage").classList.remove("hidden");
+ $("teacherTab").classList.add("active");$("studentTab").classList.remove("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+$("backStudent").addEventListener("click",()=>$("studentTab").click());
 </script>
 </body>
 </html>
