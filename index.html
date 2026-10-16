@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprout School 🌱</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f8ef;
+      color: #243b2a;
+    }
+    header {
+      background: #ffffff;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 2px 12px #0000000a;
+    }
+    .logo { font-size: 25px; font-weight: bold; color: #36834a; }
+    nav a {
+      margin-left: 18px;
+      text-decoration: none;
+      color: #34533b;
+      font-weight: bold;
+    }
+    .hero {
+      text-align: center;
+      padding: 75px 20px;
+      background: linear-gradient(135deg, #e0f5d7, #f9fbe9);
+    }
+    .hero h1 { font-size: clamp(34px, 6vw, 58px); margin: 0 0 15px; }
+    .hero p { font-size: 18px; color: #526657; }
+    button {
+      background: #36834a;
+      color: white;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .content { max-width: 1050px; margin: auto; padding: 40px 20px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 5px 18px #00000008;
+    }
+    .emoji { font-size: 42px; }
+    .card h3 { margin-bottom: 8px; }
+    footer { text-align: center; padding: 30px; color: #657568; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">🌱 Sprout School</div>
+    <nav>
+      <a href="#fag">Fag</a>
+      <a href="#laerere">For lærere</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Læring kan være gøy!</h1>
+    <p>Utforsk fag, løs oppgaver og lær noe nytt hver dag.</p>
+    <button onclick="document.getElementById('fag').scrollIntoView({behavior:'smooth'})">
+      Start læringen →
+    </button>
+  </section>
+
+  <main class="content" id="fag">
+    <h2>📚 Velg et fag</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="emoji">🔢</div>
+        <h3>Matematikk</h3>
+        <p>Øv på tall, regning og problemløsing.</p>
+        <button onclick="startQuiz('matte')">Start oppgaver</button>
+      </div>
+      <div class="card">
+        <div class="emoji">📖</div>
+        <h3>Norsk</h3>
+        <p>Tren på ord, lesing og staving.</p>
+        <button onclick="startQuiz('norsk')">Start oppgaver</button>
+      </div>
+      <div class="card">
+        <div class="emoji">🌍</div>
+        <h3>Naturfag</h3>
+        <p>Oppdag dyr, natur og verdensrommet.</p>
+        <button onclick="startQuiz('naturfag')">Start oppgaver</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="content" id="laerere">
+    <div class="card">
+      <h2>👩‍🏫 For lærere</h2>
+      <p>Her kan vi senere legge til lærerinnlogging, klasser og oppgaver.</p>
+      <p><strong>Under utvikling</strong> – lærerfunksjonene er ikke aktive ennå.</p>
+    </div>
+  </section>
+
+  <footer>© 2026 Sprout School · Laget for læring 🌱</footer>
+
+  <script>
+    function startQuiz(subject) {
+      const quizzes = {
+        matte: {
+          question: "Hva er 7 × 8?",
+          answers: ["48", "56", "64"],
+          correct: "56"
+        },
+        norsk: {
+          question: "Hvilket ord er skrevet riktig?",
+          answers: ["Skole", "Shole", "Skoole"],
+          correct: "Skole"
+        },
+        naturfag: {
+          question: "Hvilken planet bor vi på?",
+          answers: ["Mars", "Jorden", "Venus"],
+          correct: "Jorden"
+        }
+      };
+
+      const quiz = quizzes[subject];
+      const answer = prompt(
+        quiz.question + "\n\n" +
+        quiz.answers.map((a, i) => `${i + 1}. ${a}`).join("\n") +
+        "\n\nSkriv tallet til svaret:"
+      );
+
+      if (answer && quiz.answers[Number(answer) - 1] === quiz.correct) {
+        alert("Riktig! 🎉 Bra jobbet!");
+      } else if (answer) {
+        alert("Ikke helt! 💚 Prøv igjen.");
+      }
+    }
+  </script>
+</body>
+</html>
