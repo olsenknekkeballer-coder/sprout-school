@@ -255,6 +255,193 @@
       .nav button { padding: 8px 10px; font-size: 13px; }
       .card { padding: 16px; }
     }
+
+    /* Responsive layout for phones, tablets and desktop */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-padding-top: 120px;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button, input, select, textarea {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    button, .button, .answer, .forest-choice, .avatar-choice {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible,
+    textarea:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid #a98aff;
+      outline-offset: 3px;
+    }
+
+    main {
+      width: min(94%, 1240px);
+      min-width: 0;
+    }
+
+    .topbar {
+      padding-left: max(3%, env(safe-area-inset-left));
+      padding-right: max(3%, env(safe-area-inset-right));
+    }
+
+    .brand {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .nav {
+      min-width: 0;
+    }
+
+    .nav button, .button {
+      min-height: 44px;
+      line-height: 1.25;
+    }
+
+    .card, .stat, .feature-card, .forest-scene,
+    .hero, .quiz-box, .form {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .hero > div:first-child { min-width: 0; }
+    .hero-emoji { flex: 0 0 auto; }
+    .section-title { flex-wrap: wrap; }
+    .section-title > * { min-width: 0; }
+    .grid, .stats, .feature-grid { min-width: 0; }
+    .grid > *, .stats > *, .feature-grid > * { min-width: 0; }
+    .field input, .field select, textarea { font-size: 16px; }
+    textarea { display: block; }
+    .form-actions > button { min-height: 44px; }
+    .answer, .forest-choice { min-height: 48px; }
+    .profile-row { min-width: 0; }
+    .quiz-bottom > * { min-width: 0; }
+
+    @media (min-width: 1200px) {
+      main { width: min(92%, 1240px); }
+      .topbar { padding-top: 16px; padding-bottom: 16px; }
+      .nav { gap: 8px; }
+      .hero { padding: 38px; }
+      .grid { gap: 18px; }
+      .card { padding: 24px; }
+    }
+
+    @media (min-width: 601px) and (max-width: 1024px) {
+      .topbar {
+        align-items: center;
+        gap: 12px 18px;
+      }
+      .nav {
+        flex: 1 1 100%;
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 2px 8px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+      }
+      .nav button { flex: 0 0 auto; white-space: nowrap; }
+      main { width: 94%; margin-top: 22px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero { padding: clamp(22px, 4vw, 34px); }
+    }
+
+    @media (max-width: 600px) {
+      html { scroll-padding-top: 150px; }
+      .topbar {
+        position: sticky;
+        padding: 10px max(4%, env(safe-area-inset-right)) 8px max(4%, env(safe-area-inset-left));
+        gap: 8px;
+      }
+      .brand { font-size: 21px; letter-spacing: -.7px; }
+      .nav {
+        flex: 1 1 100%;
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 1px 7px;
+        gap: 7px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+      }
+      .nav::-webkit-scrollbar { display: none; }
+      .nav button {
+        flex: 0 0 auto;
+        min-height: 42px;
+        white-space: nowrap;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      main {
+        width: 92%;
+        margin: 16px auto 32px;
+      }
+      .hero {
+        border-radius: 20px;
+        padding: 21px 18px;
+        gap: 10px;
+      }
+      .hero h1 { font-size: clamp(26px, 7vw, 34px); }
+      .hero p { font-size: 14px; }
+      .hero-emoji { font-size: clamp(38px, 12vw, 62px); }
+      .section-title { margin-top: 23px; }
+      h2 { font-size: 21px; }
+      .grid, .feature-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .stat { padding: 13px; }
+      .stat strong { font-size: clamp(20px, 6vw, 25px); overflow-wrap: anywhere; }
+      .card { padding: 16px; border-radius: 16px; }
+      .quiz-box { margin: 14px auto; }
+      .question { margin: 19px 0; font-size: clamp(21px, 6vw, 27px); }
+      .answer { padding: 14px 12px; }
+      .quiz-top { align-items: flex-start; }
+      .quiz-bottom { align-items: stretch; }
+      .quiz-bottom .button { flex: 0 0 auto; }
+      .form { margin: 18px auto; }
+      .form-actions { align-items: stretch; }
+      .form-actions > button { flex: 1 1 auto; }
+      .avatar-picker { gap: 7px; }
+      .avatar-choice { min-width: 44px; min-height: 44px; }
+      footer { padding: 18px 12px calc(18px + env(safe-area-inset-bottom)); }
+    }
+
+    @media (max-width: 360px) {
+      .hero { align-items: flex-start; }
+      .hero-emoji { font-size: 38px; }
+      .stats { grid-template-columns: minmax(0, 1fr); }
+      .nav button { padding-left: 10px; padding-right: 10px; }
+      .form-actions > button { width: 100%; }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) {
+      .topbar { position: relative; }
+      .hero { padding-top: 18px; padding-bottom: 18px; }
+      main { margin-top: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 
