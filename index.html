@@ -79,7 +79,49 @@ footer{text-align:center;padding:35px 15px;color:#7b8492}
     <button id="points">⭐ <span id="totalScore">0</span></button>
   </nav>
 </header>
+<section class="wrap panel" id="accountPanel">
+  <h2>👤 Sprout School-konto</h2>
+  <p class="muted">Opprett en konto eller logg inn for å lagre poengene dine.</p>
 
+  <div id="authForms">
+    <label for="accountUsername">Brukernavn</label><br>
+    <input id="accountUsername" maxlength="20" placeholder="For eksempel Sprout123">
+    <br><br>
+    <label for="accountEmail">E-post</label><br>
+    <input id="accountEmail" type="email" autocomplete="email" placeholder="deg@example.com">
+    <br><br>
+    <label for="accountPassword">Passord (minst 8 tegn)</label><br>
+    <input id="accountPassword" type="password" minlength="8" autocomplete="current-password" placeholder="Passord">
+    <br><br>
+    <button class="action" id="signupButton">Opprett konto 🌱</button>
+    <button class="secondary" id="loginButton">Logg inn</button>
+  </div>
+
+  <div id="signedInPanel" class="hidden">
+    <h3 id="welcomeUser"></h3>
+    <p id="accountStats" class="muted"></p>
+    <button class="secondary" id="logoutButton">Logg ut</button>
+  </div>
+  <p id="authMessage" role="status" aria-live="polite" class="muted"></p>
+</section>
+
+<section class="wrap panel" id="playerProfiles">
+  <h2>🧑‍🤝‍🧑 Spillere</h2>
+  <p class="muted">Trykk på en spiller for å se profilen deres.</p>
+  <div id="playerList">Laster spillere …</div>
+  <div id="selectedProfile" class="hidden panel"></div>
+</section>
+
+<section class="wrap panel" id="trollGame">
+  <h2>🧌 Trollens gangetabell</h2>
+  <p class="muted">Hjelp trollet med å løse gangestykkene. Hvert riktig svar gir 10 poeng!</p>
+  <div style="font-size:64px" aria-label="Et troll">🧌</div>
+  <h2 id="trollQuestion">Klar for å spille?</h2>
+  <div id="trollAnswers" class="answers"></div>
+  <p id="trollFeedback" role="status" aria-live="polite"></p>
+  <button class="action" id="startTroll">Start spillet 🎮</button>
+  <button class="secondary hidden" id="nextTroll">Neste oppgave →</button>
+</section>
 <div id="studentPage">
   <section class="hero">
     <div>
