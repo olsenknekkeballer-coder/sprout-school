@@ -194,6 +194,12 @@
     .forest-choices { display:grid; gap:10px; }
     .forest-choice { padding:14px; border:2px solid #cde9ce; border-radius:12px; background:white; color:var(--text); font-weight:750; text-align:left; }
     .forest-choice:disabled { opacity:.8; }
+    .zone-card, .pet-card { background:white; border:1px solid var(--border); border-radius:16px; padding:16px; min-width:0; }
+    .zone-card.locked { opacity:.65; background:#f5f4f8; }
+    .zone-emoji, .pet-emoji { font-size:42px; line-height:1.4; }
+    .pet-card.active-pet { border:2px solid var(--green); background:#f0fff8; }
+    .pet-card h3, .zone-card h3 { margin:6px 0; }
+    .pet-card .button, .zone-card .button { margin-top:10px; }
     .pill { display:inline-block; border-radius:99px; padding:4px 10px; background:#eeeaff; color:var(--purple-dark); font-size:12px; font-weight:800; }
     .ticket-row, .assignment-row { padding:14px 0; border-bottom:1px solid var(--border); overflow-wrap:anywhere; }
     .ticket-row:last-child, .assignment-row:last-child { border-bottom:0; }
@@ -452,7 +458,8 @@
       <button class="active" data-page="home">🏠 Hjem</button>
       <button data-page="subjects">📚 Fag</button>
       <button data-page="troll">🧌 Trollens gangetabell</button>
-      <button data-page="forest">🌲 Skogseventyret</button>
+      <button data-page="forest">🌲 Skogseventyret 2.0</button>
+      <button data-page="pets">🐾 Læringsdyr</button>
       <button data-page="progress">🏅 Fremgang</button>
       <button data-page="teacher">👩‍🏫 Lærer</button>
       <button data-page="support">💬 Hjelp</button>
@@ -601,11 +608,20 @@
     </section>
     <section id="page-forest" class="hidden">
       <div class="card quiz-box">
-        <div class="forest-scene"><div style="font-size:48px">🌲🦊🍄</div><h2>Skogseventyret</h2><p>Hjelp reven Rusk gjennom skogen ved å løse fem oppgaver. Hvert riktig svar gir 20 poeng!</p></div>
-        <div id="forest-intro"><p>Stien deler seg, og skogens magi trenger din hjelp. Er du klar?</p><button class="button green" id="forest-start">Start eventyret →</button></div>
-        <div id="forest-game" class="hidden"><div class="quiz-top"><span class="pill" id="forest-step">Sti 1 av 5</span><strong id="forest-score">0 poeng</strong></div><div class="progress"><div id="forest-progress" class="progress-fill"></div></div><h3 id="forest-question" class="question"></h3><div id="forest-choices" class="forest-choices"></div><p id="forest-feedback" class="message" role="status"></p><div class="form-actions"><button class="button primary" id="forest-next" disabled>Neste →</button></div></div>
-        <div id="forest-finished" class="hidden"><h2 id="forest-finish-title">Eventyret er fullført! 🌟</h2><p id="forest-finish-text"></p><button class="button primary" id="forest-restart">Spill igjen</button></div>
+        <div class="forest-scene"><div style="font-size:48px">🌲🦊🍄✨</div><h2>Skogseventyret 2.0</h2><p>Hjelp reven Rusk med å redde den magiske skogen! Reis gjennom tre områder, løs oppgaver og samle eikenøtter til læringsdyrene dine.</p>
+          <div class="stats"><div class="stat"><strong id="forest-zones">0/3</strong><span>Områder fullført</span></div><div class="stat"><strong id="forest-best">0</strong><span>Beste poengsum</span></div><div class="stat"><strong id="forest-acorns">🌰 20</strong><span>Eikenøtter</span></div></div>
+        </div>
+        <div id="forest-intro"><h3>🗺️ Velg stien din</h3><p class="muted">Hvert område har fem oppgaver. Fullfør et område for å åpne det neste.</p><div id="forest-map" class="feature-grid"></div><button class="button green" id="forest-start">Start eventyret →</button></div>
+        <div id="forest-game" class="hidden"><div class="quiz-top"><span class="pill" id="forest-step">🌿 Sti 1 av 5</span><strong id="forest-score">0 poeng</strong></div><div class="progress"><div id="forest-progress" class="progress-fill"></div></div><h3 id="forest-question" class="question"></h3><div id="forest-choices" class="forest-choices"></div><p id="forest-feedback" class="message" role="status"></p><div class="form-actions"><button class="button primary" id="forest-next" disabled>Neste →</button></div></div>
+        <div id="forest-finished" class="hidden"><h2 id="forest-finish-title">Eventyret er fullført! 🌟</h2><p id="forest-finish-text"></p><button class="button primary" id="forest-restart">Tilbake til kartet</button></div>
       </div>
+    </section>
+
+    <section id="page-pets" class="hidden">
+      <div class="hero"><div><h1>🐾 Læringsdyrene</h1><p>Samle søte følgesvenner ved å lære. Eikenøtter du tjener kan brukes i dyrebutikken!</p><div style="margin-top:16px"><span class="pill" id="pet-wallet">🌰 20 eikenøtter</span></div></div><div class="hero-emoji">🦊🐸</div></div>
+      <div class="section-title"><h2>💚 Din følgesvenn</h2></div><div id="pet-active" class="feature-grid"></div>
+      <div class="section-title"><h2>🎒 Dyresamlingen</h2></div><div id="pet-collection" class="feature-grid"></div>
+      <div class="section-title"><h2>🛍️ Dyrebutikken</h2></div><p class="muted">Tjen eikenøtter ved å fullføre quizer og eventyr. Samlingen lagres i denne nettleseren.</p><div id="pet-shop" class="feature-grid"></div><p id="pet-message" class="message" role="status"></p>
     </section>
 
     <section id="page-progress" class="hidden">
@@ -759,7 +775,7 @@
     }
 
     function showPage(page) {
-      const pages = ["home","subjects","quiz","result","troll","forest","progress","teacher","support","players","account"];
+      const pages = ["home","subjects","quiz","result","troll","forest","pets","progress","teacher","support","players","account"];
       pages.forEach(p => $("page-" + p).classList.toggle("hidden", p !== page));
       document.querySelectorAll("[data-page]").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === page);
@@ -767,6 +783,8 @@
       if (page === "players") loadPlayerList();
       if (page === "home") refreshHomeStats();
       if (page === "account") renderAccount();
+      if (page === "pets") renderPets();
+      if (page === "forest") renderForestMap();
       if (page === "progress") { renderProgress(); loadStudentAssignments(); }
       if (page === "teacher") loadTeacherTools();
       if (page === "support") loadSupportTickets();
@@ -931,6 +949,7 @@
     }
     function recordProgress(game,points,detail="") {
       const p=readProgress();p.rounds.unshift({game,points:Number(points)||0,detail,at:new Date().toISOString()});p.rounds=p.rounds.slice(0,100);
+      addPetAcorns(Math.max(1,Math.floor((Number(points)||0)/10)));
       const total=p.rounds.reduce((n,r)=>n+r.points,0),earned=[];
       if(p.rounds.length>=1)earned.push("first");if(total>=100)earned.push("points100");if(p.rounds.length>=5)earned.push("five");
       if(p.rounds.some(r=>r.game==="Skogseventyret"))earned.push("forest");if(p.rounds.some(r=>r.detail==="perfect"))earned.push("perfect");
@@ -952,21 +971,90 @@
       p.rounds.slice(0,12).forEach(r=>{const row=document.createElement("div");row.className="assignment-row";const title=document.createElement("strong");title.textContent=r.game;const detail=document.createElement("div");detail.className="muted";detail.textContent=r.points+" poeng · "+new Date(r.at).toLocaleString("no-NO")+(r.detail==="perfect"?" · Perfekt runde":"");row.append(title,detail);history.appendChild(row);});
     }
 
-    const forestStages=[
-      {q:"Reven finner tre stier. Hvilken vei fører mot sollyset?",a:["Den mørke grotten","Stien med blomster og lys","Rett ned i elva"],correct:1,ok:"Godt valg! Blomstene viser veien 🌼"},
-      {q:"En ugle spør: 8 + 7 = ?",a:["14","15","16"],correct:1,ok:"Ugla nikker klokt! 🦉"},
-      {q:"Hva trenger en plante for å vokse?",a:["Lys og vann","Bare stein","Mørke hele dagen"],correct:0,ok:"Plantene jubler! 🌱"},
-      {q:"Rusk møter et skilt: Hva er motsatt av «stor»?",a:["Lang","Liten","Bred"],correct:1,ok:"Du fant riktig ord! 🦔"},
-      {q:"Den magiske porten spør: 6 × 4 = ?",a:["20","22","24"],correct:2,ok:"Porten åpner seg! Du reddet skogen! ✨"}
+    const forestZones=[
+      {id:"sunny",name:"Solskinnsstien",emoji:"🌼",desc:"Hjelp Rusk finne veien gjennom den lyse skogen.",stages:[
+        {q:"Reven finner tre stier. Hvilken vei fører mot sollyset?",a:["Den mørke grotten","Stien med blomster og lys","Rett ned i elva"],correct:1,ok:"Godt valg! Blomstene viser veien 🌼"},
+        {q:"En ugle spør: 8 + 7 = ?",a:["14","15","16"],correct:1,ok:"Ugla nikker klokt! 🦉"},
+        {q:"Hva trenger en plante for å vokse?",a:["Lys og vann","Bare stein","Mørke hele dagen"],correct:0,ok:"Plantene jubler! 🌱"},
+        {q:"Hva er motsatt av «stor»?",a:["Lang","Liten","Bred"],correct:1,ok:"Du fant riktig ord! 🦔"},
+        {q:"Den magiske porten spør: 6 × 4 = ?",a:["20","22","24"],correct:2,ok:"Porten åpner seg! ✨"}]},
+      {id:"mushroom",name:"Soppskogen",emoji:"🍄",desc:"Utforsk rare sopper og hjelp skogens dyr.",stages:[
+        {q:"Hva er 12 + 9?",a:["20","21","22"],correct:1,ok:"Du regnet helt riktig! 🍄"},
+        {q:"Hvilket dyr er kjent for å bygge demninger?",a:["Bever","Rev","Ugle"],correct:0,ok:"Beveren er en flink bygger! 🦫"},
+        {q:"Hva er 5 × 7?",a:["30","35","40"],correct:1,ok:"Fem ganger sju er 35! ⭐"},
+        {q:"Hvilket ord er et verb?",a:["Grønn","Hoppe","Sopp"],correct:1,ok:"Hoppe beskriver noe du gjør! 🐸"},
+        {q:"Du finner 18 eikenøtter og gir bort 6. Hvor mange har du igjen?",a:["11","12","13"],correct:1,ok:"Du delte og regnet riktig! 🌰"}]},
+      {id:"moon",name:"Månegløtten",emoji:"🌙",desc:"Løs de siste gåtene og gjenopprett skogens magi.",stages:[
+        {q:"Hva er 9 × 8?",a:["63","72","81"],correct:1,ok:"Den magiske porten lyser! ✨"},
+        {q:"Hvilken planet bor vi på?",a:["Mars","Jorda","Venus"],correct:1,ok:"Jorda er hjemmet vårt! 🌍"},
+        {q:"Hva er 100 − 37?",a:["53","63","73"],correct:1,ok:"Du fant svaret! 🌟"},
+        {q:"Hvilket ord betyr omtrent det samme som «glad»?",a:["Lykkelig","Sint","Trøtt"],correct:0,ok:"Et flott ordvalg! 💚"},
+        {q:"Den siste runen spør: 6 × 7 = ?",a:["36","40","42"],correct:2,ok:"Du reddet den magiske skogen! 🏆"}]}
     ];
-    let forestIndex=0,forestPoints=0,forestAnswered=false;
+    const FOREST_SAVE_KEY="sproutForestV2";
+    function readForestSave(){try{const x=JSON.parse(localStorage.getItem(FOREST_SAVE_KEY)||"{}");return {unlocked:Math.max(0,Math.min(2,Number(x.unlocked)||0)),completed:Array.isArray(x.completed)?x.completed:[],best:Math.max(0,Number(x.best)||0)};}catch{return {unlocked:0,completed:[],best:0};}}
+    function writeForestSave(x){try{localStorage.setItem(FOREST_SAVE_KEY,JSON.stringify(x));}catch(e){console.warn("Kunne ikke lagre skogsfremgang",e);}}
+    let forestZoneIndex=0,forestIndex=0,forestPoints=0,forestAnswered=false;
+    function renderForestMap(){
+      const save=readForestSave();$("forest-zones").textContent=save.completed.length+"/3";$("forest-best").textContent=save.best;$("forest-acorns").textContent="🌰 "+readPetSave().acorns;
+      const map=$("forest-map");map.replaceChildren();
+      forestZones.forEach((zone,i)=>{const unlocked=i<=save.unlocked,done=save.completed.includes(zone.id);const card=document.createElement("div");card.className="zone-card"+(unlocked?"":" locked");
+        const emoji=document.createElement("div");emoji.className="zone-emoji";emoji.textContent=zone.emoji;
+        const title=document.createElement("h3");title.textContent=(done?"✅ ":unlocked?"🗺️ ":"🔒 ")+zone.name;
+        const desc=document.createElement("p");desc.className="muted";desc.textContent=zone.desc;
+        const status=document.createElement("p");status.className="small";status.textContent=done?"Område fullført":unlocked?"5 oppgaver · 100 mulige poeng":"Fullfør forrige område for å låse opp";
+        const btn=document.createElement("button");btn.className="button "+(unlocked?"primary":"");btn.textContent=unlocked?(done?"Spill igjen":"Start område"):"Låst";btn.disabled=!unlocked;btn.addEventListener("click",()=>{forestZoneIndex=i;startForest();});
+        card.append(emoji,title,desc,status,btn);map.appendChild(card);});
+    }
     function startForest(){forestIndex=0;forestPoints=0;forestAnswered=false;$("forest-intro").classList.add("hidden");$("forest-finished").classList.add("hidden");$("forest-game").classList.remove("hidden");renderForestStage();}
-    function renderForestStage(){forestAnswered=false;const stage=forestStages[forestIndex];$("forest-step").textContent="Sti "+(forestIndex+1)+" av "+forestStages.length;$("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=(forestIndex/forestStages.length*100)+"%";$("forest-question").textContent=stage.q;$("forest-feedback").textContent="";$("forest-feedback").className="message";$("forest-next").disabled=true;const choices=$("forest-choices");choices.replaceChildren();shuffle(stage.a.map((text,index)=>({text,index}))).forEach(choice=>{const btn=document.createElement("button");btn.className="forest-choice";btn.textContent=choice.text;btn.addEventListener("click",()=>answerForest(choice.index,btn));choices.appendChild(btn);});}
-    function answerForest(index,button){if(forestAnswered)return;forestAnswered=true;const stage=forestStages[forestIndex];$("forest-choices").querySelectorAll("button").forEach(btn=>{btn.disabled=true;if(btn.textContent===stage.a[stage.correct])btn.style.borderColor="var(--green)";});if(index===stage.correct){forestPoints+=20;$("forest-feedback").textContent=stage.ok;$("forest-feedback").className="message success";}else{button.style.borderColor="var(--danger)";$("forest-feedback").textContent="Nesten! Riktig svar: "+stage.a[stage.correct];$("forest-feedback").className="message error";}$("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=((forestIndex+1)/forestStages.length*100)+"%";$("forest-next").disabled=false;$("forest-next").textContent=forestIndex===forestStages.length-1?"Fullfør eventyret":"Neste sti →";}
-    async function finishForest(){$("forest-game").classList.add("hidden");$("forest-finished").classList.remove("hidden");$("forest-finish-text").textContent="Du fikk "+forestPoints+" av 100 poeng. "+(forestPoints===100?"Fantastisk — alle valgene var riktige!":"Bra jobbet med å hjelpe Rusk gjennom skogen!");recordProgress("Skogseventyret",forestPoints);// Reuse the existing allowed score category so this works with the current save_game_score RPC allowlist.
-      const msg=await saveScore("Sprout School quiz",forestPoints);$("forest-finish-text").textContent+=" "+msg;refreshHomeStats();}
-    $("forest-start").addEventListener("click",startForest);$("forest-restart").addEventListener("click",()=>{$("forest-intro").classList.remove("hidden");$("forest-game").classList.add("hidden");$("forest-finished").classList.add("hidden");});$("forest-next").addEventListener("click",()=>{if(!forestAnswered)return;if(forestIndex<forestStages.length-1){forestIndex++;renderForestStage();}else finishForest();});
-    $("progress-refresh").addEventListener("click",renderProgress);
+    function renderForestStage(){
+      forestAnswered=false;const zone=forestZones[forestZoneIndex],stage=zone.stages[forestIndex];$("forest-step").textContent=zone.emoji+" "+zone.name+" · Oppgave "+(forestIndex+1)+"/"+zone.stages.length;
+      $("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=(forestIndex/zone.stages.length*100)+"%";$("forest-question").textContent=stage.q;$("forest-feedback").textContent="";$("forest-feedback").className="message";$("forest-next").disabled=true;
+      const choices=$("forest-choices");choices.replaceChildren();shuffle(stage.a.map((text,index)=>({text,index}))).forEach(choice=>{const btn=document.createElement("button");btn.className="forest-choice";btn.textContent=choice.text;btn.addEventListener("click",()=>answerForest(choice.index,btn));choices.appendChild(btn);});
+    }
+    function answerForest(index,button){
+      if(forestAnswered)return;forestAnswered=true;const stage=forestZones[forestZoneIndex].stages[forestIndex];
+      $("forest-choices").querySelectorAll("button").forEach(btn=>{btn.disabled=true;if(btn.textContent===stage.a[stage.correct])btn.style.borderColor="var(--green)";});
+      if(index===stage.correct){forestPoints+=20;$("forest-feedback").textContent=stage.ok;$("forest-feedback").className="message success";}
+      else{button.style.borderColor="var(--danger)";$("forest-feedback").textContent="Nesten! Riktig svar: "+stage.a[stage.correct];$("forest-feedback").className="message error";}
+      $("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=((forestIndex+1)/forestZones[forestZoneIndex].stages.length*100)+"%";$("forest-next").disabled=false;$("forest-next").textContent=forestIndex===forestZones[forestZoneIndex].stages.length-1?"Fullfør området":"Neste sti →";
+    }
+    async function finishForest(){
+      $("forest-game").classList.add("hidden");$("forest-finished").classList.remove("hidden");const zone=forestZones[forestZoneIndex],save=readForestSave();
+      if(!save.completed.includes(zone.id))save.completed.push(zone.id);save.unlocked=Math.max(save.unlocked,Math.min(2,forestZoneIndex+1));save.best=Math.max(save.best,forestPoints);writeForestSave(save);
+      $("forest-finish-title").textContent=zone.emoji+" Område fullført!";$("forest-finish-text").textContent="Du fikk "+forestPoints+" av 100 poeng. "+(forestPoints===100?"Fantastisk — alle svarene var riktige!":"Bra jobbet med å hjelpe Rusk!")+" Du får "+Math.max(1,Math.floor(forestPoints/10))+" eikenøtter for eventyret.";
+      recordProgress("Skogseventyret 2.0",forestPoints,forestPoints===100?"perfect":"");const msg=await saveScore("Sprout School quiz",forestPoints);$("forest-finish-text").textContent+=" "+msg;renderForestMap();renderPets();refreshHomeStats();
+    }
+    $("forest-start").addEventListener("click",()=>{forestZoneIndex=readForestSave().unlocked;startForest();});
+    $("forest-restart").addEventListener("click",()=>{$("forest-intro").classList.remove("hidden");$("forest-game").classList.add("hidden");$("forest-finished").classList.add("hidden");renderForestMap();});
+    $("forest-next").addEventListener("click",()=>{if(!forestAnswered)return;if(forestIndex<forestZones[forestZoneIndex].stages.length-1){forestIndex++;renderForestStage();}else finishForest();});
+
+    const PET_SAVE_KEY="sproutLearningPetsV1";
+    const PETS=[
+      {id:"frog",name:"Sprout frosken",emoji:"🐸",rarity:"Vanlig",cost:0,desc:"Din trofaste første venn."},
+      {id:"fox",name:"Rusk reven",emoji:"🦊",rarity:"Vanlig",cost:20,desc:"En modig skogutforsker."},
+      {id:"owl",name:"Professor Ugle",emoji:"🦉",rarity:"Sjelden",cost:35,desc:"Elsker smarte svar og nattlige gåter."},
+      {id:"bunny",name:"Bærkaninen",emoji:"🐰",rarity:"Sjelden",cost:50,desc:"Rask, snill og glad i bær."},
+      {id:"dragon",name:"Glødedragen",emoji:"🐲",rarity:"Episk",cost:80,desc:"En sjelden vokter av skogens magi."},
+      {id:"axolotl",name:"Boble",emoji:"🩷",rarity:"Episk",cost:100,desc:"En søt vannvenn fra den skjulte dammen."}
+    ];
+    function readPetSave(){try{const x=JSON.parse(localStorage.getItem(PET_SAVE_KEY)||"{}");const owned=Array.isArray(x.owned)?x.owned.filter(id=>PETS.some(p=>p.id===id)):[];if(!owned.includes("frog"))owned.unshift("frog");return {acorns:Number.isFinite(Number(x.acorns))?Math.max(0,Number(x.acorns)):20,owned,equipped:PETS.some(p=>p.id===x.equipped)&&owned.includes(x.equipped)?x.equipped:"frog"};}catch{return {acorns:20,owned:["frog"],equipped:"frog"};}}
+    function writePetSave(x){try{localStorage.setItem(PET_SAVE_KEY,JSON.stringify(x));}catch(e){console.warn("Kunne ikke lagre læringsdyr",e);}}
+    function addPetAcorns(amount){const x=readPetSave();x.acorns+=Math.max(0,Number(amount)||0);writePetSave(x);}
+    function renderPets(){
+      const x=readPetSave();$("pet-wallet").textContent="🌰 "+x.acorns+" eikenøtter";const active=PETS.find(p=>p.id===x.equipped)||PETS[0],activeBox=$("pet-active");activeBox.replaceChildren();
+      const activeCard=document.createElement("div");activeCard.className="pet-card active-pet";const emoji=document.createElement("div");emoji.className="pet-emoji";emoji.textContent=active.emoji;
+      const title=document.createElement("h3");title.textContent=active.name;const desc=document.createElement("p");desc.className="muted";desc.textContent=active.desc+" · "+active.rarity;
+      const note=document.createElement("p");note.className="small";note.textContent="Følgesvennen din er valgt! Fortsett å lære for å tjene flere eikenøtter.";activeCard.append(emoji,title,desc,note);activeBox.appendChild(activeCard);
+      const collection=$("pet-collection");collection.replaceChildren();x.owned.forEach(id=>{const pet=PETS.find(p=>p.id===id);if(!pet)return;const card=document.createElement("div");card.className="pet-card"+(pet.id===x.equipped?" active-pet":"");
+        const em=document.createElement("div");em.className="pet-emoji";em.textContent=pet.emoji;const name=document.createElement("h3");name.textContent=pet.name;const rarity=document.createElement("p");rarity.className="muted";rarity.textContent=pet.rarity;
+        const btn=document.createElement("button");btn.className="button "+(pet.id===x.equipped?"green":"primary");btn.textContent=pet.id===x.equipped?"Valgt ✓":"Velg følgesvenn";btn.disabled=pet.id===x.equipped;btn.addEventListener("click",()=>{const next=readPetSave();next.equipped=pet.id;writePetSave(next);setMessage("pet-message",pet.name+" følger deg nå!","success");renderPets();});card.append(em,name,rarity,btn);collection.appendChild(card);});
+      const shop=$("pet-shop");shop.replaceChildren();PETS.filter(p=>!x.owned.includes(p.id)).forEach(pet=>{const card=document.createElement("div");card.className="pet-card";const em=document.createElement("div");em.className="pet-emoji";em.textContent=pet.emoji;
+        const name=document.createElement("h3");name.textContent=pet.name;const rarity=document.createElement("p");rarity.className="muted";rarity.textContent=pet.rarity+" · "+pet.desc;const cost=document.createElement("p");cost.className="pill";cost.textContent="🌰 "+pet.cost+" eikenøtter";
+        const btn=document.createElement("button");btn.className="button primary";btn.textContent=x.acorns>=pet.cost?"Kjøp følgesvenn":"Trenger flere eikenøtter";btn.disabled=x.acorns<pet.cost;btn.addEventListener("click",()=>{const next=readPetSave();if(next.acorns<pet.cost)return;next.acorns-=pet.cost;next.owned.push(pet.id);next.equipped=pet.id;writePetSave(next);setMessage("pet-message","Du låste opp "+pet.name+"! "+pet.emoji,"success");renderPets();renderForestMap();});card.append(em,name,rarity,cost,btn);shop.appendChild(card);});
+      if(!shop.children.length){const note=document.createElement("p");note.className="muted";note.textContent="Du har samlet alle læringsdyrene! Fantastisk jobbet! 🏆";shop.appendChild(note);}
+    }
+
     
     async function loadStudentAssignments(){
       const out=$("student-assignment-list");if(!currentUser){out.textContent="Logg inn for å se oppgavene dine.";return;}
