@@ -485,8 +485,11 @@ function showPlayerProfile(player) {
 
   if (player.is_verified) {
     const badge = document.createElement("span");
-    badge.className = "verified";
-    badge.textContent = "✓ Verifisert spiller";
+   const badge = document.createElement("img");
+badge.className = "verified-icon";
+badge.src = "https://upload.wikimedia.org/wikipedia/commons/8/81/Twitter_Verified_Badge_Gold.svg";
+badge.alt = "Verifisert spiller";
+badge.title = "Verifisert spiller";
     panel.appendChild(badge);
   }
 
