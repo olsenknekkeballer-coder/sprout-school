@@ -190,16 +190,39 @@
     .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
     .feature-card { background:white; border:1px solid var(--border); border-radius:16px; padding:18px; }
     .feature-card h3 { margin-top:0; }
-    .forest-scene { background:linear-gradient(#dff5ff,#edffe5); border-radius:18px; padding:22px; margin:14px 0; }
+    .forest-scene { position:relative; overflow:hidden; background:linear-gradient(180deg,#a9e4ff 0%,#d8f7c4 55%,#8ed17d 100%); border:3px solid #fff; box-shadow:0 8px 0 #d2e7cb; border-radius:22px; padding:24px; margin:14px 0 24px; text-align:center; }
+    .forest-scene:after { content:"🌲   🌳   🌲   🌳   🌲"; display:block; font-size:clamp(22px,4vw,36px); letter-spacing:8px; margin:10px -8px -6px; white-space:normal; }
+    #forest-map { display:block; position:relative; overflow:hidden; padding:26px 12px; margin:18px 0; border:3px solid #b5dc9b; border-radius:26px; background:linear-gradient(180deg,#c9f1b4 0%,#e9f8c8 48%,#b6e5a2 100%); isolation:isolate; }
+    #forest-map:before { content:""; position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:22px; transform:translateX(-50%); background:repeating-linear-gradient(to bottom,#b98a55 0 15px,#e4c18a 15px 28px); border-left:4px solid #9b7549; border-right:4px solid #9b7549; border-radius:18px; opacity:.8; }
+    .zone-card { position:relative; width:min(78%,360px); margin:18px 0; padding:17px; border:3px solid #fff; border-radius:22px; background:linear-gradient(145deg,#fffef0,#f0ffd9); box-shadow:0 6px 0 #8dbd70,0 10px 18px #387a3c25; text-align:center; transition:transform .18s,filter .18s; }
+    .zone-card:nth-child(odd) { margin-left:4%; }
+    .zone-card:nth-child(even) { margin-left:auto; margin-right:4%; }
+    .zone-card:before { content:""; position:absolute; top:50%; width:30px; border-top:4px dotted #fff8d7; }
+    .zone-card:nth-child(odd):before { right:-34px; }
+    .zone-card:nth-child(even):before { left:-34px; }
+    .zone-card:not(.locked):hover { transform:translateY(-3px) rotate(-.5deg); }
+    .zone-card.locked { filter:grayscale(.55); background:#e4e8d9; box-shadow:0 5px 0 #a7b39c; }
+    .zone-card .zone-number { width:48px;height:48px;display:grid;place-items:center;margin:-4px auto 8px;border:4px solid #fff;border-radius:50%;background:#ffda62;color:#5c461b;font-size:21px;font-weight:950;box-shadow:0 4px 0 #d39b35; }
+    .zone-card.completed .zone-number { background:#8ce3a0; box-shadow:0 4px 0 #4ca866; }
+    .zone-card .zone-emoji { font-size:46px; line-height:1.3; filter:drop-shadow(0 3px 0 #528d4d33); }
+    .zone-card h3 { font-size:18px; margin:6px 0; }
+    .zone-card .muted { font-size:13px; }
+    .zone-card .button { margin-top:8px; min-width:150px; }
+    .zone-decor { position:absolute; font-size:28px; opacity:.9; pointer-events:none; }
+    .zone-decor.left { left:8px; top:12%; }
+    .zone-decor.right { right:8px; bottom:10%; }
+    .forest-map-heading { text-align:center; }
+    .forest-map-legend { display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0;color:#385b35;font-size:12px;font-weight:800; }
+    .forest-map-legend span { background:#ffffffbd;border:1px solid #c3dfa9;border-radius:99px;padding:6px 10px; }
     .forest-choices { display:grid; gap:10px; }
     .forest-choice { padding:14px; border:2px solid #cde9ce; border-radius:12px; background:white; color:var(--text); font-weight:750; text-align:left; }
     .forest-choice:disabled { opacity:.8; }
-    .zone-card, .pet-card { background:white; border:1px solid var(--border); border-radius:16px; padding:16px; min-width:0; }
-    .zone-card.locked { opacity:.65; background:#f5f4f8; }
-    .zone-emoji, .pet-emoji { font-size:42px; line-height:1.4; }
+    .pet-card { background:white; border:1px solid var(--border); border-radius:16px; padding:16px; min-width:0; }
+    .pet-emoji { font-size:42px; line-height:1.4; }
     .pet-card.active-pet { border:2px solid var(--green); background:#f0fff8; }
-    .pet-card h3, .zone-card h3 { margin:6px 0; }
-    .pet-card .button, .zone-card .button { margin-top:10px; }
+    .pet-card h3 { margin:6px 0; }
+    .pet-card .button { margin-top:10px; }
+    @media(max-width:520px) { #forest-map { padding:20px 5px; } .zone-card { width:78%; padding:13px 10px; } .zone-card:nth-child(odd) { margin-left:1%; } .zone-card:nth-child(even) { margin-right:1%; } .zone-card:before { width:17px; } .zone-card:nth-child(odd):before { right:-20px; } .zone-card:nth-child(even):before { left:-20px; } .zone-decor { font-size:20px; } }
     .pill { display:inline-block; border-radius:99px; padding:4px 10px; background:#eeeaff; color:var(--purple-dark); font-size:12px; font-weight:800; }
     .ticket-row, .assignment-row { padding:14px 0; border-bottom:1px solid var(--border); overflow-wrap:anywhere; }
     .ticket-row:last-child, .assignment-row:last-child { border-bottom:0; }
@@ -611,7 +634,7 @@
         <div class="forest-scene"><div style="font-size:48px">🌲🦊🍄✨</div><h2>Skogseventyret 2.0</h2><p>Hjelp reven Rusk med å redde den magiske skogen! Reis gjennom tre områder, løs oppgaver og samle eikenøtter til læringsdyrene dine.</p>
           <div class="stats"><div class="stat"><strong id="forest-zones">0/3</strong><span>Områder fullført</span></div><div class="stat"><strong id="forest-best">0</strong><span>Beste poengsum</span></div><div class="stat"><strong id="forest-acorns">🌰 20</strong><span>Eikenøtter</span></div></div>
         </div>
-        <div id="forest-intro"><h3>🗺️ Velg stien din</h3><p class="muted">Hvert område har fem oppgaver. Fullfør et område for å åpne det neste.</p><div id="forest-map" class="feature-grid"></div><button class="button green" id="forest-start">Start eventyret →</button></div>
+        <div id="forest-intro"><div class="forest-map-heading"><h3>🗺️ Følg skogsstien!</h3><p class="muted">Gå fra sted til sted på eventyrkartet. Fullfør et område for å låse opp det neste.</p><div class="forest-map-legend"><span>⭐ 100 poeng per område</span><span>🔒 Lås opp nye steder</span><span>🌰 Samle eikenøtter</span></div></div><div id="forest-map" aria-label="Eventyrkart med tre områder"></div></div>
         <div id="forest-game" class="hidden"><div class="quiz-top"><span class="pill" id="forest-step">🌿 Sti 1 av 5</span><strong id="forest-score">0 poeng</strong></div><div class="progress"><div id="forest-progress" class="progress-fill"></div></div><h3 id="forest-question" class="question"></h3><div id="forest-choices" class="forest-choices"></div><p id="forest-feedback" class="message" role="status"></p><div class="form-actions"><button class="button primary" id="forest-next" disabled>Neste →</button></div></div>
         <div id="forest-finished" class="hidden"><h2 id="forest-finish-title">Eventyret er fullført! 🌟</h2><p id="forest-finish-text"></p><button class="button primary" id="forest-restart">Tilbake til kartet</button></div>
       </div>
@@ -998,13 +1021,20 @@
     function renderForestMap(){
       const save=readForestSave();$("forest-zones").textContent=save.completed.length+"/3";$("forest-best").textContent=save.best;$("forest-acorns").textContent="🌰 "+readPetSave().acorns;
       const map=$("forest-map");map.replaceChildren();
-      forestZones.forEach((zone,i)=>{const unlocked=i<=save.unlocked,done=save.completed.includes(zone.id);const card=document.createElement("div");card.className="zone-card"+(unlocked?"":" locked");
+      const decorations=[["🌼","🦋"],["🍄","🪵"],["🌙","✨"]];
+      forestZones.forEach((zone,i)=>{
+        const unlocked=i<=save.unlocked,done=save.completed.includes(zone.id);
+        const card=document.createElement("article");card.className="zone-card"+(unlocked?"":" locked")+(done?" completed":"");
+        const left=document.createElement("span");left.className="zone-decor left";left.setAttribute("aria-hidden","true");left.textContent=decorations[i][0];
+        const right=document.createElement("span");right.className="zone-decor right";right.setAttribute("aria-hidden","true");right.textContent=decorations[i][1];
+        const number=document.createElement("div");number.className="zone-number";number.textContent=done?"✓":unlocked?String(i+1):"🔒";
         const emoji=document.createElement("div");emoji.className="zone-emoji";emoji.textContent=zone.emoji;
-        const title=document.createElement("h3");title.textContent=(done?"✅ ":unlocked?"🗺️ ":"🔒 ")+zone.name;
+        const title=document.createElement("h3");title.textContent=zone.name;
         const desc=document.createElement("p");desc.className="muted";desc.textContent=zone.desc;
-        const status=document.createElement("p");status.className="small";status.textContent=done?"Område fullført":unlocked?"5 oppgaver · 100 mulige poeng":"Fullfør forrige område for å låse opp";
-        const btn=document.createElement("button");btn.className="button "+(unlocked?"primary":"");btn.textContent=unlocked?(done?"Spill igjen":"Start område"):"Låst";btn.disabled=!unlocked;btn.addEventListener("click",()=>{forestZoneIndex=i;startForest();});
-        card.append(emoji,title,desc,status,btn);map.appendChild(card);});
+        const status=document.createElement("p");status.className="small";status.textContent=done?"🏆 Område fullført!":unlocked?"⭐ 5 oppgaver · 100 mulige poeng":"🔒 Fullfør forrige område for å låse opp";
+        const btn=document.createElement("button");btn.className="button "+(unlocked?"primary":"");btn.textContent=unlocked?(done?"Spill igjen ↻":"Gå inn →"):"Låst";btn.disabled=!unlocked;btn.addEventListener("click",()=>{forestZoneIndex=i;startForest();});
+        card.append(left,number,emoji,title,desc,status,btn,right);map.appendChild(card);
+      });
     }
     function startForest(){forestIndex=0;forestPoints=0;forestAnswered=false;$("forest-intro").classList.add("hidden");$("forest-finished").classList.add("hidden");$("forest-game").classList.remove("hidden");renderForestStage();}
     function renderForestStage(){
