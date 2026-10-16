@@ -187,6 +187,17 @@
     .message.error { color: var(--danger); }
     .message.success { color: #14865b; }
 
+    .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+    .feature-card { background:white; border:1px solid var(--border); border-radius:16px; padding:18px; }
+    .feature-card h3 { margin-top:0; }
+    .forest-scene { background:linear-gradient(#dff5ff,#edffe5); border-radius:18px; padding:22px; margin:14px 0; }
+    .forest-choices { display:grid; gap:10px; }
+    .forest-choice { padding:14px; border:2px solid #cde9ce; border-radius:12px; background:white; color:var(--text); font-weight:750; text-align:left; }
+    .forest-choice:disabled { opacity:.8; }
+    .pill { display:inline-block; border-radius:99px; padding:4px 10px; background:#eeeaff; color:var(--purple-dark); font-size:12px; font-weight:800; }
+    .ticket-row, .assignment-row { padding:14px 0; border-bottom:1px solid var(--border); overflow-wrap:anywhere; }
+    .ticket-row:last-child, .assignment-row:last-child { border-bottom:0; }
+    textarea { width:100%; border:1px solid #dcd6f1; border-radius:11px; padding:12px; font:inherit; resize:vertical; }
     .profile-row {
       display: flex;
       align-items: center;
@@ -254,6 +265,10 @@
       <button class="active" data-page="home">🏠 Hjem</button>
       <button data-page="subjects">📚 Fag</button>
       <button data-page="troll">🧌 Trollens gangetabell</button>
+      <button data-page="forest">🌲 Skogseventyret</button>
+      <button data-page="progress">🏅 Fremgang</button>
+      <button data-page="teacher">👩‍🏫 Lærer</button>
+      <button data-page="support">💬 Hjelp</button>
       <button data-page="players">👥 Spillere</button>
       <button data-page="account">👤 Konto</button>
     </nav>
@@ -397,6 +412,44 @@
         <p id="profile-message" class="message" role="status"></p>
       </div>
     </section>
+    <section id="page-forest" class="hidden">
+      <div class="card quiz-box">
+        <div class="forest-scene"><div style="font-size:48px">🌲🦊🍄</div><h2>Skogseventyret</h2><p>Hjelp reven Rusk gjennom skogen ved å løse fem oppgaver. Hvert riktig svar gir 20 poeng!</p></div>
+        <div id="forest-intro"><p>Stien deler seg, og skogens magi trenger din hjelp. Er du klar?</p><button class="button green" id="forest-start">Start eventyret →</button></div>
+        <div id="forest-game" class="hidden"><div class="quiz-top"><span class="pill" id="forest-step">Sti 1 av 5</span><strong id="forest-score">0 poeng</strong></div><div class="progress"><div id="forest-progress" class="progress-fill"></div></div><h3 id="forest-question" class="question"></h3><div id="forest-choices" class="forest-choices"></div><p id="forest-feedback" class="message" role="status"></p><div class="form-actions"><button class="button primary" id="forest-next" disabled>Neste →</button></div></div>
+        <div id="forest-finished" class="hidden"><h2 id="forest-finish-title">Eventyret er fullført! 🌟</h2><p id="forest-finish-text"></p><button class="button primary" id="forest-restart">Spill igjen</button></div>
+      </div>
+    </section>
+
+    <section id="page-progress" class="hidden">
+      <div class="section-title"><h2>🏅 Fremgang og prestasjoner</h2><button class="button" id="progress-refresh">Oppdater</button></div>
+      <p class="muted">Følg med på rundene dine og lås opp merker. Lokal fremgang lagres i denne nettleseren.</p>
+      <div class="stats"><div class="stat"><strong id="progress-rounds">0</strong><span>Fullførte runder</span></div><div class="stat"><strong id="progress-points">0</strong><span>Poeng fra rundene</span></div><div class="stat"><strong id="progress-badges">0/5</strong><span>Merker</span></div></div>
+      <div id="achievement-grid" class="feature-grid"></div>
+      <div class="card" style="margin-top:16px"><h3>📈 Nylig aktivitet</h3><div id="progress-history">Ingen runder registrert ennå. Spill en quiz for å komme i gang!</div></div>
+      <div class="card" style="margin-top:16px"><h3>🏫 Bli med i en klasse</h3><form id="student-join-form"><div class="field"><label for="student-join-code">Klassekode</label><input id="student-join-code" maxlength="16" required placeholder="Skriv koden fra læreren"></div><button class="button primary" type="submit">Bli med</button></form><p id="student-class-status" class="message" role="status"></p><h3>📝 Oppgavene dine</h3><div id="student-assignment-list">Logg inn og bli med i en klasse for å se oppgaver.</div></div>
+    </section>
+
+    <section id="page-teacher" class="hidden">
+      <div class="section-title"><h2>👩‍🏫 Lærerverktøy</h2><button class="button" id="teacher-refresh">Oppdater</button></div>
+      <div class="card"><p>Lag klasser og oppgaver, og se elevframgang. Tilgang krever at administrator har gitt kontoen din lærerrettigheter i Supabase.</p><p id="teacher-status" class="message" role="status">Kontrollerer tilgang …</p></div>
+      <div id="teacher-tools" class="hidden">
+        <div class="feature-grid">
+          <div class="feature-card"><h3>🏫 Ny klasse</h3><form id="teacher-class-form"><div class="field"><label for="teacher-class-name">Klassenavn</label><input id="teacher-class-name" maxlength="80" required placeholder="For eksempel 5B"></div><button class="button primary" type="submit">Opprett klasse</button></form></div>
+          <div class="feature-card"><h3>📝 Ny oppgave</h3><form id="teacher-assignment-form"><div class="field"><label for="teacher-class-select">Klasse</label><select id="teacher-class-select" required></select></div><div class="field"><label for="teacher-assignment-title">Oppgavenavn</label><input id="teacher-assignment-title" maxlength="120" required placeholder="Gangetabellen"></div><div class="field"><label for="teacher-assignment-description">Beskrivelse</label><textarea id="teacher-assignment-description" maxlength="1000" rows="3" placeholder="Hva skal elevene gjøre?"></textarea></div><button class="button primary" type="submit">Opprett oppgave</button></form></div>
+        </div>
+        <div class="card" style="margin-top:16px"><h3>📚 Klassene dine</h3><div id="teacher-class-list">Laster …</div></div>
+        <div class="card" style="margin-top:16px"><h3>📊 Elevframgang og oppgaver</h3><div id="teacher-progress-list">Velg oppdater for å laste data.</div></div>
+      </div>
+    </section>
+
+    <section id="page-support" class="hidden">
+      <div class="section-title"><h2>💬 Hjelpesenter</h2><button class="button" id="support-refresh">Oppdater</button></div>
+      <div class="card"><p>Send inn et spørsmål eller problem. Verifiserte hjelpere kan svare og ta ansvar for åpne saker. Du må være logget inn for å bruke hjelpesenteret.</p>
+        <form id="support-form"><div class="field"><label for="support-subject">Hva trenger du hjelp med?</label><input id="support-subject" maxlength="120" required placeholder="Kort overskrift"></div><div class="field"><label for="support-message">Beskriv problemet</label><textarea id="support-message" rows="4" maxlength="4000" required placeholder="Fortell oss hva som skjedde …"></textarea></div><button class="button primary" type="submit">Send sak</button></form><p id="support-status" class="message" role="status"></p>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>📨 Sakene dine / åpne saker</h3><div id="support-ticket-list">Logg inn for å se saker.</div></div>
+    </section>
   </main>
 
   <footer>🌱 Sprout School · Lær litt hver dag!</footer>
@@ -519,7 +572,7 @@
     }
 
     function showPage(page) {
-      const pages = ["home","subjects","quiz","result","troll","players","account"];
+      const pages = ["home","subjects","quiz","result","troll","forest","progress","teacher","support","players","account"];
       pages.forEach(p => $("page-" + p).classList.toggle("hidden", p !== page));
       document.querySelectorAll("[data-page]").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === page);
@@ -527,6 +580,9 @@
       if (page === "players") loadPlayerList();
       if (page === "home") refreshHomeStats();
       if (page === "account") renderAccount();
+      if (page === "progress") { renderProgress(); loadStudentAssignments(); }
+      if (page === "teacher") loadTeacherTools();
+      if (page === "support") loadSupportTickets();
       window.scrollTo({top:0,behavior:"smooth"});
     }
 
@@ -596,7 +652,11 @@
     function startQuiz(subject, level) {
       currentSubject = subject;
       currentLevel = level;
-      quizQuestions = shuffle(banks[subject.id][level]);
+      // Shuffle each answer list as answer/index pairs so the correct answer stays correct.
+      quizQuestions = shuffle(banks[subject.id][level].map(q => {
+        const shuffledAnswers = shuffle(q[1].map((text,index) => ({text,index})));
+        return [q[0],shuffledAnswers.map(a => a.text),shuffledAnswers.findIndex(a => a.index === q[2])];
+      }));
       quizIndex = 0;
       quizCorrect = 0;
       quizPoints = 0;
@@ -675,6 +735,82 @@
       if (quizIndex < quizQuestions.length) renderQuizQuestion();
       else finishQuiz();
     }
+
+    // Local progress and achievements are intentionally labelled device-local.
+    const PROGRESS_KEY = "sproutSchoolProgressV1";
+    function readProgress() {
+      try { const value=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{"rounds":[],"badges":[]}');return {rounds:Array.isArray(value.rounds)?value.rounds:[],badges:Array.isArray(value.badges)?value.badges:[]}; }
+      catch { return {rounds:[],badges:[]}; }
+    }
+    function recordProgress(game,points,detail="") {
+      const p=readProgress();p.rounds.unshift({game,points:Number(points)||0,detail,at:new Date().toISOString()});p.rounds=p.rounds.slice(0,100);
+      const total=p.rounds.reduce((n,r)=>n+r.points,0),earned=[];
+      if(p.rounds.length>=1)earned.push("first");if(total>=100)earned.push("points100");if(p.rounds.length>=5)earned.push("five");
+      if(p.rounds.some(r=>r.game==="Skogseventyret"))earned.push("forest");if(p.rounds.some(r=>r.detail==="perfect"))earned.push("perfect");
+      p.badges=[...new Set([...p.badges,...earned])];try{localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));}catch(e){console.warn("Lokal fremgang kunne ikke lagres",e);}renderProgress();
+    }
+    const ACHIEVEMENTS=[
+      {id:"first",emoji:"🌱",name:"Første steg",desc:"Fullfør din første runde."},
+      {id:"points100",emoji:"💯",name:"Poengsamler",desc:"Samle minst 100 poeng fra rundene dine."},
+      {id:"five",emoji:"🔥",name:"På hugget",desc:"Fullfør fem runder."},
+      {id:"forest",emoji:"🌲",name:"Skogens venn",desc:"Fullfør Skogseventyret."},
+      {id:"perfect",emoji:"🏆",name:"Perfekt!",desc:"Få alle svar riktig i en quiz."}
+    ];
+    function renderProgress() {
+      const p=readProgress();if(!$("achievement-grid"))return;const total=p.rounds.reduce((n,r)=>n+r.points,0);
+      $("progress-rounds").textContent=p.rounds.length;$("progress-points").textContent=total;$("progress-badges").textContent=p.badges.length+"/"+ACHIEVEMENTS.length;
+      const grid=$("achievement-grid");grid.replaceChildren();
+      ACHIEVEMENTS.forEach(a=>{const earned=p.badges.includes(a.id),card=document.createElement("div");card.className="feature-card";const icon=document.createElement("div");icon.style.fontSize="32px";icon.textContent=earned?a.emoji:"🔒";const title=document.createElement("h3");title.textContent=a.name+(earned?" ✓":"");const desc=document.createElement("p");desc.className="muted";desc.textContent=a.desc;const status=document.createElement("span");status.className="pill";status.textContent=earned?"Låst opp":"Ikke låst opp";card.append(icon,title,desc,status);grid.appendChild(card);});
+      const history=$("progress-history");history.replaceChildren();if(!p.rounds.length){history.textContent="Ingen runder registrert ennå. Spill en quiz for å komme i gang!";return;}
+      p.rounds.slice(0,12).forEach(r=>{const row=document.createElement("div");row.className="assignment-row";const title=document.createElement("strong");title.textContent=r.game;const detail=document.createElement("div");detail.className="muted";detail.textContent=r.points+" poeng · "+new Date(r.at).toLocaleString("no-NO")+(r.detail==="perfect"?" · Perfekt runde":"");row.append(title,detail);history.appendChild(row);});
+    }
+
+    const forestStages=[
+      {q:"Reven finner tre stier. Hvilken vei fører mot sollyset?",a:["Den mørke grotten","Stien med blomster og lys","Rett ned i elva"],correct:1,ok:"Godt valg! Blomstene viser veien 🌼"},
+      {q:"En ugle spør: 8 + 7 = ?",a:["14","15","16"],correct:1,ok:"Ugla nikker klokt! 🦉"},
+      {q:"Hva trenger en plante for å vokse?",a:["Lys og vann","Bare stein","Mørke hele dagen"],correct:0,ok:"Plantene jubler! 🌱"},
+      {q:"Rusk møter et skilt: Hva er motsatt av «stor»?",a:["Lang","Liten","Bred"],correct:1,ok:"Du fant riktig ord! 🦔"},
+      {q:"Den magiske porten spør: 6 × 4 = ?",a:["20","22","24"],correct:2,ok:"Porten åpner seg! Du reddet skogen! ✨"}
+    ];
+    let forestIndex=0,forestPoints=0,forestAnswered=false;
+    function startForest(){forestIndex=0;forestPoints=0;forestAnswered=false;$("forest-intro").classList.add("hidden");$("forest-finished").classList.add("hidden");$("forest-game").classList.remove("hidden");renderForestStage();}
+    function renderForestStage(){forestAnswered=false;const stage=forestStages[forestIndex];$("forest-step").textContent="Sti "+(forestIndex+1)+" av "+forestStages.length;$("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=(forestIndex/forestStages.length*100)+"%";$("forest-question").textContent=stage.q;$("forest-feedback").textContent="";$("forest-feedback").className="message";$("forest-next").disabled=true;const choices=$("forest-choices");choices.replaceChildren();shuffle(stage.a.map((text,index)=>({text,index}))).forEach(choice=>{const btn=document.createElement("button");btn.className="forest-choice";btn.textContent=choice.text;btn.addEventListener("click",()=>answerForest(choice.index,btn));choices.appendChild(btn);});}
+    function answerForest(index,button){if(forestAnswered)return;forestAnswered=true;const stage=forestStages[forestIndex];$("forest-choices").querySelectorAll("button").forEach(btn=>{btn.disabled=true;if(btn.textContent===stage.a[stage.correct])btn.style.borderColor="var(--green)";});if(index===stage.correct){forestPoints+=20;$("forest-feedback").textContent=stage.ok;$("forest-feedback").className="message success";}else{button.style.borderColor="var(--danger)";$("forest-feedback").textContent="Nesten! Riktig svar: "+stage.a[stage.correct];$("forest-feedback").className="message error";}$("forest-score").textContent=forestPoints+" poeng";$("forest-progress").style.width=((forestIndex+1)/forestStages.length*100)+"%";$("forest-next").disabled=false;$("forest-next").textContent=forestIndex===forestStages.length-1?"Fullfør eventyret":"Neste sti →";}
+    async function finishForest(){$("forest-game").classList.add("hidden");$("forest-finished").classList.remove("hidden");$("forest-finish-text").textContent="Du fikk "+forestPoints+" av 100 poeng. "+(forestPoints===100?"Fantastisk — alle valgene var riktige!":"Bra jobbet med å hjelpe Rusk gjennom skogen!");recordProgress("Skogseventyret",forestPoints);const msg=await saveScore("Skogseventyret",forestPoints);$("forest-finish-text").textContent+=" "+msg;refreshHomeStats();}
+    $("forest-start").addEventListener("click",startForest);$("forest-restart").addEventListener("click",()=>{$("forest-intro").classList.remove("hidden");$("forest-game").classList.add("hidden");$("forest-finished").classList.add("hidden");});$("forest-next").addEventListener("click",()=>{if(!forestAnswered)return;if(forestIndex<forestStages.length-1){forestIndex++;renderForestStage();}else finishForest();});
+    $("progress-refresh").addEventListener("click",renderProgress);
+    
+    async function loadStudentAssignments(){
+      const out=$("student-assignment-list");if(!currentUser){out.textContent="Logg inn for å se oppgavene dine.";return;}
+      try{const {data,error}=await supabase.rpc("student_list_assignments");if(error)throw error;out.replaceChildren();if(!data?.length){out.textContent="Ingen oppgaver ennå. Bli med i en klasse med koden fra læreren.";return;}
+      data.forEach(a=>{const row=document.createElement("div");row.className="assignment-row";const title=document.createElement("strong");title.textContent=a.title;const desc=document.createElement("p");desc.className="muted";desc.textContent=(a.class_name||"Klasse")+" · "+(a.description||"Ingen beskrivelse")+(a.completed_at?" · Fullført ✓":"");row.append(title,desc);if(!a.completed_at){const b=document.createElement("button");b.className="button primary";b.textContent="Marker som fullført";b.addEventListener("click",async()=>{const {error}=await supabase.rpc("student_complete_assignment",{p_assignment_id:a.id,p_points:0});$("student-class-status").textContent=error?error.message:"Oppgaven er fullført!";await loadStudentAssignments();});row.appendChild(b);}out.appendChild(row);});
+      }catch(e){out.textContent="Kunne ikke hente oppgaver. Kjør lærerverktøy-SQL først. "+e.message;}
+    }
+    $("student-join-form").addEventListener("submit",async e=>{e.preventDefault();if(!currentUser){$("student-class-status").textContent="Logg inn først.";return;}try{const {error}=await supabase.rpc("student_join_class",{p_join_code:$("student-join-code").value.trim().toUpperCase()});if(error)throw error;$("student-class-status").textContent="Du er med i klassen!";$("student-join-code").value="";await loadStudentAssignments();}catch(err){$("student-class-status").textContent=err.message;}});
+    
+    // Teacher RPCs validate teacher role on the server.
+    async function loadTeacherTools(){
+      $("teacher-tools").classList.add("hidden");if(!currentUser){$("teacher-status").textContent="Logg inn først. Lærertilgang krever en konto.";return;}
+      try{const {data,error}=await supabase.rpc("teacher_list_classes");if(error)throw error;$("teacher-tools").classList.remove("hidden");$("teacher-status").textContent="Lærertilgang bekreftet.";const select=$("teacher-class-select");select.replaceChildren();const list=$("teacher-class-list");list.replaceChildren();if(!data?.length)list.textContent="Ingen klasser ennå. Opprett den første!";
+      (data||[]).forEach(c=>{const opt=document.createElement("option");opt.value=c.id;opt.textContent=c.name;select.appendChild(opt);const row=document.createElement("div");row.className="assignment-row";const name=document.createElement("strong");name.textContent=c.name;const code=document.createElement("span");code.className="pill";code.textContent="Kode: "+c.join_code;const count=document.createElement("div");count.className="muted";count.textContent=(c.student_count??0)+" elever";row.append(name,document.createTextNode(" "),code,count);list.appendChild(row);});
+      const {data:progress,error:pe}=await supabase.rpc("teacher_list_progress");if(pe)throw pe;const out=$("teacher-progress-list");out.replaceChildren();if(!progress?.length){out.textContent="Ingen elevframgang ennå.";return;}progress.forEach(a=>{const row=document.createElement("div");row.className="assignment-row";const t=document.createElement("strong");t.textContent=(a.class_name||"Klasse")+" · "+(a.assignment_title||"Oppgave");const d=document.createElement("div");d.className="muted";d.textContent=(a.student_name||"Elev")+" · "+(a.points??0)+" poeng"+(a.completed_at?" · "+new Date(a.completed_at).toLocaleDateString("no-NO"):"");row.append(t,d);out.appendChild(row);});
+      }catch(error){$("teacher-status").textContent="Lærertilgang eller SQL-oppsett mangler. "+error.message;}
+    }
+    $("teacher-refresh").addEventListener("click",loadTeacherTools);
+    $("teacher-class-form").addEventListener("submit",async e=>{e.preventDefault();try{const {error}=await supabase.rpc("teacher_create_class",{p_name:$("teacher-class-name").value.trim()});if(error)throw error;$("teacher-class-name").value="";$("teacher-status").textContent="Klasse opprettet!";await loadTeacherTools();}catch(err){$("teacher-status").textContent=err.message;}});
+    $("teacher-assignment-form").addEventListener("submit",async e=>{e.preventDefault();try{const {error}=await supabase.rpc("teacher_create_assignment",{p_class_id:Number($("teacher-class-select").value),p_title:$("teacher-assignment-title").value.trim(),p_description:$("teacher-assignment-description").value.trim()});if(error)throw error;$("teacher-assignment-title").value="";$("teacher-assignment-description").value="";$("teacher-status").textContent="Oppgave opprettet!";await loadTeacherTools();}catch(err){$("teacher-status").textContent=err.message;}});
+    
+    async function loadSupportTickets(){
+      const out=$("support-ticket-list");out.replaceChildren();if(!currentUser){out.textContent="Logg inn for å sende eller se supportsaker.";return;}
+      try{const {data,error}=await supabase.rpc("list_support_tickets");if(error)throw error;if(!data?.length){out.textContent="Ingen supportsaker ennå.";return;}
+      data.forEach(t=>{const row=document.createElement("div");row.className="ticket-row";const title=document.createElement("strong");title.textContent=t.subject;const status=document.createElement("span");status.className="pill";status.textContent=t.status==="closed"?"Lukket":"Åpen";const desc=document.createElement("p");desc.className="muted";desc.textContent="Sak #"+t.id+" · "+new Date(t.created_at).toLocaleDateString("no-NO")+(t.claimed_by?" · Hjelper har tatt saken":"");row.append(title,document.createTextNode(" "),status,desc);const messages=document.createElement("div");messages.style.margin="10px 0";(t.messages||[]).forEach(m=>{const p=document.createElement("p");p.textContent=(m.sender_name||"Bruker")+": "+m.body;messages.appendChild(p);});row.appendChild(messages);
+      if(t.status==="open"){const form=document.createElement("form");form.className="field";const area=document.createElement("textarea");area.rows=2;area.maxLength=4000;area.required=true;area.placeholder="Skriv et svar …";const send=document.createElement("button");send.className="button";send.textContent="Svar";form.append(area,send);form.addEventListener("submit",async e=>{e.preventDefault();send.disabled=true;try{const {error}=await supabase.rpc("send_support_message",{p_ticket_id:t.id,p_message:area.value.trim()});if(error)throw error;await loadSupportTickets();}catch(err){$("support-status").textContent=err.message;send.disabled=false;}});row.appendChild(form);
+      if(profile?.is_verified){const actions=document.createElement("div");actions.className="form-actions";const claim=document.createElement("button");claim.className="button";claim.textContent="Ta saken";claim.addEventListener("click",async()=>{const {error}=await supabase.rpc("claim_support_ticket",{p_ticket_id:t.id});$("support-status").textContent=error?error.message:"Du har tatt saken.";await loadSupportTickets();});const close=document.createElement("button");close.className="button red";close.textContent="Lukk sak";close.addEventListener("click",async()=>{const {error}=await supabase.rpc("close_support_ticket",{p_ticket_id:t.id});$("support-status").textContent=error?error.message:"Saken er lukket.";await loadSupportTickets();});actions.append(claim,close);row.appendChild(actions);}}
+      out.appendChild(row);});
+      }catch(error){out.textContent="Kunne ikke hente supportsaker. Kjør support-SQL-oppsettet først. "+error.message;}
+    }
+    $("support-form").addEventListener("submit",async e=>{e.preventDefault();if(!currentUser){$("support-status").textContent="Logg inn først.";return;}try{const {error}=await supabase.rpc("create_support_ticket",{p_subject:$("support-subject").value.trim(),p_message:$("support-message").value.trim()});if(error)throw error;$("support-form").reset();$("support-status").textContent="Saken er sendt!";await loadSupportTickets();}catch(err){$("support-status").textContent="Kunne ikke sende saken: "+err.message;}});
+    $("support-refresh").addEventListener("click",loadSupportTickets);
 
     async function saveScore(gameName, points) {
       if (!currentUser) {
@@ -771,6 +907,7 @@
         $("troll-game").classList.add("hidden");
         $("troll-finished").classList.remove("hidden");
         $("troll-final-text").textContent = `Du fikk ${trollCorrect} av 10 riktige og ${trollPoints} poeng!`;
+        recordProgress("Trollens gangetabell",trollPoints);
         const message = await saveScore("Trollens gangetabell",trollPoints);
         $("troll-final-text").textContent += " " + message;
         refreshHomeStats();
@@ -1026,6 +1163,7 @@
     setAuthMode(false);
     renderAccount();
     resetTroll();
+    renderProgress();
 
     supabase.auth.onAuthStateChange((_event,session) => {
       // Defer profile loading so auth callbacks do not hold up Supabase auth.
