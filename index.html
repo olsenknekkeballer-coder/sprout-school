@@ -1,735 +1,1046 @@
-
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sprout School – Læring er gøy!</title>
-#accountPanel input {
-  width: 100%;
-  max-width: 420px;
-  padding: 12px;
-  border: 2px solid #eee3d3;
-  border-radius: 12px;
-  margin-top: 5px;
-}
-#playerList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-  gap: 12px;
-}
-.player-card {
-  text-align: left;
-  padding: 15px;
-  border-radius: 16px;
-  background: #e8f5e7;
-  color: var(--ink);
-  font-weight: bold;
-}
-..verified-icon {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px;
-  object-fit: contain;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7c5cff">
+  <title>Sprout School 🌱</title>
+
   <style>
-  
-:root {
-  --ink:#29354c; --green:#52ad70; --cream:#fffaf0;
-  --pink:#ffb6c8; --blue:#b8e7fa; --yellow:#ffdc76;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:#fffaf0;color:var(--ink)}
-button,select{font:inherit}
-button{cursor:pointer;border:0}
-header{height:76px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:3px solid #f1eadc;position:sticky;top:0;z-index:5}
-.logo{font-size:25px;font-weight:1000;color:#32965a}
-.logo span{display:inline-block;background:#dff5d9;padding:7px;border-radius:14px;margin-right:6px}
-.nav{display:flex;gap:10px;align-items:center}
-.nav button{background:#f2f5ef;color:var(--ink);padding:11px 15px;border-radius:14px;font-weight:bold}
-.nav button.active{background:#ffe69b}
-#points{background:#e1f5dd;color:#267845}
-.hero{margin:22px auto 0;max-width:1200px;padding:28px 5%;border-radius:30px;background:#dff2ff;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;min-height:300px}
-.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.06;margin:0 0 14px;letter-spacing:-1px}
-.hero p{font-size:18px;line-height:1.6;max-width:480px}
-.pill{display:inline-block;background:white;border-radius:50px;padding:8px 13px;font-size:13px;font-weight:bold;margin-bottom:12px}
-.bigbutton{background:#ffca59;padding:15px 22px;border-radius:16px;font-weight:900;box-shadow:0 5px 0 #e7a937;color:#463717}
-.mascots{display:flex;align-items:end;justify-content:center;gap:4px;min-width:260px}
-.character{display:flex;align-items:center;justify-content:center;border:4px solid white;border-radius:46% 46% 40% 40%;box-shadow:0 7px 0 #00000010;font-size:66px;width:112px;height:145px;position:relative}
-.character:after{content:"";position:absolute;bottom:-13px;width:35px;height:17px;background:inherit;border-radius:50%}
-.character.a{background:#ffb8c8;transform:rotate(-7deg)}
-.character.b{background:#ffe184;height:180px;width:132px;font-size:83px;z-index:1}
-.character.c{background:#b5e6c3;transform:rotate(7deg)}
-.wrap{max-width:1200px;margin:35px auto;padding:0 5%}
-.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
-h2{font-size:29px;margin:0 0 8px}
-.muted{color:#68758a;line-height:1.5}
-.subjects{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:20px}
-.subject{min-height:155px;border:3px solid transparent;border-radius:23px;padding:17px 12px;text-align:left;color:var(--ink);transition:.15s;position:relative;overflow:hidden}
-.subject:hover{transform:translateY(-4px);border-color:#ffffff;box-shadow:0 8px 0 #0000000d}
-.subject .emoji{font-size:42px;display:block;margin-bottom:10px}
-.subject strong{font-size:16px;display:block}
-.subject small{display:block;margin-top:5px;color:#4e5d70}
-.s1{background:#d9f0ff}.s2{background:#ffe1e8}.s3{background:#fff0bb}.s4{background:#dff5d7}.s5{background:#e8ddff}
-.s6{background:#ffdfc4}.s7{background:#cceeea}.s8{background:#f8d9f4}.s9{background:#e1e7ff}.s10{background:#e7edda}
-.panel{background:white;border:2px solid #f0eadf;border-radius:25px;padding:25px;margin-top:25px}
-.hidden{display:none!important}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-select{background:#fffaf0;border:2px solid #eee3d3;padding:12px;border-radius:12px;min-width:170px}
-.quiztop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#68758a;font-weight:bold}
-.track{height:10px;background:#edf0e9;border-radius:30px;overflow:hidden;margin:17px 0 24px}
-#progress{height:100%;background:#52ad70;width:0;transition:.2s}
-#question{font-size:clamp(22px,4vw,32px);line-height:1.35}
-.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-.answer{padding:17px;text-align:left;background:#f7f6f0;border:3px solid #ece9df;border-radius:16px;color:var(--ink);font-weight:bold}
-.answer:hover:not(:disabled){border-color:#8bc99b}
-.answer.correct{background:#dff7e3;border-color:#52ad70}
-.answer.wrong{background:#ffe4e0;border-color:#f28c7e}
-#feedback{padding:15px;border-radius:15px;line-height:1.5;margin:12px 0}
-.good{background:#e1f6e5;color:#21683b}.bad{background:#fff0ec;color:#9c4537}
-.action{background:#4da968;color:white;padding:13px 20px;border-radius:14px;font-weight:bold}
-.secondary{background:#f2f1e9;color:var(--ink);padding:13px 20px;border-radius:14px;font-weight:bold}
-#result{text-align:center}
-.resultnum{font-size:48px;font-weight:1000;color:#34945a}
-footer{text-align:center;padding:35px 15px;color:#7b8492}
-.teacherbox{background:#f0e8ff}
-@media(max-width:900px){.subjects{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{flex-wrap:wrap}.mascots{margin:auto}}
-@media(max-width:560px){header{height:auto;min-height:70px;padding:12px 4%;flex-wrap:wrap}.logo{font-size:20px}.nav{gap:5px}.nav button{padding:9px;font-size:12px}.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.character{width:75px;height:105px;font-size:45px}.character.b{width:95px;height:130px;font-size:60px}.mascots{min-width:0}.hero{padding:25px 6%}.answers{grid-template-columns:1fr}.panel{padding:18px}}
-</style>
+    :root {
+      --purple: #7957ff;
+      --purple-dark: #5b3ed1;
+      --green: #25b879;
+      --yellow: #ffcf5a;
+      --pink: #ff83bd;
+      --bg: #f6f4ff;
+      --card: #ffffff;
+      --text: #292744;
+      --muted: #77758e;
+      --border: #e9e5fa;
+      --danger: #e65068;
+      --shadow: 0 8px 25px #40308012;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      background: white;
+      padding: 14px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 3px 15px #29274408;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      font-weight: 950;
+      font-size: 23px;
+      color: var(--purple);
+      letter-spacing: -1px;
+    }
+
+    .brand span { color: var(--green); }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .nav button, .button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 15px;
+      background: #eeeaff;
+      color: var(--purple-dark);
+      font-weight: 750;
+    }
+
+    .nav button.active, .button.primary {
+      background: var(--purple);
+      color: white;
+    }
+
+    .button.green { background: var(--green); color: white; }
+    .button.red { background: #ffe8ed; color: #bd314c; }
+    .button:disabled { opacity: .5; cursor: not-allowed; }
+
+    main {
+      max-width: 1100px;
+      width: 92%;
+      margin: 26px auto 55px;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #7957ff, #a98aff);
+      color: white;
+      border-radius: 25px;
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 { font-size: clamp(28px, 5vw, 43px); margin: 0 0 9px; }
+    .hero p { margin: 0; opacity: .93; line-height: 1.6; }
+    .hero-emoji { font-size: clamp(55px, 10vw, 100px); }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 15px;
+    }
+
+    h2 { margin: 0; font-size: 23px; }
+    h3 { margin-top: 0; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .subject-card {
+      cursor: pointer;
+      transition: transform .16s, border-color .16s;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--purple);
+    }
+
+    .subject-emoji { font-size: 36px; margin-bottom: 10px; }
+    .subject-card h3 { margin-bottom: 7px; }
+    .muted { color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .small { font-size: 12px; color: var(--muted); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 13px;
+      margin-top: 17px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 17px;
+    }
+
+    .stat strong { display: block; font-size: 25px; color: var(--purple); }
+    .stat span { font-size: 13px; color: var(--muted); }
+
+    .hidden { display: none !important; }
+
+    .form {
+      max-width: 470px;
+      margin: 28px auto;
+    }
+
+    .field { margin: 14px 0; }
+    .field label { display: block; margin-bottom: 6px; font-weight: 750; }
+
+    .field input, .field select {
+      width: 100%;
+      border: 1px solid #dcd6f1;
+      background: white;
+      border-radius: 11px;
+      padding: 12px;
+      color: var(--text);
+    }
+
+    .form-actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 17px; }
+    .message { margin-top: 13px; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+    .message.error { color: var(--danger); }
+    .message.success { color: #14865b; }
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-row:last-child { border-bottom: 0; }
+    .avatar { font-size: 35px; }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-name { font-weight: 850; overflow-wrap: anywhere; }
+    .profile-points { font-size: 13px; color: var(--muted); }
+
+    .verified-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: -3px;
+      margin-left: 4px;
+      object-fit: contain;
+    }
+
+    .quiz-box { max-width: 760px; margin: 25px auto; }
+    .quiz-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .progress { height: 9px; border-radius: 99px; background: #eeeafa; overflow: hidden; margin: 18px 0; }
+    .progress-fill { height: 100%; background: var(--green); width: 0; transition: width .2s; }
+    .question { font-size: clamp(21px, 4vw, 29px); font-weight: 850; line-height: 1.4; margin: 24px 0; }
+
+    .answers { display: grid; gap: 10px; }
+    .answer {
+      text-align: left;
+      border: 2px solid var(--border);
+      background: white;
+      padding: 14px;
+      border-radius: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .answer:hover:not(:disabled) { border-color: var(--purple); }
+    .answer.correct { border-color: var(--green); background: #e5fff3; }
+    .answer.wrong { border-color: var(--danger); background: #fff0f3; }
+    .quiz-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .result-emoji { font-size: 65px; }
+    .avatar-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+    .avatar-choice { font-size: 27px; border: 2px solid var(--border); border-radius: 12px; padding: 6px 10px; background: white; }
+    .avatar-choice.selected { border-color: var(--purple); background: #eeeaff; }
+
+    footer { text-align: center; color: var(--muted); padding: 20px; font-size: 13px; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 12px 4%; }
+      .hero { padding: 23px; }
+      .nav button { padding: 8px 10px; font-size: 13px; }
+      .card { padding: 16px; }
+    }
+  </style>
 </head>
+
 <body>
+  <header class="topbar">
+    <div class="brand">🌱 Sprout <span>School</span></div>
+    <nav class="nav" aria-label="Hovedmeny">
+      <button class="active" data-page="home">🏠 Hjem</button>
+      <button data-page="subjects">📚 Fag</button>
+      <button data-page="troll">🧌 Trollens gangetabell</button>
+      <button data-page="players">👥 Spillere</button>
+      <button data-page="account">👤 Konto</button>
+    </nav>
+  </header>
 
-<header>
-  <div class="logo"><span>🌱</span>Sprout School</div>
-  <nav class="nav">
-    <button class="active" id="studentTab">🎮 Spill for elever</button>
-    <button id="teacherTab">👩‍🏫 For lærere</button>
-    <button id="points">⭐ <span id="totalScore">0</span></button>
-  </nav>
-</header>
-<section class="wrap panel" id="accountPanel">
-  <h2>👤 Sprout School-konto</h2>
-  <p class="muted">Opprett en konto eller logg inn for å lagre poengene dine.</p>
+  <main>
+    <section id="page-home">
+      <div class="hero">
+        <div>
+          <h1>Lær noe nytt! 🌱</h1>
+          <p>Velkommen til Sprout School — øv, spill og samle poeng!</p>
+          <div style="margin-top:20px">
+            <button class="button green" data-page="subjects">Start å lære →</button>
+          </div>
+        </div>
+        <div class="hero-emoji">🐸📚</div>
+      </div>
 
-  <div id="authForms">
-    <label for="accountUsername">Brukernavn</label><br>
-    <input id="accountUsername" maxlength="20" placeholder="For eksempel Sprout123">
-    <br><br>
-    <label for="accountEmail">E-post</label><br>
-    <input id="accountEmail" type="email" autocomplete="email" placeholder="deg@example.com">
-    <br><br>
-    <label for="accountPassword">Passord (minst 8 tegn)</label><br>
-    <input id="accountPassword" type="password" minlength="8" autocomplete="current-password" placeholder="Passord">
-    <br><br>
-    <button class="action" id="signupButton">Opprett konto 🌱</button>
-    <button class="secondary" id="loginButton">Logg inn</button>
-  </div>
+      <div class="stats">
+        <div class="stat"><strong id="home-points">0</strong><span>Dine poeng</span></div>
+        <div class="stat"><strong id="home-player-count">—</strong><span>Registrerte spillere</span></div>
+        <div class="stat"><strong>10</strong><span>Skolefag</span></div>
+      </div>
 
-  <div id="signedInPanel" class="hidden">
-    <h3 id="welcomeUser"></h3>
-    <p id="accountStats" class="muted"></p>
-    <button class="secondary" id="logoutButton">Logg ut</button>
-  </div>
-  <p id="authMessage" role="status" aria-live="polite" class="muted"></p>
-</section>
-
-<section class="wrap panel" id="playerProfiles">
-  <h2>🧑‍🤝‍🧑 Spillere</h2>
-  <p class="muted">Trykk på en spiller for å se profilen deres.</p>
-  <div id="playerList">Laster spillere …</div>
-  <div id="selectedProfile" class="hidden panel"></div>
-</section>
-
-<section class="wrap panel" id="trollGame">
-  <h2>🧌 Trollens gangetabell</h2>
-  <p class="muted">Hjelp trollet med å løse gangestykkene. Hvert riktig svar gir 10 poeng!</p>
-  <div style="font-size:64px" aria-label="Et troll">🧌</div>
-  <h2 id="trollQuestion">Klar for å spille?</h2>
-  <div id="trollAnswers" class="answers"></div>
-  <p id="trollFeedback" role="status" aria-live="polite"></p>
-  <button class="action" id="startTroll">Start spillet 🎮</button>
-  <button class="secondary hidden" id="nextTroll">Neste oppgave →</button>
-</section>
-<div id="studentPage">
-  <section class="hero">
-    <div>
-      <span class="pill">🌈 ET STED FOR NYE OPPDAGELSER</span>
-      <h1>Hei, oppdager! 👋<br>Skal vi lære noe?</h1>
-      <p>Bli med vennene våre på spennende oppdrag. Utforsk fag, svar på spørsmål og samle stjerner!</p>
-      <button class="bigbutton" onclick="document.getElementById('fag').scrollIntoView({behavior:'smooth'})">Finn et fag ↓</button>
-    </div>
-    <div class="mascots" aria-label="Sprout School sine fantasivenner">
-      <div class="character a">🐱</div>
-      <div class="character b">🐸</div>
-      <div class="character c">🐻</div>
-    </div>
-  </section>
-
-  <main class="wrap" id="fag">
-    <div class="sectionhead">
-      <div><h2>Hva vil du lære i dag? 📚</h2><div class="muted">Velg et fag og start et lite læringseventyr!</div></div>
-    </div>
-    <div class="subjects" id="subjectCards"></div>
-
-    <section class="panel hidden" id="quiz">
-      <div class="quiztop"><span id="qnumber">Spørsmål 1</span><span id="levelLabel">🟢 Lett</span></div>
-      <div class="track"><div id="progress"></div></div>
-      <h2 id="question"></h2>
-      <div class="answers" id="answers"></div>
-      <div id="feedback" class="hidden" role="status" aria-live="polite"></div>
-      <button class="action hidden" id="next">Neste spørsmål →</button>
+      <div class="section-title"><h2>🌈 Velg et fag</h2><button class="button" data-page="subjects">Alle fag</button></div>
+      <div id="home-subjects" class="grid"></div>
     </section>
 
-    <section class="panel hidden" id="result">
-      <div style="font-size:55px" id="resultEmoji">🏆</div>
-      <h2 id="resultTitle">Bra jobbet!</h2>
-      <div class="resultnum" id="earned">0 poeng</div>
-      <p id="resultText"></p>
-      <button class="action" id="again">Spill igjen 🔄</button>
-      <button class="secondary" id="back">Velg et annet fag</button>
+    <section id="page-subjects" class="hidden">
+      <div class="section-title"><h2>📚 Alle fag</h2></div>
+      <p class="muted">Velg et fag, og velg deretter vanskelighetsgrad.</p>
+      <div id="subject-grid" class="grid"></div>
     </section>
 
-    <section class="panel">
-      <h2>⭐ Samle stjerner!</h2>
-      <p class="muted">Lette spørsmål gir 10 poeng, middels gir 20, og vanskelige gir 30 poeng for hvert riktige svar.</p>
+    <section id="page-quiz" class="hidden">
+      <div class="quiz-box card">
+        <div class="quiz-top">
+          <button class="button" id="quiz-back">← Tilbake</button>
+          <span class="muted" id="quiz-level-label"></span>
+        </div>
+        <div class="progress"><div id="quiz-progress" class="progress-fill"></div></div>
+        <div class="quiz-top"><strong id="quiz-subject-label"></strong><span id="quiz-counter"></span></div>
+        <div id="quiz-content"></div>
+      </div>
+    </section>
+
+    <section id="page-result" class="hidden">
+      <div class="card quiz-box" style="text-align:center">
+        <div class="result-emoji" id="result-emoji">🎉</div>
+        <h2 id="result-title">Bra jobbet!</h2>
+        <p id="result-summary" class="muted"></p>
+        <div class="stats">
+          <div class="stat"><strong id="result-correct">0</strong><span>Riktige svar</span></div>
+          <div class="stat"><strong id="result-points">0</strong><span>Nye poeng</span></div>
+        </div>
+        <div class="form-actions" style="justify-content:center">
+          <button class="button primary" data-page="subjects">Prøv et nytt fag</button>
+          <button class="button" data-page="home">Hjem</button>
+        </div>
+        <p id="score-save-message" class="message"></p>
+      </div>
+    </section>
+
+    <section id="page-troll" class="hidden">
+      <div class="card quiz-box">
+        <div style="font-size:55px">🧌✖️</div>
+        <h2>Trollens gangetabell</h2>
+        <p class="muted">Svar riktig på gangestykker og få poeng!</p>
+        <div id="troll-game">
+          <div class="stats">
+            <div class="stat"><strong id="troll-score">0</strong><span>Poeng denne runden</span></div>
+            <div class="stat"><strong id="troll-round">1/10</strong><span>Oppgave</span></div>
+          </div>
+          <div class="question" id="troll-question">3 × 4 = ?</div>
+          <div class="answers" id="troll-answers"></div>
+          <p id="troll-feedback" class="message"></p>
+          <div class="quiz-bottom">
+            <span class="muted">Svar riktig for å hjelpe trollet!</span>
+            <button class="button primary" id="troll-next" disabled>Neste →</button>
+          </div>
+        </div>
+        <div id="troll-finished" class="hidden">
+          <h2>Runden er ferdig! 🎉</h2>
+          <p id="troll-final-text"></p>
+          <button class="button primary" id="troll-restart">Spill igjen</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-players" class="hidden">
+      <div class="section-title"><h2>👥 Spillere</h2><button class="button" id="refresh-players">Oppdater</button></div>
+      <p class="muted">Se profiler og poeng. Gullmerket er for spillere som er verifisert av administrator.</p>
+      <div class="card" id="players-list">Laster spillere …</div>
+    </section>
+
+    <section id="page-account" class="hidden">
+      <div id="logged-out-panel" class="card form">
+        <h2 id="auth-title">👋 Logg inn</h2>
+        <p class="muted">Logg inn eller lag en konto for å lagre profilen din.</p>
+        <form id="auth-form">
+          <div class="field" id="username-field">
+            <label for="auth-username">Brukernavn</label>
+            <input id="auth-username" minlength="3" maxlength="20" autocomplete="username" placeholder="For eksempel SproutFan" required>
+          </div>
+          <div class="field">
+            <label for="auth-email">E-post</label>
+            <input id="auth-email" type="email" autocomplete="email" required placeholder="deg@eksempel.no">
+          </div>
+          <div class="field">
+            <label for="auth-password">Passord</label>
+            <input id="auth-password" type="password" minlength="6" autocomplete="current-password" required placeholder="Minst 6 tegn">
+          </div>
+          <div class="form-actions">
+            <button class="button primary" type="submit" id="auth-submit">Logg inn</button>
+            <button class="button" type="button" id="toggle-auth">Lag konto</button>
+          </div>
+        </form>
+        <p id="auth-message" class="message" role="status"></p>
+        <p class="small">Hvis e-postbekreftelse er slått på i Supabase, må du bekrefte e-posten før du kan logge inn.</p>
+      </div>
+
+      <div id="logged-in-panel" class="card form hidden">
+        <h2>👤 Profilen din</h2>
+        <div id="account-display"></div>
+        <div class="field">
+          <label for="profile-username">Brukernavn</label>
+          <input id="profile-username" minlength="3" maxlength="20">
+        </div>
+        <div class="field">
+          <label>Velg avatar</label>
+          <div id="avatar-picker" class="avatar-picker"></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong id="account-points">0</strong><span>Totale poeng</span></div>
+          <div class="stat"><strong id="account-created">—</strong><span>Medlem siden</span></div>
+        </div>
+        <div class="form-actions">
+          <button class="button primary" id="save-profile">Lagre profil</button>
+          <button class="button red" id="logout-button">Logg ut</button>
+        </div>
+        <p id="profile-message" class="message" role="status"></p>
+      </div>
     </section>
   </main>
-</div>
 
-<div id="teacherPage" class="wrap hidden">
-  <section class="panel teacherbox">
-    <div style="font-size:50px">👩‍🏫📚</div>
-    <h1>Velkommen, lærer!</h1>
-    <p class="muted">Her skal lærere etter hvert kunne lage oppgaver, velge fag og følge elevenes læring.</p>
-    <h2>Dette kommer senere</h2>
-    <p>📝 Lage egne oppgaver</p>
-    <p>🏫 Opprette klasser</p>
-    <p>📈 Følge læringsprogresjon</p>
-    <p>🔐 Sikker lærerinnlogging</p>
-    <p class="muted">Lærerdelen er foreløpig en forhåndsvisning. Den har ikke innlogging eller lagring av elevdata ennå.</p>
-    <button class="action" id="backStudent">Til elevsiden</button>
-  </section>
-</div>
+  <footer>🌱 Sprout School · Lær litt hver dag!</footer>
 
-<footer>🌱 Sprout School · Læring er et eventyr!</footer>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-<script>
-const subjects = [
- {id:"matte",name:"Matematikk",emoji:"🔢",desc:"Tall og regning",color:"s1"},
- {id:"norsk",name:"Norsk",emoji:"📖",desc:"Ord og lesing",color:"s2"},
- {id:"engelsk",name:"Engelsk",emoji:"🇬🇧",desc:"Learn English",color:"s3"},
- {id:"naturfag",name:"Naturfag",emoji:"🌍",desc:"Utforsk verden",color:"s4"},
- {id:"krle",name:"KRLE",emoji:"🕊️",desc:"Religion og livssyn",color:"s5"},
- {id:"kunst",name:"Kunst og håndverk",emoji:"🎨",desc:"Skap og tegn",color:"s6"},
- {id:"samfunn",name:"Samfunnsfag",emoji:"🏛️",desc:"Mennesker og samfunn",color:"s7"},
- {id:"musikk",name:"Musikk",emoji:"🎵",desc:"Rytme og toner",color:"s8"},
- {id:"kropp",name:"Kroppsøving",emoji:"⚽",desc:"Bevegelse og helse",color:"s9"},
- {id:"kode",name:"Programmering",emoji:"💻",desc:"Tenk som en utvikler",color:"s10"}
-];
+    const SUPABASE_URL = "https://wsouovpgassxxoktoidh.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_tmdFnqHesBspObVZ4g87Ww_Sv_5T5NY";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const bank = {
-matte:[
-["Hva er 7 + 5?",["11","12","13"],1,"7 + 5 = 12."],
-["Hva er 6 × 3?",["18","15","21"],0,"6 ganger 3 er 18."],
-["Hva er halvparten av 16?",["6","8","10"],1,"16 delt på 2 er 8."],
-["Hva er 12 × 8?",["86","96","108"],1,"12 × 8 = 96."],
-["Hva er 25 % av 200?",["25","40","50"],2,"En fjerdedel av 200 er 50."],
-["Hva er 3² + 4²?",["25","49","12"],0,"9 + 16 = 25."]
-],
-norsk:[
-["Hvilket ord er skrevet riktig?",["Skole","Shole","Skoole"],0,"Skole er riktig skrevet."],
-["Hva er flertall av bok?",["Boker","Bøker","Bokker"],1,"Flertall av bok er bøker."],
-["Hvilket ord er et verb?",["Løpe","Blå","Bord"],0,"Å løpe er en handling."],
-["Hva er preteritum av å skrive?",["Skriver","Skrev","Skrevet"],1,"Preteritum er skrev."],
-["Hva er et adjektiv?",["Et beskrivende ord","Et stedsnavn","En handling"],0,"Adjektiv beskriver for eksempel farge eller størrelse."],
-["Hvilket ord er riktig skrevet?",["Interessant","Interesant","Intresant"],0,"Det skrives interessant."]
-],
-engelsk:[
-["Hva betyr «apple»?",["Pære","Eple","Appelsin"],1,"Apple betyr eple."],
-["Hva betyr «good morning»?",["God natt","God morgen","Ha det"],1,"Good morning betyr god morgen."],
-["Hva er flertall av «cat»?",["Cats","Cates","Caties"],0,"Flertall er cats."],
-["Hva er fortid av «go»?",["Goed","Gone","Went"],2,"Fortidsformen er went."],
-["Hva betyr «careful»?",["Forsiktig","Sulten","Høy"],0,"Careful betyr forsiktig."],
-["Hvilken setning er riktig?",["She are happy","She is happy","She be happy"],1,"She is happy er riktig."]
-],
-naturfag:[
-["Hvilken planet bor vi på?",["Mars","Jorden","Venus"],1,"Vi bor på Jorden."],
-["Hva trenger planter for å vokse?",["Bare godteri","Lys og vann","Bare stein"],1,"Planter trenger blant annet lys og vann."],
-["Hva er Solen?",["En stjerne","En planet","En måne"],0,"Solen er en stjerne."],
-["Hvilken gass trenger mennesker for å puste?",["Oksygen","Helium","Neon"],0,"Vi trenger oksygen."],
-["Hva kalles væske som blir til gass?",["Frysing","Fordamping","Smelting"],1,"Dette kalles fordamping."],
-["Hva er DNA sin viktigste rolle?",["Lagre genetisk informasjon","Pumpe blod","Fordøye mat"],0,"DNA lagrer genetisk informasjon."]
-],
-krle:[
-["Hvilken bok er sentral i kristendommen?",["Bibelen","Koranen","Vedaene"],0,"Bibelen er kristendommens hellige bok."],
-["Hva heter den muslimske fastemåneden?",["Ramadan","Advent","Påske"],0,"Ramadan er en viktig måned i islam."],
-["Hva betyr toleranse?",["Å respektere forskjeller","Å alltid være enig","Å bestemme over andre"],0,"Toleranse handler om respekt for forskjeller."],
-["Hva heter buddhismens grunnlegger?",["Sokrates","Siddhartha Gautama","Abraham Lincoln"],1,"Siddhartha Gautama er kjent som Buddha."],
-["Hva er livssyn?",["En måte å forstå livet på","En type sport","Et språk"],0,"Et livssyn handler om hvordan man forstår livet og verden."],
-["Hva er etikk?",["Lære om rett og galt","Lære om vær","Lære om tall"],0,"Etikk undersøker hva som er rett og galt."]
-],
-kunst:[
-["Hvilke farger blander du for å få grønt med maling?",["Blå og gul","Rød og blå","Svart og hvit"],0,"Blått og gult gir grønt."],
-["Hva bruker du for å klippe papir?",["Saks","Skje","Linjal alene"],0,"En saks kan klippe papir."],
-["Hva er en skisse?",["En enkel tegning","En sang","En type maling"],0,"En skisse er en enkel tegning av en idé."],
-["Hva er en komplementærfarge?",["En farge som står mot en annen i fargesirkelen","Alltid hvit","En gjennomsiktig farge"],0,"Komplementærfarger står mot hverandre i fargesirkelen."],
-["Hva brukes perspektiv til i tegning?",["Å vise dybde","Å gjøre alt flatt","Å blande maling"],0,"Perspektiv kan gi inntrykk av dybde."],
-["Hva er gjenbruk i kunst?",["Å bruke materialer på nytt","Å kaste alt","Å bare bruke nytt papir"],0,"Gjenbruk gir materialer nytt liv."]
-],
-samfunn:[
-["Hva heter hovedstaden i Norge?",["Bergen","Oslo","Trondheim"],1,"Oslo er hovedstaden i Norge."],
-["Hva er demokrati?",["Folk kan være med og bestemme","Én person bestemmer alltid","Ingen regler finnes"],0,"I et demokrati kan folk påvirke hvem som styrer."],
-["Hva bruker vi kart til?",["Å finne steder","Å måle temperatur alene","Å skrive musikk"],0,"Kart viser steder og geografiske områder."],
-["Hva er en kommune?",["Et lokalt styringsområde","Et kontinent","En type fjell"],0,"Kommunen har ansvar for mange lokale tjenester."],
-["Hva betyr kildekritikk?",["Å vurdere om informasjon er til å stole på","Å tro på alt","Å lese bare overskriften"],0,"Kildekritikk betyr å undersøke informasjon og kilder."],
-["Hva er en grunnlov?",["En viktig lov som setter rammer for staten","En skolebok","En værmelding"],0,"Grunnloven fastsetter grunnleggende regler for staten."]
-],
-musikk:[
-["Hva bruker vi for å måle musikalsk puls?",["Takt","Farge","Temperatur"],0,"Takt organiserer pulsen i musikken."],
-["Hvilket instrument har tangenter?",["Piano","Trompet","Tromme"],0,"Piano har tangenter."],
-["Hva betyr «tempo» i musikk?",["Hvor fort musikken går","Hvor høy sangeren er","Hvor stor scenen er"],0,"Tempo er hastigheten på musikken."],
-["Hva er en melodi?",["En rekke toner som danner en musikalsk linje","En type mikrofon","En lydløs pause"],0,"Melodien er tonerekken du ofte kan nynne."],
-["Hva er en oktav?",["Avstanden mellom toner med samme tonenavn","En trommetype","En sangtekst"],0,"En oktav går fra en tone til neste med samme tonenavn."],
-["Hva betyr dynamikk i musikk?",["Variasjon i lydstyrke","Musikkens farge","Hvor mange instrumenter finnes"],0,"Dynamikk handler blant annet om sterkt og svakt."]
-],
-kropp:[
-["Hvor mange bein har et voksent menneske vanligvis?",["106","206","306"],1,"Et voksent menneske har vanligvis 206 bein."],
-["Hva er viktig før hard trening?",["Oppvarming","Å sitte helt stille hele dagen","Å holde pusten"],0,"Oppvarming forbereder kroppen på aktivitet."],
-["Hvilket organ pumper blod?",["Hjertet","Magesekken","Huden"],0,"Hjertet pumper blod rundt i kroppen."],
-["Hva hjelper musklene med?",["Bevegelse","Å se farger","Å lage bein"],0,"Musklene hjelper kroppen å bevege seg."],
-["Hva er utholdenhet?",["Å holde på med aktivitet over tid","Å hoppe én gang","Å sitte stille"],0,"Utholdenhet er evnen til å være aktiv over tid."],
-["Hvorfor trenger kroppen søvn?",["For hvile og restitusjon","For å slutte å trenge vann","For å stoppe hjertet"],0,"Søvn er viktig for både kropp og hjerne."]
-],
-kode:[
-["Hva er en algoritme?",["En trinnvis oppskrift","En dataskjerm","Et tastatur"],0,"En algoritme er en rekke instruksjoner."],
-["Hva er en løkke i programmering?",["Kode som gjentas","En datamus","Et bilde"],0,"En løkke gjentar instruksjoner."],
-["Hva betyr en feil i kode ofte?",["Programmet gjør ikke det forventede","Datamaskinen blir alltid ødelagt","Internett forsvinner alltid"],0,"Feilsøking handler om å finne og rette problemer."],
-["Hva er en variabel?",["Et sted der en verdi lagres","En type skjerm","Et nettverk"],0,"Variabler kan lagre data."],
-["Hva gjør en if-setning?",["Kjører kode hvis en betingelse stemmer","Skrur alltid av PC-en","Sletter all kode"],0,"En if-setning sjekker en betingelse."],
-["Hva er en boolsk verdi?",["Sann eller usann","Rød eller blå","Stor eller liten fil"],0,"Boolsk verdi er true eller false."]
-]
-};
+    const $ = id => document.getElementById(id);
+    const GOLD_BADGE_URL = "https://upload.wikimedia.org/wikipedia/commons/8/81/Twitter_Verified_Badge_Gold.svg";
+    const avatars = ["🐸","🐱","🐼","🦊","🐻","🐰","🦄","🐲","🐵","🐧","🐢","🦁"];
 
-const levels=[
-{name:"Lett",emoji:"🟢",points:10,start:0,end:2},
-{name:"Middels",emoji:"🟡",points:20,start:2,end:4},
-{name:"Vanskelig",emoji:"🔴",points:30,start:4,end:6}
-];
-let subjectId="matte", level=0, qs=[], pos=0, earned=0, total=0, answered=false;
+    const subjects = [
+      {id:"matte",name:"Matematikk",emoji:"➗",description:"Tall, regning og problemløsing"},
+      {id:"norsk",name:"Norsk",emoji:"📖",description:"Ord, språk og grammatikk"},
+      {id:"engelsk",name:"Engelsk",emoji:"🇬🇧",description:"Lær engelsk"},
+      {id:"naturfag",name:"Naturfag",emoji:"🔬",description:"Utforsk verden"},
+      {id:"krle",name:"KRLE",emoji:"🌍",description:"Religioner og livssyn"},
+      {id:"kunst",name:"Kunst og håndverk",emoji:"🎨",description:"Farger og kreativitet"},
+      {id:"samfunn",name:"Samfunnsfag",emoji:"🏛️",description:"Samfunnet rundt oss"},
+      {id:"musikk",name:"Musikk",emoji:"🎵",description:"Rytme og instrumenter"},
+      {id:"kropp",name:"Kroppsøving",emoji:"⚽",description:"Kropp og aktivitet"},
+      {id:"programmering",name:"Programmering",emoji:"💻",description:"Kode og teknologi"}
+    ];
 
-const $=id=>document.getElementById(id);
-$("subjectCards").innerHTML=subjects.map(s=>`
-<button class="subject ${s.color}" data-subject="${s.id}">
-<span class="emoji">${s.emoji}</span><strong>${s.name}</strong><small>${s.desc}</small>
-</button>`).join("");
+    const banks = {
+      matte: [
+        [["2 + 3 = ?",["4","5","6","7"],1],["10 − 4 = ?",["5","6","7","8"],1],["3 × 4 = ?",["7","12","14","16"],1],["12 ÷ 3 = ?",["3","4","5","6"],1],["Hva er dobbelt av 8?",["12","14","16","18"],2],["15 + 7 = ?",["20","21","22","23"],2]],
+        [["7 × 8 = ?",["54","56","58","64"],1],["144 ÷ 12 = ?",["10","11","12","14"],2],["25 % av 100 = ?",["20","25","50","75"],1],["3² = ?",["6","8","9","12"],2],["−4 + 10 = ?",["4","5","6","14"],2],["Hva er ¾ av 20?",["5","10","15","18"],2]],
+        [["Løs: 3x = 27",["6","8","9","12"],2],["15 % av 200 = ?",["15","20","30","35"],2],["√144 = ?",["10","11","12","14"],2],["2⁵ = ?",["16","25","32","64"],2],["Hva er 0,75 som brøk?",["¼","½","¾","⅘"],2],["En vare koster 400 kr og får 25 % rabatt. Ny pris?",["100 kr","250 kr","300 kr","375 kr"],2]]
+      ],
+      norsk: [
+        [["Hva er et substantiv?",["Et navn på noe","Et tall","En lyd","En farge"],0],["Hva er flertall av katt?",["Katter","Katten","Kattens","Kattet"],0],["Hvilket ord er et verb?",["Blå","Løpe","Hund","Rask"],1],["Hva er det motsatte av varm?",["Het","Kald","Myk","Lys"],1],["Hvilket tegn avslutter vanligvis et spørsmål?",[".","!","?",","],2],["Hva er en vokal?",["B","K","A","T"],2]],
+        [["Hva er et adjektiv?",["Et beskrivel­s esord","Et navn","Et tall","En preposisjon"],0],["Hva er preteritum av å gå?",["Går","Gikk","Gått","Gående"],1],["Hvilket ord er et pronomen?",["Bord","Hun","Rød","Hoppe"],1],["Hva er synonym til glad?",["Sint","Trist","Lykkelig","Trøtt"],2],["Hva er et sammensatt ord?",["Solskinn","Sol og","Veldig sol","Solen"],0],["Hva er subjektet i «Kari leser»?",["Leser","Kari","Boka","Ingen"],1]],
+        [["Hva er en metafor?",["Et bilde uten sammenligningsord","Et spørsmål","En liste","Et rim"],0],["Hva er en hovedsetning?",["En setning som kan stå alene","Et enkelt ord","En overskrift","En fotnote"],0],["Hva er passiv form av «De bygde huset»?",["Huset bygde de","Huset ble bygget","De bygger hus","Bygg huset"],1],["Hva er en novelle?",["En kort fortelling","En ordbok","Et dikt alltid","En rapport"],0],["Hva er ironi?",["Å si noe som betyr noe annet enn ordene direkte uttrykker","Å telle","Å beskrive vær","Å rime"],0],["Hva betyr «å trekke en konklusjon»?",["Å gjette helt tilfeldig","Å oppsummere hva man har funnet ut","Å starte på nytt","Å stille et spørsmål"],1]]
+      ],
+      engelsk: [
+        [["Hva betyr «apple»?",["Pære","Eple","Appelsin","Banan"],1],["Hva betyr «dog»?",["Katt","Hund","Fugl","Fisk"],1],["Hva betyr «blue»?",["Rød","Grønn","Blå","Gul"],2],["Hva betyr «thank you»?",["Hei","Ha det","Takk","Vær så snill"],2],["Hva betyr «book»?",["Bok","Bil","Bord","Ball"],0],["Hva er engelsk for «katt»?",["Cow","Cat","Cut","Cot"],1]],
+        [["Hva er fortid av «go»?",["Goed","Gone","Went","Going"],2],["Hva betyr «careful»?",["Forsiktig","Rask","Sulten","Trist"],0],["Hva er flertall av «child»?",["Childs","Children","Childes","Childrens"],1],["Hva betyr «although»?",["Derfor","Fordi","Selv om","Før"],2],["Hva er motsatt av «cheap»?",["Expensive","Easy","Small","Quiet"],0],["Hva betyr «borrow»?",["Låne","Kjøpe","Selge","Miste"],0]],
+        [["Hva er korrekt?",["She have a dog","She has a dog","She having a dog","She haves a dog"],1],["Hva betyr «environment»?",["Underholdning","Miljø","Eventyr","Utstyr"],1],["Hva er perfektum av «write»?",["Wrote","Written","Writing","Writes"],1],["Hva betyr «reliable»?",["Pålitelig","Farlig","Rar","Sjelden"],0],["Hva betyr «despite»?",["På grunn av","Til tross for","I stedet for","Før"],1],["Hvilken er passiv?",["They built it","It was built","They build it","They are building"],1]]
+      ],
+      naturfag: [
+        [["Hvilken planet bor vi på?",["Mars","Venus","Jorda","Jupiter"],2],["Hva trenger planter for å vokse?",["Bare mørke","Lys og vann","Bare sand","Bare vind"],1],["Hvor mange bein har en edderkopp?",["6","8","10","12"],1],["Hva fryser vann til?",["Damp","Is","Sand","Salt"],1],["Hva puster mennesker inn?",["Karbondioksid","Oksygen","Helium","Røyk"],1],["Hvilket dyr er et pattedyr?",["Ørret","Frosk","Hund","Maur"],2]],
+        [["Hva er fotosyntese?",["Planter lager sukker ved hjelp av lys","Vann blir til stein","Dyr sover","Jorda roterer"],0],["Hva er tyngdekraft?",["En kraft som trekker ting mot hverandre","En type lys","En lyd","En temperatur"],0],["Hvilket organ pumper blod?",["Lungene","Hjertet","Leveren","Magen"],1],["Hva er H₂O?",["Salt","Oksygen","Vann","Hydrogen"],2],["Hva er et rovdyr?",["Et dyr som spiser andre dyr","Et dyr som bare spiser planter","Et tre","En sopp"],0],["Hva kalles vann som blir til gass?",["Smelting","Fordamping","Frysing","Kondens"],1]],
+        [["Hva er DNA?",["Arvestoff","Et mineral","En planet","En gass"],0],["Hva er en fornybar energikilde?",["Kull","Olje","Vindkraft","Naturgass"],2],["Hva er pH 7?",["Nøytralt","Sterkt surt","Sterkt basisk","Ingen væske"],0],["Hva er en hypotese?",["En testbar forklaring","Et ferdig bevis","Et måleinstrument","En lov alltid"],0],["Hva skjer ved kondensasjon?",["Gass blir væske","Væske blir gass","Fast stoff blir gass","Vann fryser"],0],["Hva er et økosystem?",["Organismer og miljøet de lever i","Bare ett dyr","Bare luft","En bergart"],0]]
+      ],
+      krle: [
+        [["Hvilken høytid forbindes med jul?",["Diwali","Jul","Eid","Hanukka"],1],["Hva heter den hellige boka i islam?",["Bibelen","Toraen","Koranen","Vedaene"],2],["Hvilket symbol forbindes ofte med kristendom?",["Kors","Halvmåne","Lotus","Anker"],0],["Hva er en religion?",["Et livssyn eller en tro","Et språk","En planet","Et instrument"],0],["Hva er respekt?",["Å behandle andre ordentlig","Å alltid være enig","Å bestemme alt","Å ignorere andre"],0],["Hva feires under Diwali?",["Lysets høytid","Nyttår i Norge","Påske","Grunnlovsdagen"],0]],
+        [["Hva kalles buddhismens grunnlegger?",["Sokrates","Buddha","Moses","Muhammed"],1],["Hva er en pilegrimsreise?",["En reise til et hellig sted","En skoletime","En konkurranse","En matrett"],0],["Hva er humanisme opptatt av?",["Menneskeverd og ansvar","Bare penger","Bare sport","Bare teknologi"],0],["Hva er sabbat i jødedommen?",["En ukentlig hviledag","En festdrakt","Et tempel","En matrett"],0],["Hva er et ritual?",["En handling med fast betydning","En tilfeldig lyd","Et kart","En type tall"],0],["Hva betyr toleranse?",["Å akseptere at mennesker er ulike","Å tvinge alle til å være like","Å ignorere lover","Å aldri spørre"],0]],
+        [["Hva er et livssyn?",["Et syn på livet og mennesket","En type vær","Et språk","En matplan"],0],["Hva betyr religionsfrihet?",["Frihet til å velge eller ikke ha religion","At alle må tro det samme","At ingen kan diskutere tro","At bare én religion er tillatt"],0],["Hva er etisk refleksjon?",["Å tenke gjennom hva som er rett og galt","Å pugge datoer","Å løse en ligning","Å tegne et kart"],0],["Hva er en sekulær stat?",["Staten er ikke styrt av en bestemt religion","Alle må følge én tro","En stat uten lover","En stat uten skoler"],0],["Hva er en hellig tekst?",["En tekst med religiøs betydning","En vanlig handleliste","En avisannonse","En matteprøve"],0],["Hva er dialog?",["En samtale der man lytter og utveksler synspunkter","En konkurranse i roping","En skriftlig test","En type musikk"],0]]
+      ],
+      kunst: [
+        [["Hvilke farger får du av blått og gult?",["Grønn","Lilla","Rosa","Brun"],0],["Hva bruker du for å klippe papir?",["Saks","Skje","Hammer","Gaffel"],0],["Hvilken farge er en primærfarge?",["Grønn","Oransje","Rød","Lilla"],2],["Hva kan du tegne med?",["Blyant","Såpe","Skohorn","Skrutrekker"],0],["Hva er leire?",["Et formbart materiale","En type lys","En lyd","En plante"],0],["Hva er et mønster?",["En gjentakende form eller dekorasjon","En tilfeldig lyd","Et tall alene","Et verktøy"],0]],
+        [["Hva blir rødt og blått blandet til?",["Grønt","Lilla","Gult","Hvitt"],1],["Hva betyr perspektiv i tegning?",["Å vise dybde og avstand","Å blande maling","Å klippe stoff","Å lime papir"],0],["Hva er en skulptur?",["Et tredimensjonalt kunstverk","Et dikt","En sang","Et fotografi alltid"],0],["Hva er komplementærfarger?",["Farger som står mot hverandre i fargesirkelen","To like farger","Bare gråtoner","Alle pasteller"],0],["Hva brukes en pensel til?",["Å påføre maling","Å måle temperatur","Å sage tre","Å sy stoff"],0],["Hva er collage?",["Kunst laget ved å sette sammen materialer","En type dans","Et musikkinstrument","En leireovn"],0]],
+        [["Hva betyr komposisjon i kunst?",["Hvordan elementene er plassert","Hvor dyrt verket er","Hvor gammelt papiret er","Bare fargevalg"],0],["Hva er kontrast?",["En tydelig forskjell mellom elementer","To identiske former","En usynlig linje","En type lim"],0],["Hva er abstrakt kunst?",["Kunst som ikke nødvendigvis viser virkelige motiver direkte","Bare realistiske portretter","Bare fotografier","Kunst uten form"],0],["Hva er tekstur?",["Hvordan en overflate ser ut eller føles","Hvor lang en sang er","En fargetone alene","En målestokk"],0],["Hva er negativt rom?",["Området rundt og mellom motivene","En mørk farge","Et hull i lerretet alltid","En type ramme"],0],["Hva er en prototype?",["En tidlig modell som kan testes","Et ferdig museum","En fargeblanding","En kunstkritiker"],0]]
+      ],
+      samfunn: [
+        [["Hva er hovedstaden i Norge?",["Bergen","Oslo","Trondheim","Tromsø"],1],["Hva er demokrati?",["Folkestyre","Kongedømme uten valg","Diktatur","Et spill"],0],["Hva er en kommune?",["Et lokalt forvaltningsområde","Et kontinent","Et hav","Et språk"],0],["Hva bruker vi penger til?",["Å betale for varer og tjenester","Å lage vær","Å måle tid alltid","Å skrive dikt"],0],["Hva er et kart?",["En framstilling av et område","En type mat","Et instrument","En lov"],0],["Hva er en regel?",["Noe som forteller hva som er tillatt","Et fjell","En valuta","En planet"],0]],
+        [["Hva er Stortingets viktigste oppgave?",["Å vedta lover og statsbudsjett","Å dømme alle saker","Å styre alle kommuner direkte","Å lage værmeldinger"],0],["Hva er skatt?",["Penger som betales til det offentlige","En type lønn","Et lån alltid","En premie"],0],["Hva er en kilde i historie?",["Noe som kan gi informasjon om fortiden","En framtidsplan","En mening alltid","En type kart bare"],0],["Hva betyr bærekraft?",["Å ta hensyn til framtidige generasjoner","Å bruke opp alt nå","Å produsere mest mulig avfall","Å slutte å samarbeide"],0],["Hva er en menneskerettighet?",["En grunnleggende rettighet alle mennesker har","En premie for voksne","En lokal hobby","En skolekarakter"],0],["Hva er urbanisering?",["At flere mennesker bor i byer","At byer blir til skog","At alle flytter til gårder","At havet stiger"],0]],
+        [["Hva er maktfordeling?",["At statsmakten deles mellom ulike organer","At én person bestemmer alt","At alle lover fjernes","At kommuner blir land"],0],["Hva er inflasjon?",["Generell økning i prisnivået","At alle priser faller alltid","At penger blir ulovlige","At lønn alltid dobles"],0],["Hva er en interesseorganisasjon?",["En gruppe som arbeider for en sak","En domstol","Et land","Et valglokale"],0],["Hva er propaganda?",["Budskap som forsøker å påvirke meninger","Nøytral måling alltid","En naturressurs","Et kart"],0],["Hva er globalisering?",["Økende forbindelser mellom land og mennesker","At alle land blir isolert","At internett forsvinner","At handel stopper"],0],["Hva er en primærkilde?",["En kilde fra tiden eller hendelsen som undersøkes","En tilfeldig oppsummering alltid","En moderne roman om framtiden","En reklame uten informasjon"],0]]
+      ],
+      musikk: [
+        [["Hvor mange strenger har en vanlig gitar?",["4","5","6","8"],2],["Hva bruker du for å spille piano?",["Tangenter","Buer","Ventiler","Trommestikker alltid"],0],["Hva er rytme?",["Mønster av lyder og pauser i tid","En farge","Et instrument","Et rom"],0],["Hvilket instrument har trommeskinn?",["Tromme","Fløyte","Fiolin","Piano"],0],["Hva betyr å synge?",["Å lage toner med stemmen","Å tegne","Å danse alltid","Å skrive noter bare"],0],["Hva er en melodi?",["En rekke toner som danner en musikalsk idé","En scene","Et kostyme","Et høyttalermerke"],0]],
+        [["Hva betyr tempo?",["Hvor rask musikken er","Hvor høy en person er","Hvor gammel en sang er","Hvor stor scenen er"],0],["Hva er en duett?",["Musikk framført av to","Musikk for hundre","En solo alltid","En type tromme"],0],["Hva er dynamikk i musikk?",["Variasjon i lydstyrke","Bare hastighet","Bare tekst","Bare instrumentstørrelse"],0],["Hva er en note?",["Et tegn som viser en musikalsk lyd","En mikrofon","En scene","En høyttaler"],0],["Hvilket er et blåseinstrument?",["Trompet","Gitar","Piano","Tromme"],0],["Hva betyr improvisasjon?",["Å skape musikk spontant","Å spille bare etter opptak","Å stoppe musikken","Å stemme en gitar"],0]],
+        [["Hva er en durtreklang vanligvis bygd av?",["Grunntone, ters og kvint","Tre trommer","Bare to toner","Fire oktaver"],0],["Hva er synkope?",["En rytmisk betoning på et uventet sted","En type mikrofon","En toneart alltid","En sangtekst"],0],["Hva er en taktart?",["Hvordan slag grupperes i takter","Hvor dyrt et instrument er","Hvor lenge en artist lever","En lydstyrke"],0],["Hva er klangfarge?",["Det som gjør at instrumenter høres forskjellige ut","Bare tonehøyde","Bare tempo","En type papir"],0],["Hva er et refreng?",["En del av sangen som ofte gjentas","Alltid den første tonen","Et instrument","En pause mellom konserter"],0],["Hva er en oktav?",["Intervallet mellom toner med dobbelt eller halv frekvens","En type tromme","Åtte sanger","En taktart"],0]]
+      ],
+      kropp: [
+        [["Hva er viktig før trening?",["Oppvarming","Å sitte helt stille hele dagen","Å aldri drikke vann","Å holde pusten"],0],["Hvilket organ pumper blod?",["Hjertet","Magen","Øret","Albuen"],0],["Hva trenger kroppen etter aktivitet?",["Hvile og væske","Ingen mat noen gang","Bare godteri","Å ikke sove"],0],["Hva er en lagidrett?",["Fotball","Sjakk alene","Løping alene","Svømming alene"],0],["Hva er balanse?",["Å holde kroppen stabil","Å løpe fortest alltid","Å hoppe høyest alltid","Å løfte tyngst"],0],["Hvor mange spillere har et vanlig fotballag på banen?",["7","9","11","13"],2]],
+        [["Hva trener utholdenhet?",["Aktivitet over lengre tid","Bare ett kort hopp","Å sitte","Å lese"],0],["Hva gjør muskler?",["Hjelper kroppen å bevege seg","Lager lys","Filtrerer luft alene","Lager bein"],0],["Hva er fair play?",["Å følge regler og vise respekt","Å jukse for å vinne","Å krangle med alle","Å ignorere dommeren"],0],["Hva er koordinasjon?",["Å samordne bevegelser","Å sove lenge","Å telle poeng bare","Å stå helt stille"],0],["Hvorfor tøyer noen etter trening?",["For bevegelighet og avslapning","For å bli usynlig","For å slutte å puste","For å endre høyde raskt"],0],["Hva er puls?",["Hjerteslag per tidsenhet","Antall skritt alltid","Lungestørrelse","Kroppstemperatur bare"],0]],
+        [["Hva er aerob utholdenhet?",["Kroppens evne til langvarig aktivitet med oksygentilførsel","Bare maksimal styrke i ett sekund","Evnen til å holde pusten lengst","En type ball"],0],["Hva er restitusjon?",["Tiden kroppen bruker på å hente seg inn","En konkurranse","En type sko","En oppvarmingsøvelse"],0],["Hva betyr progresjon i trening?",["Gradvis økning i belastning eller utfordring","Å gjøre mindre hver gang alltid","Å aldri endre treningen","Å bare konkurrere"],0],["Hva er bevegelighet?",["Evnen til å bevege ledd gjennom bevegelsesutslag","Evnen til å telle","Hvor raskt hjertet slår","En type løpesko"],0],["Hvorfor er søvn viktig for trening?",["Kroppen restituerer og tilpasser seg","Den erstatter all mat","Den gjør oppvarming unødvendig","Den fjerner behovet for vann"],0],["Hva er skadeforebygging?",["Tiltak som reduserer risiko for skader","Å trene gjennom alle skader","Å droppe oppvarming","Å ignorere smerte"],0]]
+      ],
+      programmering: [
+        [["Hva er en variabel?",["Et sted å lagre en verdi","En type skjerm","Et tastatur","Et spillbrett"],0],["Hva betyr HTML?",["Språk for å strukturere nettsider","Et bildeformat","En spillkonsoll","Et passord"],0],["Hva gjør en løkke i kode?",["Gjentar instruksjoner","Sletter alltid alt","Slår av PC-en","Lager bare bilder"],0],["Hva er en feil i kode ofte kalt?",["Bug","Pet","Pixel","Port"],0],["Hva er en algoritme?",["En serie trinn for å løse et problem","En skjerm","En type mus","Et passord"],0],["Hvilket tegn brukes ofte for å starte en kommentar i JavaScript på én linje?",["//","##","!!","@@ "],0]],
+        [["Hva er en funksjon?",["Gjenbrukbar kode som utfører en oppgave","Et bilde","En mappe alltid","Et passord"],0],["Hva gjør en if-setning?",["Velger handling ut fra en betingelse","Gjentar alltid hundre ganger","Lager en nettside alene","Sletter variabler"],0],["Hva er CSS til?",["Utseendet til nettsider","Databasepassord","Lydopptak","Bare matematikk"],0],["Hva betyr array?",["En samling verdier","En farge","Et nettverk alltid","En feil"],0],["Hva returnerer 3 === '3' i JavaScript?",["true","false","3","En tekst"],1],["Hva er en parameter?",["En verdi en funksjon mottar","En skjermtype","En filendelse","En nettsideadresse"],0]],
+        [["Hva er en API?",["Et grensesnitt for programvarekommunikasjon","Et bildeformat","Et tastatur","En skjermoppløsning"],0],["Hva er en asynkron funksjon ofte markert med i JavaScript?",["async","waitonly","later","thread"],0],["Hva er SQL brukt til?",["Å spørre og endre relasjonsdatabaser","Å style knapper","Å redigere lyd","Å tegne figurer"],0],["Hvorfor validere brukerinput?",["For å kontrollere at data er gyldige og trygge","For å gjøre siden tregere","For å skjule alle feil","For å slå av serveren"],0],["Hva er versjonskontroll nyttig for?",["Å spore endringer og samarbeide om kode","Å øke skjermstørrelsen","Å lage passord automatisk","Å endre tastatur"],0],["Hva bør ikke legges i offentlig frontend-kode?",["Hemmelig API-nøkkel","En offentlig profiltekst","Et ikonnavn","En knappetekst"],0]]
+      ]
+    };
 
-document.querySelectorAll("[data-subject]").forEach(b=>b.addEventListener("click",()=>{
- subjectId=b.dataset.subject;
- $("quiz").classList.remove("hidden");$("result").classList.add("hidden");
- $("quiz").scrollIntoView({behavior:"smooth",block:"start"});
- const levelChoice=prompt("Velg nivå:\n1 = Lett\n2 = Middels\n3 = Vanskelig","1");
- if(levelChoice===null){$("quiz").classList.add("hidden");return}
- level=Math.max(0,Math.min(2,Number(levelChoice)-1||0));
- startQuiz();
-}));
+    let currentUser = null;
+    let profile = null;
+    let signupMode = false;
+    let chosenAvatar = "🐸";
+    let currentSubject = null;
+    let currentLevel = 0;
+    let quizQuestions = [];
+    let quizIndex = 0;
+    let quizCorrect = 0;
+    let quizPoints = 0;
+    let quizAnswered = false;
+    let trollIndex = 0;
+    let trollPoints = 0;
+    let trollCorrect = 0;
+    let trollQuestion = null;
+    let trollAnswered = false;
 
-function startQuiz(){
- const lv=levels[level], all=bank[subjectId];
- qs=all.slice(lv.start,lv.end);
- pos=0;earned=0;
- $("levelLabel").textContent=lv.emoji+" "+lv.name+" · "+lv.points+" poeng per riktig svar";
- $("result").classList.add("hidden");$("quiz").classList.remove("hidden");
- showQuestion();
-}
-function showQuestion(){
- answered=false;
- const q=qs[pos];
- $("qnumber").textContent=`Spørsmål ${pos+1} av ${qs.length}`;
- $("progress").style.width=(pos/qs.length*100)+"%";
- $("question").textContent=q[0];
- $("answers").innerHTML="";
- $("feedback").className="hidden";
- $("next").classList.add("hidden");
- q[1].forEach((a,i)=>{
-  const b=document.createElement("button");
-  b.className="answer";b.textContent=["A","B","C"][i]+". "+a;
-  b.addEventListener("click",()=>answer(i));
-  $("answers").appendChild(b);
- });
-}
-function answer(i){
- if(answered)return;answered=true;
- const q=qs[pos],lv=levels[level];
- [...$("answers").children].forEach((b,n)=>{
-  b.disabled=true;
-  if(n===q[2])b.classList.add("correct");
-  if(n===i&&i!==q[2])b.classList.add("wrong");
- });
- const f=$("feedback");
- if(i===q[2]){
-  earned+=lv.points;total+=lv.points;
-  $("totalScore").textContent=total;
-  f.textContent=`🎉 Riktig! +${lv.points} poeng! ${q[3]}`;
-  f.className="good";
- }else{
-  f.textContent=`💚 Prøv igjen neste gang! Riktig svar er «${q[1][q[2]]}». ${q[3]}`;
-  f.className="bad";
- }
- $("next").textContent=pos===qs.length-1?"Se resultatet 🏆":"Neste spørsmål →";
- $("next").classList.remove("hidden");
-}
-$("next").addEventListener("click",()=>{
- if(pos<qs.length-1){pos++;showQuestion();return}
- $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
- const pct=Math.round(earned/(qs.length*levels[level].points)*100);
- $("earned").textContent=earned+" poeng";
- $("resultTitle").textContent=pct===100?"Fantastisk! 🌟":pct>=60?"Veldig bra jobbet! 🎉":"Godt forsøk! 💪";
- $("resultText").textContent=`Du fikk ${pct} % av mulige poeng i ${subjects.find(s=>s.id===subjectId).name}.`;
- $("resultEmoji").textContent=pct===100?"🏆":pct>=60?"⭐":"🌱";
- $("progress").style.width="100%";
- $("result").scrollIntoView({behavior:"smooth",block:"center"});
-});
-$("again").addEventListener("click",()=>{startQuiz();$("quiz").scrollIntoView({behavior:"smooth"})});
-$("back").addEventListener("click",()=>{$("result").classList.add("hidden");$("fag").scrollIntoView({behavior:"smooth"})});
-$("studentTab").addEventListener("click",()=>{
- $("studentPage").classList.remove("hidden");$("teacherPage").classList.add("hidden");
- $("studentTab").classList.add("active");$("teacherTab").classList.remove("active");
-});
-$("teacherTab").addEventListener("click",()=>{
- $("studentPage").classList.add("hidden");$("teacherPage").classList.remove("hidden");
- $("teacherTab").classList.add("active");$("studentTab").classList.remove("active");
- window.scrollTo({top:0,behavior:"smooth"});
-});
-$("backStudent").addEventListener("click",()=>$("studentTab").click());
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const sproutDB = window.supabase.createClient(
-  "https://wsouovpgassxxoktoidh.supabase.co",
-  "sb_publishable_tmdFnqHesBspObVZ4g87Ww_Sv_5T5NY"
-);
-
-let sproutUser = null;
-let trollRound = [];
-let trollIndex = 0;
-let trollPoints = 0;
-let trollAnswered = false;
-let quizRoundId = 0;
-const savedQuizRounds = new Set();
-
-function authMessage(message, error = false) {
-  const el = document.getElementById("authMessage");
-  el.textContent = message;
-  el.style.color = error ? "#b42318" : "#267845";
-}
-
-async function loadPlayerList() {
-  const list = document.getElementById("playerList");
-  const { data, error } = await sproutDB
-    .from("profiles")
-    .select("id, username, avatar, is_verified, total_points")
-    .order("total_points", { ascending: false })
-    .limit(50);
-
-  if (error) {
-    list.textContent = "Kunne ikke laste spillere akkurat nå.";
-    console.error(error);
-    return;
-  }
-
-  list.replaceChildren();
-
-  if (!data.length) {
-    list.textContent = "Ingen spillere ennå. Bli den første!";
-    return;
-  }
-
-  data.forEach(player => {
-    const button = document.createElement("button");
-    button.className = "player-card";
-
-    const name = document.createElement("div");
-    name.textContent = `${player.avatar || "🌱"} ${player.username}`;
-
-    const score = document.createElement("div");
-    score.textContent = `⭐ ${player.total_points || 0} poeng`;
-
-    button.append(name, score);
-
-    if (player.is_verified) {
-      const badge = document.createElement("span");
-      badge.className = "verified";
-      badge.textContent = "✓ Verifisert";
-      button.appendChild(badge);
+    function setMessage(id, text, type = "") {
+      const el = $(id);
+      el.textContent = text;
+      el.className = "message " + type;
     }
 
-    button.addEventListener("click", () => showPlayerProfile(player));
-    list.appendChild(button);
-  });
-}
-
-function showPlayerProfile(player) {
-  const panel = document.getElementById("selectedProfile");
-  panel.classList.remove("hidden");
-  panel.replaceChildren();
-
-  const title = document.createElement("h2");
-  title.textContent = `${player.avatar || "🌱"} ${player.username}`;
-
-  const points = document.createElement("p");
-  points.textContent = `⭐ ${player.total_points || 0} poeng`;
-
-  panel.append(title, points);
-
-  if (player.is_verified) {
-    const badge = document.createElement("span");
-   const badge = document.createElement("img");
-badge.className = "verified-icon";
-badge.src = "https://upload.wikimedia.org/wikipedia/commons/8/81/Twitter_Verified_Badge_Gold.svg";
-badge.alt = "Verifisert spiller";
-badge.title = "Verifisert spiller";
-    panel.appendChild(badge);
-  }
-
-  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-}
-
-async function refreshSproutAccount() {
-  const { data } = await sproutDB.auth.getSession();
-  sproutUser = data.session?.user || null;
-
-  document.getElementById("authForms").classList.toggle("hidden", !!sproutUser);
-  document.getElementById("signedInPanel").classList.toggle("hidden", !sproutUser);
-
-  if (!sproutUser) {
-    document.getElementById("totalScore").textContent = "0";
-    await loadPlayerList();
-    return;
-  }
-
-  const { data: profile, error } = await sproutDB
-    .from("profiles")
-    .select("username, avatar, total_points, is_verified")
-    .eq("id", sproutUser.id)
-    .single();
-
-  if (error) {
-    authMessage("Innlogging fungerer, men profilen kunne ikke lastes. Sjekk databaseoppsettet.", true);
-    console.error(error);
-    return;
-  }
-
-  document.getElementById("welcomeUser").textContent =
-    `Hei, ${profile.username}! ${profile.avatar || "🌱"}`;
-
-  document.getElementById("accountStats").textContent =
-    `Du har ${profile.total_points || 0} poeng${profile.is_verified ? " · ✓ Verifisert" : ""}.`;
-
-  document.getElementById("totalScore").textContent = profile.total_points || 0;
-  await loadPlayerList();
-}
-
-document.getElementById("signupButton").addEventListener("click", async () => {
-  const username = document.getElementById("accountUsername").value.trim();
-  const email = document.getElementById("accountEmail").value.trim();
-  const password = document.getElementById("accountPassword").value;
-
-  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    authMessage("Brukernavnet må være 3–20 tegn og bruke bokstaver, tall eller _.", true);
-    return;
-  }
-
-  if (!email || password.length < 8) {
-    authMessage("Skriv inn e-post og et passord på minst 8 tegn.", true);
-    return;
-  }
-
-  const { error } = await sproutDB.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { username },
-      emailRedirectTo: window.location.origin
+    function addVerifiedBadge(parent) {
+      const img = document.createElement("img");
+      img.className = "verified-icon";
+      img.src = GOLD_BADGE_URL;
+      img.alt = "Verifisert spiller";
+      img.title = "Verifisert spiller";
+      img.loading = "lazy";
+      parent.appendChild(img);
     }
-  });
 
-  if (error) {
-    authMessage(error.message, true);
-    return;
-  }
+    function displayName(name, verified) {
+      const span = document.createElement("span");
+      span.textContent = name;
+      if (verified) addVerifiedBadge(span);
+      return span;
+    }
 
-  authMessage("Kontoen er opprettet! Sjekk e-posten din hvis du blir bedt om å bekrefte den.");
-  await refreshSproutAccount();
-});
+    function showPage(page) {
+      const pages = ["home","subjects","quiz","result","troll","players","account"];
+      pages.forEach(p => $("page-" + p).classList.toggle("hidden", p !== page));
+      document.querySelectorAll("[data-page]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === page);
+      });
+      if (page === "players") loadPlayerList();
+      if (page === "home") refreshHomeStats();
+      if (page === "account") renderAccount();
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
 
-document.getElementById("loginButton").addEventListener("click", async () => {
-  const email = document.getElementById("accountEmail").value.trim();
-  const password = document.getElementById("accountPassword").value;
+    document.querySelectorAll("[data-page]").forEach(btn => {
+      btn.addEventListener("click", () => showPage(btn.dataset.page));
+    });
 
-  const { error } = await sproutDB.auth.signInWithPassword({ email, password });
+    function renderSubjectCards(targetId) {
+      const target = $(targetId);
+      target.replaceChildren();
+      subjects.forEach(subject => {
+        const card = document.createElement("div");
+        card.className = "card subject-card";
+        card.tabIndex = 0;
+        const emoji = document.createElement("div");
+        emoji.className = "subject-emoji";
+        emoji.textContent = subject.emoji;
+        const title = document.createElement("h3");
+        title.textContent = subject.name;
+        const desc = document.createElement("p");
+        desc.className = "muted";
+        desc.textContent = subject.description;
+        const button = document.createElement("button");
+        button.className = "button primary";
+        button.textContent = "Velg nivå →";
+        button.addEventListener("click", () => chooseLevel(subject));
+        card.append(emoji,title,desc,button);
+        card.addEventListener("click", e => {
+          if (e.target !== button) chooseLevel(subject);
+        });
+        card.addEventListener("keydown", e => {
+          if (e.key === "Enter") chooseLevel(subject);
+        });
+        target.appendChild(card);
+      });
+    }
 
-  if (error) {
-    authMessage(error.message, true);
-    return;
-  }
+    function chooseLevel(subject) {
+      currentSubject = subject;
+      const options = [
+        {label:"Nivå 1 — Lett",value:0},
+        {label:"Nivå 2 — Middels",value:1},
+        {label:"Nivå 3 — Vanskelig",value:2}
+      ];
+      const choice = prompt(
+        "Velg nivå for " + subject.name + ":\n1 = Lett (10 poeng per riktig svar)\n2 = Middels (20 poeng per riktig svar)\n3 = Vanskelig (30 poeng per riktig svar)",
+        "1"
+      );
+      if (choice === null) return;
+      const n = Number(choice);
+      if (![1,2,3].includes(n)) {
+        alert("Velg 1, 2 eller 3.");
+        return;
+      }
+      startQuiz(subject,n-1);
+    }
 
-  authMessage("Du er logget inn! 🎉");
-  await refreshSproutAccount();
-});
+    function shuffle(list) {
+      const copy = [...list];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i+1));
+        [copy[i],copy[j]] = [copy[j],copy[i]];
+      }
+      return copy;
+    }
 
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  const { error } = await sproutDB.auth.signOut();
-  if (error) {
-    authMessage(error.message, true);
-    return;
-  }
+    function startQuiz(subject, level) {
+      currentSubject = subject;
+      currentLevel = level;
+      quizQuestions = shuffle(banks[subject.id][level]);
+      quizIndex = 0;
+      quizCorrect = 0;
+      quizPoints = 0;
+      showPage("quiz");
+      renderQuizQuestion();
+    }
 
-  authMessage("Du er logget ut.");
-  await refreshSproutAccount();
-});
+    function renderQuizQuestion() {
+      quizAnswered = false;
+      const q = quizQuestions[quizIndex];
+      $("quiz-subject-label").textContent = currentSubject.emoji + " " + currentSubject.name;
+      $("quiz-level-label").textContent = ["Lett","Middels","Vanskelig"][currentLevel];
+      $("quiz-counter").textContent = `Oppgave ${quizIndex+1} av ${quizQuestions.length}`;
+      $("quiz-progress").style.width = `${quizIndex/quizQuestions.length*100}%`;
+      const container = $("quiz-content");
+      container.replaceChildren();
 
-sproutDB.auth.onAuthStateChange(() => {
-  refreshSproutAccount();
-});
+      const question = document.createElement("div");
+      question.className = "question";
+      question.textContent = q[0];
+      const answers = document.createElement("div");
+      answers.className = "answers";
+      q[1].forEach((answer,index) => {
+        const btn = document.createElement("button");
+        btn.className = "answer";
+        btn.textContent = answer;
+        btn.addEventListener("click", () => answerQuiz(index,btn));
+        answers.appendChild(btn);
+      });
+      const feedback = document.createElement("p");
+      feedback.id = "quiz-feedback";
+      feedback.className = "message";
+      feedback.setAttribute("role","status");
+      const bottom = document.createElement("div");
+      bottom.className = "quiz-bottom";
+      const score = document.createElement("span");
+      score.className = "muted";
+      score.textContent = `Poeng denne runden: ${quizPoints}`;
+      score.id = "quiz-running-score";
+      const next = document.createElement("button");
+      next.className = "button primary";
+      next.id = "quiz-next";
+      next.textContent = quizIndex === quizQuestions.length-1 ? "Se resultat →" : "Neste →";
+      next.disabled = true;
+      next.addEventListener("click", nextQuizQuestion);
+      bottom.append(score,next);
+      container.append(question,answers,feedback,bottom);
+    }
 
-// Save a completed quiz when the result panel appears.
-document.querySelectorAll("[data-subject]").forEach(button => {
-  button.addEventListener("click", () => quizRoundId++);
-});
+    function answerQuiz(index, clickedButton) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const q = quizQuestions[quizIndex];
+      const buttons = $("quiz-content").querySelectorAll(".answer");
+      buttons.forEach((button,i) => {
+        button.disabled = true;
+        if (i === q[2]) button.classList.add("correct");
+      });
+      if (index === q[2]) {
+        quizCorrect++;
+        const award = (currentLevel+1)*10;
+        quizPoints += award;
+        setMessage("quiz-feedback",`Riktig! +${award} poeng 🎉`,"success");
+      } else {
+        clickedButton.classList.add("wrong");
+        setMessage("quiz-feedback","Ikke helt riktig. Se det grønne svaret og prøv igjen! 🌱","error");
+      }
+      $("quiz-running-score").textContent = `Poeng denne runden: ${quizPoints}`;
+      $("quiz-next").disabled = false;
+      $("quiz-progress").style.width = `${(quizIndex+1)/quizQuestions.length*100}%`;
+    }
 
-document.getElementById("again").addEventListener("click", () => {
-  quizRoundId++;
-});
+    function nextQuizQuestion() {
+      if (!quizAnswered) return;
+      quizIndex++;
+      if (quizIndex < quizQuestions.length) renderQuizQuestion();
+      else finishQuiz();
+    }
 
-document.getElementById("next").addEventListener("click", async () => {
-  if (!sproutUser) return;
+    async function saveScore(gameName, points) {
+      if (!currentUser) {
+        return "Logg inn for å lagre poeng. Du kan fortsatt spille!";
+      }
+      try {
+        const {error} = await supabase.rpc("save_game_score", {
+          p_game_name: gameName,
+          p_points: points
+        });
+        if (error) throw error;
+        await loadMyProfile();
+        return "Poengene dine er lagret! 🌟";
+      } catch (error) {
+        console.error("Lagring av poeng feilet:",error);
+        return "Kunne ikke lagre poengene. Sjekk at save_game_score-funksjonen er opprettet i Supabase.";
+      }
+    }
 
-  const result = document.getElementById("result");
-  if (result.classList.contains("hidden")) return;
-  if (savedQuizRounds.has(quizRoundId)) return;
+    async function finishQuiz() {
+      showPage("result");
+      $("result-emoji").textContent = quizCorrect === quizQuestions.length ? "🏆" : quizCorrect >= 3 ? "🎉" : "🌱";
+      $("result-title").textContent = quizCorrect === quizQuestions.length ? "Perfekt runde!" : "Bra jobbet!";
+      $("result-summary").textContent = `Du fikk ${quizCorrect} av ${quizQuestions.length} svar riktig i ${currentSubject.name}.`;
+      $("result-correct").textContent = `${quizCorrect}/${quizQuestions.length}`;
+      $("result-points").textContent = quizPoints;
+      setMessage("score-save-message","Lagrer poengene …");
+      const message = await saveScore("Sprout School quiz",quizPoints);
+      setMessage("score-save-message",message,message.includes("lagret") ? "success" : "");
+      refreshHomeStats();
+    }
 
-  savedQuizRounds.add(quizRoundId);
-  const points = Number.parseInt(document.getElementById("earned").textContent, 10) || 0;
+    function resetTroll() {
+      trollIndex = 0;
+      trollPoints = 0;
+      trollCorrect = 0;
+      $("troll-game").classList.remove("hidden");
+      $("troll-finished").classList.add("hidden");
+      renderTrollQuestion();
+    }
 
-  const { error } = await sproutDB.rpc("save_game_score", {
-    p_game_name: "Sprout School quiz",
-    p_points: points
-  });
+    function renderTrollQuestion() {
+      trollAnswered = false;
+      $("troll-score").textContent = trollPoints;
+      $("troll-round").textContent = `${trollIndex+1}/10`;
+      $("troll-feedback").textContent = "";
+      $("troll-next").disabled = true;
+      const a = 2 + Math.floor(Math.random()*11);
+      const b = 2 + Math.floor(Math.random()*11);
+      trollQuestion = {a,b,correct:a*b};
+      $("troll-question").textContent = `${a} × ${b} = ?`;
+      const wrong = new Set();
+      while (wrong.size < 3) {
+        let v = trollQuestion.correct + Math.floor(Math.random()*17)-8;
+        if (v >= 0 && v !== trollQuestion.correct) wrong.add(v);
+      }
+      const choices = shuffle([trollQuestion.correct,...wrong]);
+      const container = $("troll-answers");
+      container.replaceChildren();
+      choices.forEach(value => {
+        const button = document.createElement("button");
+        button.className = "answer";
+        button.textContent = value;
+        button.addEventListener("click",() => answerTroll(value,button));
+        container.appendChild(button);
+      });
+    }
 
-  if (error) {
-    authMessage("Kunne ikke lagre quizpoengene. " + error.message, true);
-    console.error(error);
-  } else {
-    authMessage(`Quizpoengene dine ble lagret! +${points} poeng.`);
-    await refreshSproutAccount();
-  }
-});
-
-// Troll multiplication game
-function startTrollRound() {
-  trollRound = Array.from({ length: 5 }, () => {
-    const a = Math.floor(Math.random() * 10) + 1;
-    const b = Math.floor(Math.random() * 10) + 1;
-    return { a, b, answer: a * b };
-  });
-
-  trollIndex = 0;
-  trollPoints = 0;
-  document.getElementById("startTroll").classList.add("hidden");
-  document.getElementById("nextTroll").classList.add("hidden");
-  showTrollQuestion();
-}
-
-function showTrollQuestion() {
-  trollAnswered = false;
-  const q = trollRound[trollIndex];
-  document.getElementById("trollQuestion").textContent =
-    `Oppgave ${trollIndex + 1} av 5: ${q.a} × ${q.b} = ?`;
-  document.getElementById("trollFeedback").textContent = "";
-  document.getElementById("nextTroll").classList.add("hidden");
-
-  const options = new Set([q.answer]);
-  while (options.size < 4) {
-    options.add(Math.max(1, q.answer + Math.floor(Math.random() * 15) - 7));
-  }
-
-  const answers = [...options].sort(() => Math.random() - 0.5);
-  const area = document.getElementById("trollAnswers");
-  area.replaceChildren();
-
-  answers.forEach(value => {
-    const button = document.createElement("button");
-    button.className = "answer";
-    button.textContent = value;
-    button.addEventListener("click", () => {
+    function answerTroll(value, clicked) {
       if (trollAnswered) return;
       trollAnswered = true;
-
-      [...area.children].forEach(b => b.disabled = true);
-
-      if (value === q.answer) {
+      $("troll-answers").querySelectorAll("button").forEach(btn => {
+        btn.disabled = true;
+        if (Number(btn.textContent) === trollQuestion.correct) btn.classList.add("correct");
+      });
+      if (value === trollQuestion.correct) {
+        trollCorrect++;
         trollPoints += 10;
-        button.classList.add("correct");
-        document.getElementById("trollFeedback").textContent =
-          "🎉 Riktig! Trollet hopper av glede! +10 poeng";
+        setMessage("troll-feedback","Riktig! +10 poeng 🧌","success");
       } else {
-        button.classList.add("wrong");
-        document.getElementById("trollFeedback").textContent =
-          `Nesten! Riktig svar er ${q.answer}. Prøv igjen neste gang!`;
-        [...area.children].forEach(b => {
-          if (Number(b.textContent) === q.answer) b.classList.add("correct");
-        });
+        clicked.classList.add("wrong");
+        setMessage("troll-feedback",`Nesten! Svaret var ${trollQuestion.correct}.`,"error");
       }
+      $("troll-score").textContent = trollPoints;
+      $("troll-next").disabled = false;
+      $("troll-next").textContent = trollIndex === 9 ? "Fullfør runden" : "Neste →";
+    }
 
-      document.getElementById("nextTroll").classList.remove("hidden");
-      document.getElementById("nextTroll").textContent =
-        trollIndex === 4 ? `Se resultatet · ${trollPoints} poeng` : "Neste oppgave →";
+    $("troll-next").addEventListener("click",async () => {
+      if (!trollAnswered) return;
+      trollIndex++;
+      if (trollIndex < 10) renderTrollQuestion();
+      else {
+        $("troll-game").classList.add("hidden");
+        $("troll-finished").classList.remove("hidden");
+        $("troll-final-text").textContent = `Du fikk ${trollCorrect} av 10 riktige og ${trollPoints} poeng!`;
+        const message = await saveScore("Trollens gangetabell",trollPoints);
+        $("troll-final-text").textContent += " " + message;
+        refreshHomeStats();
+      }
     });
-    area.appendChild(button);
-  });
-}
 
-document.getElementById("startTroll").addEventListener("click", startTrollRound);
+    $("troll-restart").addEventListener("click",resetTroll);
+    $("quiz-back").addEventListener("click",() => showPage("subjects"));
+    $("refresh-players").addEventListener("click",loadPlayerList);
 
-document.getElementById("nextTroll").addEventListener("click", async () => {
-  if (trollIndex < 4) {
-    trollIndex++;
-    showTrollQuestion();
-    return;
-  }
+    function setAuthMode(signup) {
+      signupMode = signup;
+      $("auth-title").textContent = signup ? "🌱 Lag konto" : "👋 Logg inn";
+      $("auth-submit").textContent = signup ? "Opprett konto" : "Logg inn";
+      $("toggle-auth").textContent = signup ? "Jeg har allerede konto" : "Lag konto";
+      $("username-field").classList.toggle("hidden",!signup);
+      $("auth-password").autocomplete = signup ? "new-password" : "current-password";
+      $("auth-username").required = signup;
+      setMessage("auth-message","");
+    }
 
-  document.getElementById("trollQuestion").textContent =
-    `Ferdig! Du fikk ${trollPoints} av 50 mulige poeng! 🏆`;
-  document.getElementById("trollAnswers").replaceChildren();
-  document.getElementById("nextTroll").classList.add("hidden");
-  document.getElementById("startTroll").classList.remove("hidden");
-  document.getElementById("startTroll").textContent = "Spill igjen 🔄";
+    $("toggle-auth").addEventListener("click",() => setAuthMode(!signupMode));
 
-  if (!sproutUser) {
-    document.getElementById("trollFeedback").textContent =
-      "Logg inn for å lagre poengene dine.";
-    return;
-  }
+    $("auth-form").addEventListener("submit",async event => {
+      event.preventDefault();
+      const email = $("auth-email").value.trim();
+      const password = $("auth-password").value;
+      const username = $("auth-username").value.trim();
+      $("auth-submit").disabled = true;
+      setMessage("auth-message",signupMode ? "Oppretter konto …" : "Logger inn …");
+      try {
+        if (signupMode) {
+          if (!/^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
+            throw new Error("Brukernavnet må være 3–20 tegn og bare inneholde bokstaver, tall, _ eller -.");
+          }
+          const {data,error} = await supabase.auth.signUp({
+            email,
+            password,
+            options:{data:{username}}
+          });
+          if (error) throw error;
+          if (data.session) {
+            currentUser = data.user;
+            await loadMyProfile();
+            setMessage("auth-message","Konto opprettet! 🌱","success");
+            showPage("account");
+          } else {
+            setMessage("auth-message","Konto opprettet! Sjekk e-posten din for å bekrefte kontoen, og logg deretter inn.","success");
+          }
+        } else {
+          const {data,error} = await supabase.auth.signInWithPassword({email,password});
+          if (error) throw error;
+          currentUser = data.user;
+          await loadMyProfile();
+          setMessage("auth-message","Du er logget inn!","success");
+          showPage("account");
+        }
+      } catch(error) {
+        setMessage("auth-message",friendlyAuthError(error),"error");
+      } finally {
+        $("auth-submit").disabled = false;
+      }
+    });
 
-  const { error } = await sproutDB.rpc("save_game_score", {
-    p_game_name: "Trollens gangetabell",
-    p_points: trollPoints
-  });
+    function friendlyAuthError(error) {
+      const msg = String(error?.message || "Noe gikk galt.");
+      if (msg.toLowerCase().includes("already registered")) return "Denne e-posten har allerede en konto. Logg inn i stedet.";
+      if (msg.toLowerCase().includes("invalid login credentials")) return "Feil e-post eller passord.";
+      if (msg.toLowerCase().includes("username")) return "Brukernavnet finnes kanskje allerede, eller er ugyldig.";
+      return msg;
+    }
 
-  if (error) {
-    document.getElementById("trollFeedback").textContent =
-      "Kunne ikke lagre poengene. " + error.message;
-    console.error(error);
-  } else {
-    document.getElementById("trollFeedback").textContent =
-      `Poengene er lagret! +${trollPoints} poeng 🌟`;
-    await refreshSproutAccount();
-  }
-});
+    async function loadMyProfile() {
+      if (!currentUser) {
+        profile = null;
+        return;
+      }
+      const {data,error} = await supabase
+        .from("profiles")
+        .select("id,username,avatar,is_verified,total_points,created_at")
+        .eq("id",currentUser.id)
+        .maybeSingle();
+      if (error) throw error;
+      profile = data;
+      if (!profile) {
+        throw new Error("Fant ikke profilen. Kontroller at Supabase-profiltriggeren er opprettet.");
+      }
+      renderAccount();
+      refreshHomeStats();
+    }
 
-refreshSproutAccount();
-</script>
+    function renderAccount() {
+      const loggedIn = Boolean(currentUser && profile);
+      $("logged-out-panel").classList.toggle("hidden",loggedIn);
+      $("logged-in-panel").classList.toggle("hidden",!loggedIn);
+      if (!loggedIn) return;
+
+      const display = $("account-display");
+      display.replaceChildren();
+      const row = document.createElement("div");
+      row.className = "profile-row";
+      const av = document.createElement("div");
+      av.className = "avatar";
+      av.textContent = profile.avatar || "🐸";
+      const info = document.createElement("div");
+      info.className = "profile-info";
+      const name = document.createElement("div");
+      name.className = "profile-name";
+      name.appendChild(displayName(profile.username,profile.is_verified));
+      const email = document.createElement("div");
+      email.className = "muted";
+      email.textContent = currentUser.email || "";
+      info.append(name,email);
+      row.append(av,info);
+      display.appendChild(row);
+
+      $("profile-username").value = profile.username;
+      $("account-points").textContent = profile.total_points || 0;
+      $("account-created").textContent = profile.created_at
+        ? new Date(profile.created_at).toLocaleDateString("no-NO")
+        : "—";
+      chosenAvatar = profile.avatar || "🐸";
+      renderAvatarPicker();
+    }
+
+    function renderAvatarPicker() {
+      const picker = $("avatar-picker");
+      picker.replaceChildren();
+      avatars.forEach(avatar => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "avatar-choice" + (avatar === chosenAvatar ? " selected" : "");
+        btn.textContent = avatar;
+        btn.title = "Velg " + avatar;
+        btn.addEventListener("click",() => {
+          chosenAvatar = avatar;
+          renderAvatarPicker();
+        });
+        picker.appendChild(btn);
+      });
+    }
+
+    $("save-profile").addEventListener("click",async () => {
+      if (!currentUser || !profile) return;
+      const username = $("profile-username").value.trim();
+      if (!/^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
+        setMessage("profile-message","Brukernavnet må være 3–20 tegn og bare inneholde bokstaver, tall, _ eller -.","error");
+        return;
+      }
+      $("save-profile").disabled = true;
+      try {
+        const {data,error} = await supabase.from("profiles")
+          .update({username,avatar:chosenAvatar})
+          .eq("id",currentUser.id)
+          .select("id,username,avatar,is_verified,total_points,created_at")
+          .single();
+        if (error) throw error;
+        profile = data;
+        renderAccount();
+        setMessage("profile-message","Profilen er lagret! 🌱","success");
+        loadPlayerList();
+      } catch(error) {
+        setMessage("profile-message",error.message.includes("duplicate")
+          ? "Dette brukernavnet er allerede i bruk."
+          : "Kunne ikke lagre profilen: " + error.message,"error");
+      } finally {
+        $("save-profile").disabled = false;
+      }
+    });
+
+    $("logout-button").addEventListener("click",async () => {
+      const {error} = await supabase.auth.signOut();
+      if (error) {
+        setMessage("profile-message",error.message,"error");
+        return;
+      }
+      currentUser = null;
+      profile = null;
+      renderAccount();
+      setAuthMode(false);
+      showPage("home");
+    });
+
+    async function loadPlayerList() {
+      const list = $("players-list");
+      list.textContent = "Laster spillere …";
+      try {
+        const {data,error} = await supabase.from("profiles")
+          .select("id,username,avatar,is_verified,total_points,created_at")
+          .order("total_points",{ascending:false})
+          .limit(100);
+        if (error) throw error;
+        list.replaceChildren();
+        if (!data || data.length === 0) {
+          list.textContent = "Ingen spillere ennå. Bli den første!";
+          return;
+        }
+        data.forEach(player => {
+          const row = document.createElement("div");
+          row.className = "profile-row";
+          const av = document.createElement("div");
+          av.className = "avatar";
+          av.textContent = player.avatar || "🐸";
+          const info = document.createElement("div");
+          info.className = "profile-info";
+          const name = document.createElement("div");
+          name.className = "profile-name";
+          name.appendChild(displayName(player.username,player.is_verified));
+          const pts = document.createElement("div");
+          pts.className = "profile-points";
+          pts.textContent = `${player.total_points || 0} poeng`;
+          info.append(name,pts);
+          row.append(av,info);
+          list.appendChild(row);
+        });
+        $("home-player-count").textContent = data.length;
+      } catch(error) {
+        console.error(error);
+        list.textContent = "Kunne ikke hente spillere. Kontroller Supabase-tabellen profiles og tilgangsreglene.";
+      }
+    }
+
+    async function refreshHomeStats() {
+      $("home-points").textContent = profile?.total_points || 0;
+      try {
+        const {count,error} = await supabase.from("profiles")
+          .select("id",{count:"exact",head:true});
+        if (!error) $("home-player-count").textContent = count ?? 0;
+      } catch(error) {
+        console.warn("Kunne ikke hente spillerantall",error);
+      }
+    }
+
+    async function handleSession(session) {
+      currentUser = session?.user || null;
+      if (currentUser) {
+        try {
+          await loadMyProfile();
+        } catch(error) {
+          console.error(error);
+          profile = null;
+          setMessage("auth-message","Innlogging fungerte, men profilen kunne ikke lastes: " + error.message,"error");
+        }
+      } else {
+        profile = null;
+      }
+      renderAccount();
+      refreshHomeStats();
+    }
+
+    renderSubjectCards("home-subjects");
+    renderSubjectCards("subject-grid");
+    setAuthMode(false);
+    renderAccount();
+    resetTroll();
+
+    supabase.auth.onAuthStateChange((_event,session) => {
+      // Defer profile loading so auth callbacks do not hold up Supabase auth.
+      setTimeout(() => handleSession(session),0);
+    });
+
+    try {
+      const {data,error} = await supabase.auth.getSession();
+      if (error) throw error;
+      await handleSession(data.session);
+    } catch(error) {
+      console.error("Supabase-oppstart feilet:",error);
+      setMessage("auth-message","Kunne ikke koble til Supabase: " + error.message,"error");
+    }
+
+    loadPlayerList();
+  </script>
 </body>
 </html>
