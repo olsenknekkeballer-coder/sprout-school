@@ -2,152 +2,386 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sprout School 🌱</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f8ef;
-      color: #243b2a;
-    }
-    header {
-      background: #ffffff;
-      padding: 20px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 2px 12px #0000000a;
-    }
-    .logo { font-size: 25px; font-weight: bold; color: #36834a; }
-    nav a {
-      margin-left: 18px;
-      text-decoration: none;
-      color: #34533b;
-      font-weight: bold;
-    }
-    .hero {
-      text-align: center;
-      padding: 75px 20px;
-      background: linear-gradient(135deg, #e0f5d7, #f9fbe9);
-    }
-    .hero h1 { font-size: clamp(34px, 6vw, 58px); margin: 0 0 15px; }
-    .hero p { font-size: 18px; color: #526657; }
-    button {
-      background: #36834a;
-      color: white;
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 22px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .content { max-width: 1050px; margin: auto; padding: 40px 20px; }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 5px 18px #00000008;
-    }
-    .emoji { font-size: 42px; }
-    .card h3 { margin-bottom: 8px; }
-    footer { text-align: center; padding: 30px; color: #657568; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprout School 🌱</title>
+<style>
+:root {
+  --green: #32834b;
+  --dark: #203c2b;
+  --bg: #f3f8ef;
+  --white: #fff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+}
+header {
+  background: white;
+  padding: 18px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 12px #00000008;
+}
+.logo { font-size: 24px; font-weight: 800; color: var(--green); }
+.score {
+  background: #e3f5df;
+  border-radius: 12px;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+.hero { text-align: center; padding: 40px 16px 25px; }
+.hero h1 { font-size: clamp(30px, 5vw, 46px); margin-bottom: 10px; }
+.hero p { color: #617264; }
+main { max-width: 900px; margin: auto; padding: 12px 16px 50px; }
+.panel {
+  background: white;
+  border-radius: 22px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px #203c2b0b;
+}
+h2 { margin-top: 0; }
+label { display: block; font-weight: bold; margin-bottom: 8px; }
+select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d7e3d6;
+  border-radius: 10px;
+  background: white;
+  color: var(--dark);
+  font-size: 16px;
+}
+.settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 17px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform .12s, background .12s;
+}
+button:active { transform: scale(.98); }
+.primary { background: var(--green); color: white; }
+.primary:hover { background: #266b3c; }
+.secondary { background: #e9f3e6; color: var(--dark); }
+#start { width: 100%; margin-top: 20px; }
+.hidden { display: none !important; }
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #637568;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+.track {
+  height: 9px;
+  background: #e7eee4;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+#progress {
+  height: 100%;
+  width: 0%;
+  background: #64b86d;
+  transition: width .2s;
+}
+#question { font-size: clamp(21px, 4vw, 28px); line-height: 1.4; }
+#answers { display: grid; gap: 11px; margin: 20px 0; }
+.answer {
+  width: 100%;
+  text-align: left;
+  background: #f7faf5;
+  border: 2px solid #e1eade;
+  color: var(--dark);
+}
+.answer:hover:not(:disabled) { border-color: var(--green); }
+.answer:disabled { cursor: default; opacity: 1; }
+.answer.correct { background: #e0f7e4; border-color: #39984f; }
+.answer.wrong { background: #fff0ee; border-color: #df6b61; }
+#feedback {
+  border-radius: 12px;
+  padding: 14px;
+  margin: 15px 0;
+  line-height: 1.5;
+}
+.good { background: #e4f7e7; color: #226735; }
+.bad { background: #fff0ee; color: #983f36; }
+#next { width: 100%; margin-top: 8px; }
+.result { text-align: center; }
+.big-score { font-size: 48px; color: var(--green); font-weight: 800; }
+.small { color: #647467; font-size: 14px; }
+footer { text-align: center; padding: 20px; color: #728073; }
+@media (max-width: 540px) {
+  .settings { grid-template-columns: 1fr; }
+  .panel { padding: 19px; }
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">🌱 Sprout School</div>
-    <nav>
-      <a href="#fag">Fag</a>
-      <a href="#laerere">For lærere</a>
-    </nav>
-  </header>
 
-  <section class="hero">
-    <h1>Læring kan være gøy!</h1>
-    <p>Utforsk fag, løs oppgaver og lær noe nytt hver dag.</p>
-    <button onclick="document.getElementById('fag').scrollIntoView({behavior:'smooth'})">
-      Start læringen →
-    </button>
-  </section>
+<header>
+  <div class="logo">🌱 Sprout School</div>
+  <div class="score">⭐ Poeng: <span id="totalScore">0</span></div>
+</header>
 
-  <main class="content" id="fag">
-    <h2>📚 Velg et fag</h2>
-    <div class="cards">
-      <div class="card">
-        <div class="emoji">🔢</div>
-        <h3>Matematikk</h3>
-        <p>Øv på tall, regning og problemløsing.</p>
-        <button onclick="startQuiz('matte')">Start oppgaver</button>
+<section class="hero">
+  <h1>Lær noe nytt! 🎮</h1>
+  <p>Velg et fag, finn nivået ditt og samle poeng.</p>
+</section>
+
+<main>
+  <section class="panel" id="setup">
+    <h2>📚 Velg din utfordring</h2>
+    <div class="settings">
+      <div>
+        <label for="subject">Fag</label>
+        <select id="subject">
+          <option value="matte">🔢 Matematikk</option>
+          <option value="norsk">📖 Norsk</option>
+          <option value="naturfag">🌍 Naturfag</option>
+        </select>
       </div>
-      <div class="card">
-        <div class="emoji">📖</div>
-        <h3>Norsk</h3>
-        <p>Tren på ord, lesing og staving.</p>
-        <button onclick="startQuiz('norsk')">Start oppgaver</button>
-      </div>
-      <div class="card">
-        <div class="emoji">🌍</div>
-        <h3>Naturfag</h3>
-        <p>Oppdag dyr, natur og verdensrommet.</p>
-        <button onclick="startQuiz('naturfag')">Start oppgaver</button>
+      <div>
+        <label for="difficulty">Vanskelighetsgrad</label>
+        <select id="difficulty">
+          <option value="easy">🟢 Lett</option>
+          <option value="medium">🟡 Middels</option>
+          <option value="hard">🔴 Vanskelig</option>
+        </select>
       </div>
     </div>
-  </main>
-
-  <section class="content" id="laerere">
-    <div class="card">
-      <h2>👩‍🏫 For lærere</h2>
-      <p>Her kan vi senere legge til lærerinnlogging, klasser og oppgaver.</p>
-      <p><strong>Under utvikling</strong> – lærerfunksjonene er ikke aktive ennå.</p>
-    </div>
+    <button class="primary" id="start">Start quiz 🚀</button>
+    <p class="small">Hvert spørsmål har tre svaralternativer. Klarer du alle?</p>
   </section>
 
-  <footer>© 2026 Sprout School · Laget for læring 🌱</footer>
+  <section class="panel hidden" id="quiz">
+    <div class="quiz-top">
+      <span id="questionNumber">Spørsmål 1</span>
+      <span id="levelLabel">🟢 Lett</span>
+    </div>
+    <div class="track"><div id="progress"></div></div>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <div id="feedback" class="hidden" role="status" aria-live="polite"></div>
+    <button class="primary hidden" id="next">Neste spørsmål →</button>
+  </section>
 
-  <script>
-    function startQuiz(subject) {
-      const quizzes = {
-        matte: {
-          question: "Hva er 7 × 8?",
-          answers: ["48", "56", "64"],
-          correct: "56"
-        },
-        norsk: {
-          question: "Hvilket ord er skrevet riktig?",
-          answers: ["Skole", "Shole", "Skoole"],
-          correct: "Skole"
-        },
-        naturfag: {
-          question: "Hvilken planet bor vi på?",
-          answers: ["Mars", "Jorden", "Venus"],
-          correct: "Jorden"
-        }
-      };
+  <section class="panel result hidden" id="results">
+    <div style="font-size:55px" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Bra jobbet!</h2>
+    <div class="big-score" id="earned">0 poeng</div>
+    <p id="resultText"></p>
+    <button class="primary" id="again">Spill igjen 🔄</button>
+    <button class="secondary" id="change">Velg et annet fag</button>
+  </section>
 
-      const quiz = quizzes[subject];
-      const answer = prompt(
-        quiz.question + "\n\n" +
-        quiz.answers.map((a, i) => `${i + 1}. ${a}`).join("\n") +
-        "\n\nSkriv tallet til svaret:"
-      );
+  <section class="panel">
+    <h2>🏅 Slik fungerer poengene</h2>
+    <p>🟢 Lett: <strong>10 poeng</strong> for riktig svar.</p>
+    <p>🟡 Middels: <strong>20 poeng</strong> for riktig svar.</p>
+    <p>🔴 Vanskelig: <strong>30 poeng</strong> for riktig svar.</p>
+    <p class="small">Du får poeng bare én gang per spørsmål.</p>
+  </section>
+</main>
 
-      if (answer && quiz.answers[Number(answer) - 1] === quiz.correct) {
-        alert("Riktig! 🎉 Bra jobbet!");
-      } else if (answer) {
-        alert("Ikke helt! 💚 Prøv igjen.");
-      }
-    }
-  </script>
+<footer>© 2026 Sprout School 🌱 · Læring for alle</footer>
+
+<script>
+const questions = {
+  matte: {
+    easy: [
+      {q:"Hva er 7 + 5?",a:["11","12","13"],c:1,why:"7 + 5 = 12."},
+      {q:"Hva er 6 × 3?",a:["18","15","21"],c:0,why:"6 ganger 3 er 18."},
+      {q:"Hva er 20 − 8?",a:["10","11","12"],c:2,why:"20 − 8 = 12."},
+      {q:"Hva er halvparten av 16?",a:["6","8","10"],c:1,why:"16 delt på 2 er 8."}
+    ],
+    medium: [
+      {q:"Hva er 12 × 8?",a:["86","96","108"],c:1,why:"12 × 8 = 96."},
+      {q:"Hva er 144 delt på 12?",a:["11","12","14"],c:1,why:"12 × 12 = 144."},
+      {q:"Hva er 25 % av 200?",a:["25","40","50"],c:2,why:"En fjerdedel av 200 er 50."},
+      {q:"Hva er 3,5 + 2,7?",a:["5,2","6,2","6,7"],c:1,why:"3,5 + 2,7 = 6,2."}
+    ],
+    hard: [
+      {q:"Hva er 15 % av 400?",a:["40","60","80"],c:1,why:"10 % er 40, og 5 % er 20. Til sammen 60."},
+      {q:"Hva er 3² + 4²?",a:["25","49","12"],c:0,why:"9 + 16 = 25."},
+      {q:"En vare koster 800 kr og får 25 % rabatt. Hva er ny pris?",a:["600 kr","650 kr","700 kr"],c:0,why:"25 % av 800 er 200. 800 − 200 = 600 kr."},
+      {q:"Løs likningen: 3x = 27.",a:["x = 6","x = 9","x = 12"],c:1,why:"27 delt på 3 er 9."}
+    ]
+  },
+  norsk: {
+    easy: [
+      {q:"Hvilket ord er skrevet riktig?",a:["Skole","Shole","Skoole"],c:0,why:"Skole er riktig skrevet."},
+      {q:"Hva er flertall av «bok»?",a:["Boker","Bøker","Bokker"],c:1,why:"Flertall av bok er bøker."},
+      {q:"Hvilket ord er et verb?",a:["Løpe","Blå","Bord"],c:0,why:"Å løpe er en handling, altså et verb."},
+      {q:"Hva er det motsatte av «varm»?",a:["Het","Kald","Myk"],c:1,why:"Det motsatte av varm er kald."}
+    ],
+    medium: [
+      {q:"Hvilken setning er riktig?",a:["Jeg liker å lese.","Jeg liker og lese.","Jeg liker å leser."],c:0,why:"Her bruker vi «å lese»."},
+      {q:"Hva er et adjektiv?",a:["Et ord som beskriver","Et navn på en person","Et ord for en handling"],c:0,why:"Adjektiv beskriver for eksempel størrelse, farge eller egenskaper."},
+      {q:"Hva er preteritum av «å skrive»?",a:["Skriver","Skrev","Skrevet"],c:1,why:"Preteritum er «skrev»."},
+      {q:"Hvilket ord er et substantiv?",a:["Raskt","Hoppe","Sykkel"],c:2,why:"En sykkel er en ting, altså et substantiv."}
+    ],
+    hard: [
+      {q:"Hvilken setning har riktig tegnsetting?",a:["Hei hvordan går det?","Hei, hvordan går det?","Hei hvordan, går det"],c:1,why:"Komma etter «Hei» og spørsmålstegn til slutt."},
+      {q:"Hva er et synonym for «modig»?",a:["Tapper","Redd","Trøtt"],c:0,why:"Tapper betyr omtrent det samme som modig."},
+      {q:"Hvilken ordklasse tilhører «fordi» i «Jeg gikk hjem fordi jeg var trøtt»?",a:["Preposisjon","Subjunksjon","Adjektiv"],c:1,why:"«Fordi» innleder en leddsetning."},
+      {q:"Hva er riktig skrivemåte?",a:["Interessant","Interesant","Intresant"],c:0,why:"Det skrives interessant, med to s-er."}
+    ]
+  },
+  naturfag: {
+    easy: [
+      {q:"Hvilken planet bor vi på?",a:["Mars","Jorden","Venus"],c:1,why:"Vi bor på planeten Jorden."},
+      {q:"Hva trenger planter for å vokse?",a:["Bare godteri","Lys og vann","Bare stein"],c:1,why:"Planter trenger blant annet lys, vann og næringsstoffer."},
+      {q:"Hvilket dyr er et pattedyr?",a:["Laks","Frosk","Hund"],c:2,why:"Hunder er pattedyr."},
+      {q:"Hva er Solen?",a:["En stjerne","En planet","En måne"],c:0,why:"Solen er stjernen i solsystemet vårt."}
+    ],
+    medium: [
+      {q:"Hvilken gass trenger mennesker for å puste?",a:["Oksygen","Helium","Karbondioksid"],c:0,why:"Vi bruker oksygen i celleåndingen."},
+      {q:"Ved hvilken temperatur fryser rent vann normalt?",a:["0 °C","10 °C","100 °C"],c:0,why:"Rent vann fryser normalt ved 0 °C."},
+      {q:"Hva er fotosyntese?",a:["Når planter lager sukker ved hjelp av lys","Når vann fryser","Når dyr sover"],c:0,why:"Planter bruker lys, vann og karbondioksid til å lage sukker og frigir oksygen."},
+      {q:"Hvilket organ pumper blod rundt i kroppen?",a:["Lungene","Hjertet","Magesekken"],c:1,why:"Hjertet pumper blod gjennom kroppen."}
+    ],
+    hard: [
+      {q:"Hva er det kjemiske symbolet for gull?",a:["Ag","Au","Fe"],c:1,why:"Gull har symbolet Au."},
+      {q:"Hva kalles prosessen der væske blir til gass?",a:["Kondensering","Fordamping","Frysing"],c:1,why:"Fordamping er overgangen fra væske til gass."},
+      {q:"Hvilken planet er kjent for sitt store røde stormområde?",a:["Jupiter","Merkur","Neptun"],c:0,why:"Den store røde flekken er en enorm storm på Jupiter."},
+      {q:"Hva er DNA sin viktigste rolle?",a:["Å transportere oksygen","Å lagre genetisk informasjon","Å fordøye mat"],c:1,why:"DNA inneholder genetiske opplysninger om en organisme."}
+    ]
+  }
+};
+
+const labels = {easy:"🟢 Lett",medium:"🟡 Middels",hard:"🔴 Vanskelig"};
+let currentQuestions = [];
+let index = 0;
+let earned = 0;
+let totalScore = 0;
+let answered = false;
+
+const $ = id => document.getElementById(id);
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz() {
+  const subject = $("subject").value;
+  const difficulty = $("difficulty").value;
+  currentQuestions = shuffle(questions[subject][difficulty]);
+  index = 0;
+  earned = 0;
+  $("levelLabel").textContent = labels[difficulty];
+  $("setup").classList.add("hidden");
+  $("results").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const item = currentQuestions[index];
+  $("questionNumber").textContent =
+    `Spørsmål ${index + 1} av ${currentQuestions.length}`;
+  $("progress").style.width =
+    `${index / currentQuestions.length * 100}%`;
+  $("question").textContent = item.q;
+  $("answers").innerHTML = "";
+  $("feedback").className = "hidden";
+  $("feedback").textContent = "";
+  $("next").classList.add("hidden");
+
+  item.a.forEach((answer, i) => {
+    const button = document.createElement("button");
+    button.className = "answer";
+    button.textContent = `${["A","B","C"][i]}. ${answer}`;
+    button.addEventListener("click", () => chooseAnswer(i));
+    $("answers").appendChild(button);
+  });
+}
+
+function chooseAnswer(choice) {
+  if (answered) return;
+  answered = true;
+
+  const item = currentQuestions[index];
+  const buttons = [...$("answers").children];
+  buttons.forEach((button, i) => {
+    button.disabled = true;
+    if (i === item.c) button.classList.add("correct");
+    else if (i === choice) button.classList.add("wrong");
+  });
+
+  const correct = choice === item.c;
+  const points = {easy:10,medium:20,hard:30}[$("difficulty").value];
+  const feedback = $("feedback");
+
+  if (correct) {
+    earned += points;
+    totalScore += points;
+    $("totalScore").textContent = totalScore;
+    feedback.textContent = `🎉 Riktig! +${points} poeng. ${item.why}`;
+    feedback.className = "good";
+  } else {
+    feedback.textContent = `💚 Ikke helt! Riktig svar er «${item.a[item.c]}». ${item.why}`;
+    feedback.className = "bad";
+  }
+
+  $("next").textContent =
+    index === currentQuestions.length - 1 ? "Se resultatet 🏆" : "Neste spørsmål →";
+  $("next").classList.remove("hidden");
+}
+
+function finishQuiz() {
+  $("quiz").classList.add("hidden");
+  $("results").classList.remove("hidden");
+  $("progress").style.width = "100%";
+
+  const percentage = Math.round(earned /
+    (currentQuestions.length *
+    {easy:10,medium:20,hard:30}[$("difficulty").value]) * 100);
+
+  $("earned").textContent = `${earned} poeng`;
+  $("resultTitle").textContent =
+    percentage === 100 ? "Perfekt! 🌟" :
+    percentage >= 60 ? "Veldig bra jobbet! 🎉" : "Bra forsøk! 💪";
+  $("resultEmoji").textContent =
+    percentage === 100 ? "🏆" : percentage >= 60 ? "🌟" : "🌱";
+  $("resultText").textContent =
+    `Du fikk ${percentage} % riktig på ${currentQuestions.length} spørsmål. Fortsett å øve!`;
+}
+
+$("start").addEventListener("click", startQuiz);
+$("next").addEventListener("click", () => {
+  if (index < currentQuestions.length - 1) {
+    index++;
+    showQuestion();
+  } else {
+    finishQuiz();
+  }
+});
+$("again").addEventListener("click", startQuiz);
+$("change").addEventListener("click", () => {
+  $("results").classList.add("hidden");
+  $("setup").classList.remove("hidden");
+});
+</script>
 </body>
 </html>
