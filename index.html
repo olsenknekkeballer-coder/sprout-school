@@ -481,12 +481,16 @@
         transition-duration: .01ms !important;
       }
     }
-  </style>
+  
+/* Sprout School colorful classroom redesign */
+.topbar{background:linear-gradient(100deg,#2865b7,#4389d4);color:#fff}.brand{color:#fff}.brand span{color:#d2ff9c}.nav button{background:#ffffff20;color:#fff;border:1px solid #ffffff75}.nav button.active,.button.primary{background:#fff;color:#2459a5}.language-picker{display:flex;align-items:center;gap:7px;color:#fff;font-size:13px;font-weight:800}.language-picker select{max-width:145px;border:1px solid #ffffff90;border-radius:999px;padding:10px;background:#ffffff20;color:#fff;min-height:42px}.language-picker option{color:#222;background:#fff}.grade-hero{background:linear-gradient(120deg,#a5eaff,#ddf9bc);border:3px solid white;border-radius:24px;padding:22px;margin:18px 0;box-shadow:0 7px 0 #b8dfaa}.grade-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}.grade-card{border:3px solid white;border-radius:18px;background:#fff;color:#292744;padding:15px 8px;box-shadow:0 4px 0 #d4e7c9;text-align:center;font-weight:850;cursor:pointer}.grade-card:hover{transform:translateY(-2px)}.grade-card.selected{background:#fff3b5;border-color:#ffc94a}.grade-emoji{display:block;font-size:32px;margin-bottom:6px}.grade-message{background:#e2f7ff;border:1px solid #b5e6f5;border-radius:14px;padding:12px;margin-top:10px;font-weight:750}@media(max-width:650px){.grade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{gap:10px}}
+</style>
 </head>
 
 <body>
   <header class="topbar">
     <div class="brand">🌱 Sprout <span>School</span></div>
+    <label class="language-picker" for="sprout-language">🌐 <span data-language-label>Språk</span><select id="sprout-language"><option value="no">🇳🇴 Bokmål</option><option value="nn">🏔️ Nynorsk</option><option value="en">🇬🇧 English</option><option value="uk">🇺🇦 Українська</option><option value="pl">🇵🇱 Polski</option><option value="es">🇪🇸 Español</option></select></label>
     <nav class="nav" aria-label="Hovedmeny">
       <button class="active" data-page="home">🏠 Hjem</button>
       <button data-page="subjects">📚 Fag</button>
@@ -526,7 +530,8 @@
 
     <section id="page-subjects" class="hidden">
       <div class="section-title"><h2>📚 Alle fag</h2></div>
-      <p class="muted">Velg et fag, og velg deretter vanskelighetsgrad.</p>
+      <p class="muted" data-subject-instruction>Velg et fag, og velg deretter vanskelighetsgrad.</p>
+      <div class="grade-hero"><h2 data-grade-title>🎒 Hvilket trinn går du på?</h2><p class="muted" data-grade-help>Velg trinn først, så finner du fagene dine under!</p><div class="grade-grid"><button type="button" class="grade-card" data-grade="1-2"><span class="grade-emoji">🎈</span><span data-grade-label="0">1.–2. trinn</span></button><button type="button" class="grade-card" data-grade="3-4"><span class="grade-emoji">🦊</span><span data-grade-label="1">3.–4. trinn</span></button><button type="button" class="grade-card" data-grade="5-7"><span class="grade-emoji">🚀</span><span data-grade-label="2">5.–7. trinn</span></button><button type="button" class="grade-card" data-grade="8-10"><span class="grade-emoji">🏆</span><span data-grade-label="3">8.–10. trinn</span></button></div><div class="grade-message" data-grade-message>🌱 Velg trinnet ditt for å komme i gang!</div></div>
       <div id="subject-grid" class="grid"></div>
     </section>
 
@@ -1487,6 +1492,37 @@
       renderAccount();
       refreshHomeStats();
     }
+
+
+    // Grade picker and interface language selector
+    const sproutTranslations = {
+      no:{language:"Språk",home:"🏠 Hjem",subjects:"📚 Fag",troll:"🧌 Trollens gangetabell",forest:"🌲 Skogseventyret 2.0",pets:"🐾 Læringsdyr",progress:"🏅 Fremgang",teacher:"👩‍🏫 Lærer",support:"💬 Hjelp",players:"👥 Spillere",account:"👤 Konto",hero:"Lær noe nytt! 🌱",welcome:"Velkommen til Sprout School — øv, spill og samle poeng!",start:"Start å lære →",pick:"🌈 Velg et fag",all:"Alle fag",instruction:"Velg et fag, og velg deretter vanskelighetsgrad.",title:"🎒 Hvilket trinn går du på?",help:"Velg trinn først, så finner du fagene dine under!",grades:["1.–2. trinn","3.–4. trinn","5.–7. trinn","8.–10. trinn"],selected:"🌱 Trinn valgt: "},
+      nn:{language:"Språk",home:"🏠 Heim",subjects:"📚 Fag",troll:"🧌 Trollens gongjetabell",forest:"🌲 Skogseventyret 2.0",pets:"🐾 Læringsdyr",progress:"🏅 Framgang",teacher:"👩‍🏫 Lærar",support:"💬 Hjelp",players:"👥 Spelarar",account:"👤 Konto",hero:"Lær noko nytt! 🌱",welcome:"Velkomen til Sprout School — øv, spel og samle poeng!",start:"Start å lære →",pick:"🌈 Vel eit fag",all:"Alle fag",instruction:"Vel eit fag, og vel deretter vanskegrad.",title:"🎒 Kva for trinn går du på?",help:"Vel trinn først, så finn du faga dine under!",grades:["1.–2. trinn","3.–4. trinn","5.–7. trinn","8.–10. trinn"],selected:"🌱 Trinn valt: "},
+      en:{language:"Language",home:"🏠 Home",subjects:"📚 Subjects",troll:"🧌 Troll Times Tables",forest:"🌲 Forest Adventure 2.0",pets:"🐾 Learning Pets",progress:"🏅 Progress",teacher:"👩‍🏫 Teacher",support:"💬 Help",players:"👥 Players",account:"👤 Account",hero:"Learn something new! 🌱",welcome:"Welcome to Sprout School — learn, play and earn points!",start:"Start learning →",pick:"🌈 Choose a subject",all:"All subjects",instruction:"Choose a subject, then choose a difficulty level.",title:"🎒 What grade are you in?",help:"Choose your grade first, then explore your subjects below!",grades:["Grades 1–2","Grades 3–4","Grades 5–7","Grades 8–10"],selected:"🌱 Grade selected: "},
+      uk:{language:"Мова",home:"🏠 Головна",subjects:"📚 Предмети",troll:"🧌 Таблиця множення троля",forest:"🌲 Лісова пригода 2.0",pets:"🐾 Навчальні улюбленці",progress:"🏅 Прогрес",teacher:"👩‍🏫 Учитель",support:"💬 Допомога",players:"👥 Гравці",account:"👤 Профіль",hero:"Дізнайся щось нове! 🌱",welcome:"Ласкаво просимо до Sprout School — навчайся, грай і збирай бали!",start:"Почати навчання →",pick:"🌈 Обери предмет",all:"Усі предмети",instruction:"Обери предмет, а потім рівень складності.",title:"🎒 У якому ти класі?",help:"Спочатку обери клас, а потім предмет нижче!",grades:["1–2 класи","3–4 класи","5–7 класи","8–10 класи"],selected:"🌱 Обраний клас: "},
+      pl:{language:"Język",home:"🏠 Strona główna",subjects:"📚 Przedmioty",troll:"🧌 Tabliczka mnożenia trolla",forest:"🌲 Leśna przygoda 2.0",pets:"🐾 Zwierzaki do nauki",progress:"🏅 Postępy",teacher:"👩‍🏫 Nauczyciel",support:"💬 Pomoc",players:"👥 Gracze",account:"👤 Konto",hero:"Naucz się czegoś nowego! 🌱",welcome:"Witaj w Sprout School — ucz się, graj i zdobywaj punkty!",start:"Zacznij naukę →",pick:"🌈 Wybierz przedmiot",all:"Wszystkie przedmioty",instruction:"Wybierz przedmiot, a następnie poziom trudności.",title:"🎒 Do której klasy chodzisz?",help:"Najpierw wybierz klasę, a potem przedmiot poniżej!",grades:["Klasy 1–2","Klasy 3–4","Klasy 5–7","Klasy 8–10"],selected:"🌱 Wybrana klasa: "},
+      es:{language:"Idioma",home:"🏠 Inicio",subjects:"📚 Asignaturas",troll:"🧌 Tablas del troll",forest:"🌲 Aventura en el bosque 2.0",pets:"🐾 Mascotas de aprendizaje",progress:"🏅 Progreso",teacher:"👩‍🏫 Profesor",support:"💬 Ayuda",players:"👥 Jugadores",account:"👤 Cuenta",hero:"¡Aprende algo nuevo! 🌱",welcome:"Bienvenido a Sprout School: ¡aprende, juega y gana puntos!",start:"Empezar a aprender →",pick:"🌈 Elige una asignatura",all:"Todas las asignaturas",instruction:"Elige una asignatura y después el nivel de dificultad.",title:"🎒 ¿En qué curso estás?",help:"¡Elige primero tu curso y después una asignatura!",grades:["Cursos 1–2","Cursos 3–4","Cursos 5–7","Cursos 8–10"],selected:"🌱 Curso seleccionado: "}
+    };
+    let sproutGrade = localStorage.getItem("sprout-school-grade") || "";
+    function paintSproutGrade(t) {
+      document.querySelectorAll("[data-grade]").forEach((b,i)=>{b.classList.toggle("selected",b.dataset.grade===sproutGrade);const label=b.querySelector("[data-grade-label]");if(label)label.textContent=t.grades[i];});
+      const msg=document.querySelector("[data-grade-message]");
+      if(msg){const i=["1-2","3-4","5-7","8-10"].indexOf(sproutGrade);msg.textContent=sproutGrade?t.selected+t.grades[i]:"🌱 "+t.help;}
+    }
+    function setSproutLanguage(lang) {
+      const t=sproutTranslations[lang]||sproutTranslations.no;
+      document.documentElement.lang=lang==="no"?"nb":lang;
+      document.querySelector("[data-language-label]").textContent=t.language;
+      document.querySelectorAll(".nav [data-page]").forEach((b,i)=>{const k=["home","subjects","troll","forest","pets","progress","teacher","support","players","account"][i];b.textContent=t[k];});
+      const set=(sel,val)=>{const el=document.querySelector(sel);if(el)el.textContent=val;};
+      set("#page-home .hero h1",t.hero);set("#page-home .hero p",t.welcome);set("#page-home .hero [data-page='subjects']",t.start);set("#page-home .section-title h2",t.pick);set("#page-home .section-title button",t.all);set("[data-subject-instruction]",t.instruction);set("[data-grade-title]",t.title);set("[data-grade-help]",t.help);
+      paintSproutGrade(t);
+    }
+    document.querySelectorAll("[data-grade]").forEach(b=>b.addEventListener("click",()=>{sproutGrade=b.dataset.grade;localStorage.setItem("sprout-school-grade",sproutGrade);paintSproutGrade(sproutTranslations[document.getElementById("sprout-language").value]||sproutTranslations.no);}));
+    const sproutLanguage=document.getElementById("sprout-language");
+    sproutLanguage.value=localStorage.getItem("sprout-school-language")||"no";
+    sproutLanguage.addEventListener("change",()=>{localStorage.setItem("sprout-school-language",sproutLanguage.value);setSproutLanguage(sproutLanguage.value);});
+    setSproutLanguage(sproutLanguage.value);
 
     renderSubjectCards("home-subjects");
     renderSubjectCards("subject-grid");
