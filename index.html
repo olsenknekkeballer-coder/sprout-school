@@ -876,6 +876,7 @@
     }
 
     function chooseLevel(subject) {
+      if (!localStorage.getItem("sprout-school-grade")) { const message = document.querySelector("[data-grade-message]"); if (message) { message.textContent = "👆 Velg skoletrinnet ditt først!"; message.scrollIntoView({behavior:"smooth",block:"center"}); } return; }
       currentSubject = subject;
       const options = [
         {label:"Nivå 1 — Lett",value:0},
